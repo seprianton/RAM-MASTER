@@ -1,7 +1,7 @@
 # MEMORY-MASTER
 Python script file to forensically investigate memory dump files.
 
-[X] Still under construction - but what is there is working but not tested.
+[x] Still under construction - but what is there is working but not tested.
 
 | LANGUAGE | FILENAME | MD5 Hash |
 |------    |------    | -------  |
