@@ -14,4 +14,4 @@ Python script file to forensically investigate memory dump files.
 A python script file that forensically examines memory dumps - It can pull password hashes amd dump pcap files, currently working on automating a lot of the investigation processing...
 
 ## CONSOLE DISPLAY
-![Screenshot](picture2.png)
+![Screenshot](picture3.png)
