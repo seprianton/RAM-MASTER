@@ -7,7 +7,7 @@ Python script file to forensically investigate memory dump files.
 |------    |------    | -------  |
 | python | memory_master.py | MD5 Hash -  |
 | text file| profiles.txt | MD5 Hash - |
-| bash | sort.sh | MD5 Hash - |
+| bash | patch.sh | MD5 Hash - |
 
 <br />
 
