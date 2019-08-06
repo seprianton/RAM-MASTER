@@ -2,7 +2,7 @@
 # coding:UTF-8
 
 # -------------------------------------------------------------------------------------
-#       PYTHON UTILITY SCRIPT FILE FOR THE FORENSIC ANALYSIS OF MEMORY DUMP-FILES
+#      PYTHON UTILITY SCRIPT FILE FOR THE FORENSIC ANALYSIS OF MEMORY DUMP-FILES
 #               BY TERENCE BROADBENT BSC CYBER SECURITY (FIRST CLASS)
 # -------------------------------------------------------------------------------------
 
@@ -124,8 +124,8 @@ while True:
    print "\t\t\t| |\/| |  _| | |\/| | | | | |_) \ V /  | |\/| | / _ \ \___ \ | | |  _| | |_) | "
    print "\t\t\t| |  | | |___| |  | | |_| |  _ < | |   | |  | |/ ___ \ ___) || | | |___|  _ <  "
    print "\t\t\t|_|  |_|_____|_|  |_|\___/|_| \_\|_|   |_|  |_/_/   \_\____/ |_| |_____|_| \_\ "
-   print "\t\t\t                                                                               "
-   print "\t\t\t             BY TERENCE BROADBENT BSC CYBER SECURITY (FIRST CLASS)           \n"
+   print "                                                                                     "
+   print "\t\t\t            BY TERENCE BROADBENT BSC CYBER SECURITY (FIRST CLASS)            \n"
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
