@@ -54,70 +54,14 @@ while len(fileName) < 25:
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub                                                               
-# Version : 1.0
-# Details : Initialise program variables and set up system requirements.
-# Modified: N/A                                                               
-# -------------------------------------------------------------------------------------
-
-os.system("mkdir workArea")
-os.system("echo temp > ./workArea/temp.txt")
-
-#os.system("md5sum " + fileName + " > MD5SUM.txt")
-#hashvalue = open("MD5SUM.txt").readline().replace(fileName, '').rstrip('\n')
-
-PRO = "UNSELECTED              "
-DIS = "UNSELECTED              "
-SAM = "0x0000000000000000"
-SEC = "0x0000000000000000"
-SOF = "0x0000000000000000"
-COM = "0x0000000000000000"
-SYS = "0x0000000000000000"
-PID = "0                       "
-PPID = "0                       "
-PRM = "UNSELECTED              "
-REG = 0
-PWD = "0x0000000000000000"
-SHW = "0x0000000000000000"
-PRM2 = "0x0000000000000000"
-PRM3 = "0x0000000000000000"
-PRM4 = "0x0000000000000000"
-PRM5 = "0x0000000000000000"
-PRM6 = "0x0000000000000000"
-PRM7 = "0x0000000000000000"
-PRM8 = "0x0000000000000000"
-PRM9 = "0x0000000000000000"
-SCAN = 0
-
-# -------------------------------------------------------------------------------------
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub                                                               
-# Version : 1.0
-# Details : Create a main menu system.
-# Modified: N/A                                                               
-# -------------------------------------------------------------------------------------
-
-menu = {}
-menu['(1)']="Auto PROFILE.	(10) List Processes.	(19) SAM.		(28) Malfind PID.		(37) Bulk Extract Files."
-menu['(2)']="Auto HIVES.\t	(11) Analyse Processes.	(20) SECURITY.		(29) Mutant PID.		(38) "
-menu['(3)']="			(12) List Services.	(21) SOFTWARE.		(30) Vaddump PID.		(39) "
-menu['(4)']="			(13) Build Timeline.	(22) COMPONENT.		(31) Memory Dump PID.		(40)"
-menu['(5)']="Set PROFILE.	(14) 			(23) SYSTEM.		(32) Show Screenshots.		(41)"
-menu['(6)']="Set PID.		(15) 			(24) 			(33) Show Clipboard.		(42)"
-menu['(7)']="Set PPID.		(16) 			(25) 			(34) Show UserAssist Keys.	(43)"
-menu['(8)']="Set PARAM.		(17) 			(26) 			(35) Show Console.		(44) Exit."
-menu['(9)']="Search PARAM.	(18)			(27) Network Traffic.	(36)				(45) Clean and Exit."
-
-while True: 
-   os.system("clear")
-
-# -------------------------------------------------------------------------------------
-# AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 1.0                                                                
 # Details : Display universal header.    
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
+
+def header ():
+   os.system("clear")
 
    print "\t\t\t __  __ _____ __  __  ___  ______   __  __  __    _    ____ _____ _____ ____   "
    print "\t\t\t|  \/  | ____|  \/  |/ _ \|  _ \ \ / / |  \/  |  / \  / ___|_   _| ____|  _ \  "
@@ -134,7 +78,8 @@ while True:
 # Details : Build and display pertinant information to the user.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
- 
+
+def display():
    print "="*19,
    print colored("SYSTEM",'red'),
    print "="*25,
@@ -155,7 +100,7 @@ while True:
       print colored(SAM[:24],'blue'),
    print "] PASSWD   [",
    if PWD == "0x0000000000000000":
-      print colored(PWD,'white'),
+      print colored(PWD,'grey'),
    else:
        print colored(PWD,'blue'),
    print "] RESERVED [ " + PRM5 + " ]"
@@ -171,15 +116,15 @@ while True:
       print colored(SEC[:24],'blue'),
    print "] SHADOW   [",
    if SHW == "0x0000000000000000":
-      print colored(SHW,'white'),
+      print colored(SHW,'grey'),
    else:
       print colored(SHW,'blue'),
    print "] RESERVED [ " + PRM6 + " ]"
    print "PID      [",
-   if PID[:1] == "0":
-      print colored(PID[:24],'white'),
+   if PI1[:1] == "0":
+      print colored(PI1[:24],'white'),
    else:
-      print colored(PID[:24],'blue'),
+      print colored(PI1[:24],'blue'),
    print "] SOFTWARE  [",
    if SOF == "0x0000000000000000":
       print colored(SOF[:24],'white'),
@@ -187,10 +132,10 @@ while True:
       print colored(SOF[:24],'blue'),
    print "] RESERVED [ " + PRM2 + " ] RESERVED [ " + PRM7 + " ]"
    print "PPID     [",
-   if PPID[:1] == "0":
-      print colored(PPID[:24],'white'),
+   if PI2[:1] == "0":
+      print colored(PI2[:24],'white'),
    else:
-      print colored(PPID[:24],'blue'),
+      print colored(PI2[:24],'blue'),
    print "] COMPONENT [",
    if COM == "0x0000000000000000":
       print colored(COM[:24],'white'),
@@ -228,10 +173,66 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
 # Version : 1.0
-# Details : Create the main controller.
+# Details : Initialise program variables and set up system requirements.
+# Modified: N/A                                                               
+# -------------------------------------------------------------------------------------
+
+os.system("mkdir workArea")
+os.system("echo temp > ./workArea/temp.txt")
+
+PRO = "UNSELECTED              "
+DIS = "UNSELECTED              "
+SAM = "0x0000000000000000"
+SEC = "0x0000000000000000"
+SOF = "0x0000000000000000"
+COM = "0x0000000000000000"
+SYS = "0x0000000000000000"
+PI1 = "0                       "
+PI2 = "0                       "
+PRM = "UNSELECTED              "
+REG = 0
+PWD = "0x0000000000000000"
+SHW = "0x0000000000000000"
+PRM2 = "0x0000000000000000"
+PRM3 = "0x0000000000000000"
+PRM4 = "0x0000000000000000"
+PRM5 = "0x0000000000000000"
+PRM6 = "0x0000000000000000"
+PRM7 = "0x0000000000000000"
+PRM8 = "0x0000000000000000"
+PRM9 = "0x0000000000000000"
+SCAN = 0
+
+# -------------------------------------------------------------------------------------
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub                                                               
+# Version : 1.0
+# Details : Create a menu system.
+# Modified: N/A                                                               
+# -------------------------------------------------------------------------------------
+
+menu = {}
+menu['(1)']="Auto Windows.	(10) HIVES.		(19) SAM.		(28) Malfind PID.		(37) Bulk Extract."
+menu['(2)']="Set Linux PROFILE.	(11) Processes.		(20) SECURITY.		(29) Mutant PID.		(38) "
+menu['(3)']="Set Mac PROFILE.	(12) Services.		(21) SOFTWARE.		(30) Vaddump PID.		(39) "
+menu['(4)']="Set PID.		(13) Timeline.		(22) COMPONENT.		(31) Memory Dump PID.		(40)"
+menu['(5)']="Set PPID.		(14) 			(23) SYSTEM.		(32) Show Screenshots.		(41)"
+menu['(6)']="Set Param.		(15) 			(24) Processes.		(33) Show Clipboard.		(42)"
+menu['(7)']="			(16) 			(25) 			(34) Show UserAssist Keys.	(43)"
+menu['(8)']="			(17) 			(26) 			(35) Show Console.		(44)"
+menu['(9)']="Search PARAM.	(18) 			(27) Network Traffic.	(36)				(45) Clean and Exit."
+
+# -------------------------------------------------------------------------------------
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub                                                               
+# Version : 1.0
+# Details : Start the main menu controller.
 # Modified: N/A                                                               	
 # -------------------------------------------------------------------------------------
 
+while True: 
+   header()
+   display()
    options=menu.keys()
    options.sort()
    for entry in options: 
@@ -263,11 +264,120 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 1.0
-# Details : Menu option selected - Create and populate registry hives.
+# Details : Menu option selected - Grab the profile settings from the user.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='2':
+      orginal = PRO
+      found = 0
+      PRO = raw_input("Please enter profile: ")
+      if PRO == "":
+         PRO = orginal      
+      with open("profiles.txt") as fp:
+         line = fp.readline()
+         while line:
+            line = fp.readline()
+            if PRO in line:
+               found = 1  
+      if found == 0:
+         PRO = orginal
+      else:
+         PRO = " --profile " + PRO
+         DIS = PRO.replace(" --profile ","")
+         while len(DIS) < 30:
+            DIS += " "
+      fp.close()
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - Grab the profile settings from the user.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='3':
+      orginal = PRO
+      found = 0
+      PRO = raw_input("Please enter profile: ")
+      if PRO == "":
+         PRO = orginal      
+      with open("profiles.txt") as fp:
+         line = fp.readline()
+         while line:
+            line = fp.readline()
+            if PRO in line:
+               found = 1  
+      if found == 0:
+         PRO = orginal
+      else:
+         PRO = " --profile " + PRO
+         DIS = PRO.replace(" --profile ","")
+         while len(DIS) < 30:
+            DIS += " "
+      fp.close()
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - User set the PID.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='4':
+      PI1 = raw_input("Please enter PID value: ")
+      while len(PI1) < 24:
+         PI1 += " "
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - User set the PPID.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='5':
+      PI2 = raw_input("Please enter PPID value: ")
+      while len(PI2) < 24:
+         PI2 += " "
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - User set the Parameter.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='6':
+      PRM = raw_input("Please enter parameter value: ")
+      while len(PRM) < 24:
+         PRM += " "
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - Search PARAM.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='9':
+      os.system("volatility -f " + fileName + " " + PRO + " pslist | grep " + PRM)
+      selection=raw_input("Please any key to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - Create and populate registry hives.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='10':
       os.system("volatility -f " + fileName + PRO + " hivelist > hivelist.txt")
       with open("hivelist.txt") as fp:  
          line = fp.readline()
@@ -300,173 +410,12 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 1.0
-# Details : Menu option selected - RESERVED
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='3':
-      print "Reserved for later use."
-      raw_input("Press any key to continue...")
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 1.0
-# Details : Menu option selected - RESERVED
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='4':
-      print "Reserved for later use."
-      raw_input("Press any key to continue...")
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 1.0
-# Details : Menu option selected - Grab the profile settings from the user.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='5':
-      orginal = PRO
-      found = 0
-      PRO = raw_input("Please enter profile: ")
-      if PRO == "":
-         PRO = orginal      
-      with open("profiles.txt") as fp:
-         line = fp.readline()
-         while line:
-            line = fp.readline()
-            if PRO in line:
-               found = 1  
-      if found == 0:
-         PRO = orginal
-      else:
-         PRO = " --profile " + PRO
-         DIS = PRO.replace(" --profile ","")
-         while len(DIS) < 30:
-            DIS += " "
-      fp.close()
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 1.0
-# Details : Menu option selected - User=set the PID.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='6':
-      PID = raw_input("Please enter PID value: ")
-      while len(PID) < 24:
-         PID += " "
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 1.0
-# Details : Menu option selected - User-set the PPID.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='7':
-      PPID = raw_input("Please enter PPID value: ")
-      while len(PPID) < 24:
-         PPID += " "
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 1.0
-# Details : Menu option selected - Get parameter
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='8':
-      PRM = raw_input("Please enter parameter value: ")
-      while len(PRM) < 24:
-         PRM += " "
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 1.0
-# Details : Menu option selected - Search PARAM.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='9':
-      os.system("volatility -f " + fileName + " " + PRO + " pslist | grep " + PRM)
-      selection=raw_input("Please any key to continue...")
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 1.0
 # Details : Menu option selected - Show running processes.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='10':
-      os.system("volatility -f " + fileName + PRO + " psscan | more")
-      selection=raw_input("\nPlease any key to continue...")
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 1.0
-# Details : Menu option selected - Auto analyse the running processes.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
    if selection =='11':
-      os.system("volatility -f " + fileName + PRO + " psscan --output greptext > F1.txt")
-      os.system("tail -n +2 F1.txt > F2.txt")
-      os.system("sed -i 's/>//g' F2.txt")
-      with open("F2.txt") as read1:
-         for line in read1:
-            for word in line.split('|'):
-                output = subprocess.check_output("echo " + word + " >> F3.txt", shell=True)
-      read1.close()
-      os.system("tail -n +2 F3.txt > F4.txt")
-      os.system("wc -l F2.txt > NUM.txt")
-      NUMLINES = open("NUM.txt").readline().replace(' F2.txt','')
-      COUNT = int(NUMLINES)
-      print "\n[1]. There were",COUNT,"processes running at the time of the memory dump.\n"
-      read2 = open('PID.txt','w')
-      read3 = open('PPID.txt','w')
-      with open('F4.txt') as read4:
-         while COUNT > 0:
-            A = read4.readline()
-            B = read4.readline() # Executable name
-            C = read4.readline().rstrip('\n') # PID
-            print >>read2,C
-            D = read4.readline().rstrip('\n') # PPID             
-            print >>read3,D		
-            E = read4.readline()
-            G = read4.readline()
-            H = read4.readline() # blank
-            COUNT = (COUNT-1)
-      read2.close()
-      read3.close()
-      os.remove('F1.txt')
-      os.remove('F2.txt')
-      os.remove('F3.txt')
-      os.remove('F4.txt')
-      os.system("bash patch.sh")
-      print "[2]. Analyse of these processes reveals that:"
-      with open('SUSPECT.txt') as read5:
-         line = read5.readline().rstrip('\n')
-         while line != "":
-            if line != "0":
-               print "     Parent process PPID",line,"does not have a process spawn! and should be investigated further..."
-            line = read5.readline().strip('\n')
-      read5.close()
-      os.remove('PID.txt')
-      os.remove('PPID.txt')
-      os.remove('NUM.txt')
-      os.remove('SUSPECT.txt')
+      os.system("volatility -f " + fileName + PRO + " psscan | more")
       selection=raw_input("\nPlease any key to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -572,6 +521,63 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 1.0
+# Details : Menu option selected - Auto analyse the running processes.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='24':
+      os.system("volatility -f " + fileName + PRO + " psscan --output greptext > F1.txt")
+      os.system("tail -n +2 F1.txt > F2.txt")
+      os.system("sed -i 's/>//g' F2.txt")
+      with open("F2.txt") as read1:
+         for line in read1:
+            for word in line.split('|'):
+                output = subprocess.check_output("echo " + word + " >> F3.txt", shell=True)
+      read1.close()
+      os.system("tail -n +2 F3.txt > F4.txt")
+      os.system("wc -l F2.txt > NUM.txt")
+      NUMLINES = open("NUM.txt").readline().replace(' F2.txt','')
+      COUNT = int(NUMLINES)
+      print "\n[1]. There were",COUNT,"processes running at the time of the memory dump.\n"
+      read2 = open('PID.txt','w')
+      read3 = open('PPID.txt','w')
+      with open('F4.txt') as read4:
+         while COUNT > 0:
+            A = read4.readline()
+            B = read4.readline() # Executable name
+            C = read4.readline().rstrip('\n') # PI1
+            print >>read2,C
+            D = read4.readline().rstrip('\n') # PI2             
+            print >>read3,D		
+            E = read4.readline()
+            G = read4.readline()
+            H = read4.readline() # blank
+            COUNT = (COUNT-1)
+      read2.close()
+      read3.close()
+      os.remove('F1.txt')
+      os.remove('F2.txt')
+      os.remove('F3.txt')
+      os.remove('F4.txt')
+      os.system("bash patch.sh")
+      print "[2]. Analyse of these processes reveals that:"
+      with open('SUSPECT.txt') as read5:
+         line = read5.readline().rstrip('\n')
+         while line != "":
+            if line != "0":
+               print "     Parent process PI2",line,"does not have a process spawn! and should be investigated further..."
+            line = read5.readline().strip('\n')
+      read5.close()
+      os.remove('PID.txt')
+      os.remove('PPID.txt')
+      os.remove('NUM.txt')
+      os.remove('SUSPECT.txt')
+      selection=raw_input("\nPlease any key to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
 # Details : Menu option selected - Extract network traffic.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -589,7 +595,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='28':
-      os.system("volatility -f " + fileName + PRO + " malfind -p " + PID + " --dump-dir workArea")
+      os.system("volatility -f " + fileName + PRO + " malfind -p " + PI1 + " --dump-dir workArea")
       selection=raw_input("\nPlease any key to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -601,7 +607,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='29':
-      os.system("volatility -f " + fileName + PRO + " handles -p " + PID + " -t Mutant -s")
+      os.system("volatility -f " + fileName + PRO + " handles -p " + PI1 + " -t Mutant -s")
       selection=raw_input("\nPlease any key to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -613,19 +619,19 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='30':
-      os.system("volatility -f " + fileName + PRO + " vaddump -p " + PID + " -D workArea")
+      os.system("volatility -f " + fileName + PRO + " vaddump -p " + PI1 + " -D workArea")
       selection=raw_input("\nPlease any key to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 1.0
-# Details : Menu option selected - Memory dump PID.
+# Details : Menu option selected - Memory dump PI1.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='31':
-      os.system("volatility -f " + fileName + PRO + " memdump -p " + PID + " -D workArea")
+      os.system("volatility -f " + fileName + PRO + " memdump -p " + PI1 + " -D workArea")
       selection=raw_input("\nPlease any key to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -687,17 +693,6 @@ while True:
 
    if selection =='37':
       os.system("bulk_extractor -o bulkOut " + fileName)
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 1.0
-# Details : Menu option selected - Exit the program.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='44':
-      exit(0)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
