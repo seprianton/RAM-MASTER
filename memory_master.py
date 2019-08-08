@@ -77,8 +77,8 @@ PID = "0                       "
 PPID = "0                       "
 PRM = "UNSELECTED              "
 REG = 0
-PRM0 = "0x0000000000000000"
-PRM1 = "0x0000000000000000"
+PWD = "0x0000000000000000"
+SHW = "0x0000000000000000"
 PRM2 = "0x0000000000000000"
 PRM3 = "0x0000000000000000"
 PRM4 = "0x0000000000000000"
@@ -139,11 +139,11 @@ while True:
    print colored("SYSTEM",'red'),
    print "="*25,
    print colored("WINDOWS HIVES",'red'),
-   print "="*18,
-   print colored("UNALLOCATED",'red'),
-   print "="*19,
-   print colored("UNALLOCATED",'red'),
-   print "="*4
+   print "="*21,
+   print colored("LINUX",'red'),
+   print "="*25,
+   print colored("MAC",'red'),
+   print "="*8
    print "FILENAME [",
    print colored(str.upper(fileName[:24]),'blue'),
    print "] SAM       [",
@@ -153,7 +153,12 @@ while True:
       print colored(SAM[:24],'red'),
    else:
       print colored(SAM[:24],'blue'),
-   print "] RESERVED [ " + PRM0 + " ] RESERVED [ " + PRM5 + " ]"
+   print "] PASSWD   [",
+   if PWD == "0x0000000000000000":
+      print colored(PWD,'white'),
+   else:
+       print colored(PWD,'blue'),
+   print "] RESERVED [ " + PRM5 + " ]"
    print "PROFILE  [",
    if DIS == "UNSELECTED              ":
       print colored(str.upper(DIS[:24]),'white'),
@@ -164,7 +169,12 @@ while True:
       print colored(SEC[:24],'white'),
    else:
       print colored(SEC[:24],'blue'),
-   print "] RESERVED [ " + PRM1 + " ] RESERVED [ " + PRM6 + " ]"
+   print "] SHADOW   [",
+   if SHW == "0x0000000000000000":
+      print colored(SHW,'white'),
+   else:
+      print colored(SHW,'blue'),
+   print "] RESERVED [ " + PRM6 + " ]"
    print "PID      [",
    if PID[:1] == "0":
       print colored(PID[:24],'white'),
