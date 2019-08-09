@@ -212,9 +212,9 @@ SCAN = 0
 # -------------------------------------------------------------------------------------
 
 menu = {}
-menu['(1)']="Auto Windows.	(10) HIVES.		(19) SAM.		(28) Malfind PID.		(37) Bulk Extract."
-menu['(2)']="Set Linux PROFILE.	(11) Processes.		(20) SECURITY.		(29) Mutant PID.		(38) "
-menu['(3)']="Set Mac PROFILE.	(12) Services.		(21) SOFTWARE.		(30) Vaddump PID.		(39) "
+menu['(1)']="Windows PROFILE.	(10) HIVES.		(19) SAM.		(28) Malfind PID.		(37) Bulk Extract."
+menu['(2)']="Linux PROFILE.	(11) Processes.		(20) SECURITY.		(29) Mutant PID.		(38) MFT Table.	"
+menu['(3)']="Mac PROFILE.	(12) Services.		(21) SOFTWARE.		(30) Vaddump PID.		(39) "
 menu['(4)']="Set PID.		(13) Timeline.		(22) COMPONENT.		(31) Memory Dump PID.		(40)"
 menu['(5)']="Set PPID.		(14) 			(23) SYSTEM.		(32) Show Screenshots.		(41)"
 menu['(6)']="Set Param.		(15) 			(24) Processes.		(33) Show Clipboard.		(42)"
@@ -698,6 +698,19 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 1.0
+# Details : Menu option selected - MFT Extract.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='38':
+      os.system("volatility -f " + fileName + PRO + " mftparser >> mfttable.txt")
+      print "The MFT has been sucessfully exported to mfttable.txt..."
+      selection=raw_input("Please any key to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
 # Details : Menu option selected - Clean up system files and exit the program.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -709,10 +722,12 @@ while True:
          os.remove('timeline.txt')
       if os.path.exists("bulkOut"): 
          os.system('cd bulkOut; rm *.*; cd ..')
-         os.rmdir('bulkOut') 
+         os.rmdir('bulkOut')
       if os.path.exists('workArea'):
          os.system('cd workArea; rm *.*; cd ..')
          os.rmdir('workArea')
+      if os.path.exists('mfttable.txt'):
+         os.remove('mfttable.txt')
       exit(0)
 
 #Eof...
