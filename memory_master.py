@@ -149,10 +149,8 @@ def display():
    else:
       print colored(str.upper(PRM[:24]),'blue'),
    print "] SYSTEM    [",
-   if (REG == 0) and (SYS == "0x0000000000000000"):
+   if SYS == "0x0000000000000000":
       print colored(SYS[:24],'red'),
-   elif (REG == 1) and (SYS == "0x0000000000000000"):
-      print colored(SYS[:24],'white'),
    else:
       print colored(SYS[:24],'blue'),
    print "] RESERVED [ " + UN4 + " ] RESERVED [ " + UN9 + " ]"
