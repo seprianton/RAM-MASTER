@@ -163,7 +163,7 @@ def display():
    print colored("IDENTIFY",'white'),
    print " "*15,
    print colored("ANALYSE",'white'),
-   print " "*17,
+   print " "*13,
    print colored("INVESTIGATE",'white'),
    print " "*18,
    print colored("EXTRACT",'white'),
@@ -188,8 +188,8 @@ SEC = "0x0000000000000000"
 SOF = "0x0000000000000000"
 COM = "0x0000000000000000"
 SYS = "0x0000000000000000"
-PWD = "0x0000000000000000"
-SHW = "0x0000000000000000"
+PWD = "RESERVED          "
+SHW = "RESERVED          "
 UN2 = "0x0000000000000000"
 UN3 = "0x0000000000000000"
 UN4 = "0x0000000000000000"
@@ -210,13 +210,13 @@ REG = 0
 # -------------------------------------------------------------------------------------
 
 menu = {}
-menu['(1)']="Set Windows PROFILE (10) Build Timeline	(19) SAM		(28) Malfind PID		(37) Bulk Extractor"
-menu['(2)']="Set Linux PROFILE	(11) List Processes	(20) SECURITY		(29) Mutant PID			(38) Screenshots"
-menu['(3)']="Set Mac PROFILE	(12) List Services	(21) SOFTWARE		(30) Vaddump PID		(39) MFT Table"
-menu['(4)']="Set PID value	(13) Show Clipboard	(22) COMPONENT		(31) Dump PID			(40)" 
-menu['(5)']="Set PPID value	(14) Show Console	(23) SYSTEM		(32) 				(41)"
-menu['(6)']="Set PARAM value	(15) Show Assist Keys	(24) Network Traffic	(33) 				(42)"
-menu['(7)']="Clean and Exit	(16) 			(25) PARAM Search	(34) 				(43)"
+menu['(1)']="Windows PROFILE	(10) List Processes	(20) SAM		(30) PARAM Search	(40) Timeline"
+menu['(2)']="Linux PROFILE	(11) List Services	(21) SECURITY		(31) Malfind PID	(41) Screenshots"
+menu['(3)']="Mac PROFILE\t	(12) Show Clipboard	(22) SOFTWARE		(32) Mutant PID		(42) MFT Table"
+menu['(4)']="Set PID		(13) Show Console	(23) COMPONENT		(33) Vaddump PID	(43) " 
+menu['(5)']="Set PPID		(14) Show Assist Keys	(24) SYSTEM		(34) Dump PID		(44) Bulk Extractor"
+menu['(6)']="Set PARAM		(15) 			(25) Network Traffic	(35) 			(45) Clean and Exit"
+
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -387,49 +387,11 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 1.0
-# Details : Menu option selected - Clean up system files and exit the program.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='7':
-      if os.path.exists('timeline.txt'):
-         os.remove('timeline.txt')
-      if os.path.exists('mfttable.txt'):
-         os.remove('mfttable.txt')
-      if os.path.exists('screenShots'):
-         shutil.rmtree('screenShots') 
-      if os.path.exists('bulkOut'):
-         shutil.rmtree('bulkOut') 
-      if os.path.exists('PIData'):
-         shutil.rmtree('PIData')
-      if os.path.exists('malFind'):
-         shutil.rmtree('malFind')   
-      if os.path.exists('mutantFiles'):
-         shutil.rmtree('mutantFiles') 
-      if os.path.exists('vadDump'):
-         shutil.rmtree('vadDump')
-      exit(False)
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 1.0
-# Details : Menu option selected - Build timeline.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='10':
-      os.system("volatility -f " + fileName + PRO + " timeliner --output-file timeline.txt")
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 1.0
 # Details : Menu option selected - Show running processes.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='11':
+   if selection =='10':
       os.system("volatility -f " + fileName + PRO + " psscan | more")
       os.system("volatility -f " + fileName + PRO + " psscan --output greptext > F1.txt")
       os.system("tail -n +2 F1.txt > F2.txt")
@@ -487,7 +449,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='12':
+   if selection =='11':
       os.system("volatility -f " + fileName + PRO + " svcscan | more")
       raw_input("\nPlease any key to continue...")
 
@@ -499,7 +461,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='13':
+   if selection =='12':
       os.system("volatility -f " + fileName + PRO + " clipboard")
       raw_input("\nPlease any key to continue...")
 
@@ -511,7 +473,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='14':
+   if selection =='13':
       os.system("volatility -f " + fileName + PRO + " consoles")
       raw_input("\nPlease any key to continue...")
 
@@ -523,7 +485,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='15':
+   if selection =='14':
       os.system("volatility -f " + fileName + PRO + " userassist")
       raw_input("\nPlease any key to continue...")
 
@@ -535,7 +497,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='19':
+   if selection =='20':
       if (SAM == "0x0000000000000000") or (SYS == "0x0000000000000000"):
          print colored("Not possible...",'white')
       else:
@@ -550,7 +512,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='20':
+   if selection =='21':
       if (SEC == "0x0000000000000000"):
          print colored("Not possible...",'white')
       else:
@@ -565,7 +527,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='21':
+   if selection =='22':
       if (SOF == "0x0000000000000000"):
          print colored("Not possible...",'white')
       else:
@@ -580,7 +542,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='22':
+   if selection =='23':
       if (COM == "0x0000000000000000"):
          print colored("Not possible...",'white')
       else:
@@ -595,7 +557,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='23':
+   if selection =='24':
       if (SYS == "0x0000000000000000"):
          print colored("Not possible...",'white')
       else:
@@ -610,7 +572,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='24':
+   if selection =='25':
       os.system("volatility -f " + fileName + PRO + " netscan")
       raw_input("\nPlease any key to continue...")
 
@@ -622,7 +584,7 @@ while True:
 # Modified: N/A
 # ------------------------------------------------------------------------------------- 
    
-   if selection =='25':
+   if selection =='30':
       os.system("volatility -f " + fileName + " " + PRO + " pslist | grep " + PRM)
       raw_input("Please any key to continue...")
 
@@ -634,7 +596,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='28':
+   if selection =='31':
       test = os.path.exists('malFind')
       if test !=1:
          os.system('mkdir malFind')
@@ -650,12 +612,12 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='29':
+   if selection =='32':
       test = os.path.exists('mutantFiles')
       if test !=1:
          os.system('mkdir mutantFiles')
       os.system("volatility -f " + fileName + PRO + " handles -p " + PI1 + " -t mutantFiles -s")
-      print "\nMutant extraction is now available in directory malFind...\n"
+      print "\nMutant extraction is now available in directory mutantFiles...\n"
       raw_input("Please any key to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -666,12 +628,12 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='30':
+   if selection =='33':
       test = os.path.exists('vadDump')
       if test !=1:
          os.system('mkdir vadDump')
       os.system("volatility -f " + fileName + PRO + " vaddump -p " + PI1 + " -D vadDump")
-      print "\nVaddunp extraction is now available in directory malFind...\n"
+      print "\nVaddunp extraction is now available in directory vadDump...\n"
       raw_input("Please any key to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -682,7 +644,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='31':
+   if selection =='34':
       test = os.path.exists('PIData')
       if test !=1:
          os.system('mkdir PIData') 
@@ -694,14 +656,12 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 1.0
-# Details : Menu option selected - Bulk Extract.
+# Details : Menu option selected - Build timeline.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='37':
-      os.system("bulk_extractor -o bulkOut " + fileName)
-      print "\nBulk extraction is now available in directory bulkOut...\n"
-      raw_input("Please any key to continue...")
+   if selection =='40':
+      os.system("volatility -f " + fileName + PRO + " timeliner --output-file timeline.txt")
 
 #------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -711,7 +671,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='38':
+   if selection =='41':
       test = os.path.exists('screenShots')
       if test !=1:
          os.system('mkdir screenShots')   
@@ -727,9 +687,49 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='39':
+   if selection =='42':
       os.system("volatility -f " + fileName + PRO + " mftparser >> mfttable.txt")
       print "The MFT has been sucessfully exported to mfttable.txt..."
       raw_input("Please any key to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - Bulk Extract.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='44':
+      os.system("bulk_extractor -o bulkOut " + fileName)
+      print "\nBulk extraction is now available in directory bulkOut...\n"
+      raw_input("Please any key to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - Clean up system files and exit the program.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='45':
+      if os.path.exists('timeline.txt'):
+         os.remove('timeline.txt')
+      if os.path.exists('mfttable.txt'):
+         os.remove('mfttable.txt')
+      if os.path.exists('screenShots'):
+         shutil.rmtree('screenShots') 
+      if os.path.exists('bulkOut'):
+         shutil.rmtree('bulkOut') 
+      if os.path.exists('PIData'):
+         shutil.rmtree('PIData')
+      if os.path.exists('malFind'):
+         shutil.rmtree('malFind')   
+      if os.path.exists('mutantFiles'):
+         shutil.rmtree('mutantFiles') 
+      if os.path.exists('vadDump'):
+         shutil.rmtree('vadDump')
+      exit(False)
 
 #Eof...
