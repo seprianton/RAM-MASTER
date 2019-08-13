@@ -1,7 +1,9 @@
 # MEMORY-MASTER
-Python script file to forensically investigate memory dump files.
+Python script file to forensically investigate memory dump files via volatility. Still under construction, but what is there is working but not fully tested.
 
-- [ ] Note still under construction - but what is there is working but not fully tested.
+- [x] Requires volatility (https://github.com/volatilityfoundation/volatility) to be installed.
+- [ ] Linux and Mac profile enumeration pending.
+
 
 | LANGUAGE  | FILENAME         | MD5 Hash                         |
 |------     |------            | -------                          |
