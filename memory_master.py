@@ -208,12 +208,13 @@ REG = 0
 # -------------------------------------------------------------------------------------
 
 menu = {}
-menu['(1)']="Windows PROFILE	(10) List Processes	(20) SAM		(30) PARAM Search	(40) Timeline"
+menu['(1)']="Windows PROFILE	(10) List Processes	(20) SAM		(30) Search PARAM	(40) Timeline"
 menu['(2)']="Linux PROFILE	(11) List Services	(21) SECURITY		(31) Malfind PID	(41) Screenshots"
 menu['(3)']="Mac PROFILE\t	(12) Show Clipboard	(22) SOFTWARE		(32) Mutant PID		(42) MFT Table"
 menu['(4)']="Set PID		(13) Show Console	(23) COMPONENT		(33) Vaddump PID	(43) " 
 menu['(5)']="Set PPID		(14) Show Assist Keys	(24) SYSTEM		(34) Dump PID		(44) Bulk Extractor"
-menu['(6)']="Set PARAM		(15) 			(25) Network Traffic	(35) 			(45) Clean and Exit"
+menu['(6)']="Set PARAM		(15) Host Name		(25) Network Traffic	(35) 			(45) Clean and Exit"
+menu['(7)']="			(16) User Passwords	(26) 			(36)			(46)"
 
 
 # -------------------------------------------------------------------------------------
@@ -491,15 +492,39 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 1.0
+# Details : Menu option selected - Print hostname.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='15':
+      os.system("volatility -f " + fileName + PRO + " printkey -o " + SYS + " -K ControlSet001\Control\ComputerName\ComputerName")
+      raw_input("\nPlease any key to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
 # Details : Menu option selected - Dump SAM file hashes.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='20':
+   if selection =='16':
       if (SAM == "0x0000000000000000") or (SYS == "0x0000000000000000"):
-         print colored("Not possible...",'white')
+         print colored("Missing HIVE - its not possible to extract the hashes...",'white')	
       else:
          os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM)
+      raw_input("Please any key to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - Show SAM hives.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='20':
+      os.system("volatility -f " + fileName + PRO + " hivedump -o " + SAM)
       raw_input("Please any key to continue...")
 
 # ------------------------------------------------------------------------------------- 
