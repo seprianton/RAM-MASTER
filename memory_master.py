@@ -208,13 +208,13 @@ REG = 0
 # -------------------------------------------------------------------------------------
 
 menu = {}
-menu['(1)']="Windows PROFILE	(10) List Processes	(20) SAM		(30) Search PARAM	(40) Timeline"
-menu['(2)']="Linux PROFILE	(11) List Services	(21) SECURITY		(31) Malfind PID	(41) Screenshots"
-menu['(3)']="Mac PROFILE\t	(12) Show Clipboard	(22) SOFTWARE		(32) Mutant PID		(42) MFT Table"
-menu['(4)']="Set PID		(13) Show Console	(23) COMPONENT		(33) Vaddump PID	(43) " 
-menu['(5)']="Set PPID		(14) Show Assist Keys	(24) SYSTEM		(34) Dump PID		(44) Bulk Extractor"
-menu['(6)']="Set PARAM		(15) Host Name		(25) Network Traffic	(35) 			(45) Clean and Exit"
-menu['(7)']="			(16) User Passwords	(26) 			(36)			(46)"
+menu['(1)']="Windows PROFILE	(10) Host Name		(20) SAM		(30) Search PARAM	(40) Timeline"
+menu['(2)']="Linux PROFILE	(11) User Passwords	(21) SECURITY		(31) Malfind PID	(41) Screenshots"
+menu['(3)']="Mac PROFILE\t	(12) List Processes	(22) SOFTWARE		(32) Mutant PID		(42) MFT Table"
+menu['(4)']="Set PID		(13) List Services	(23) COMPONENT		(33) Vaddump PID	(43) " 
+menu['(5)']="Set PPID		(14) Show Clipboard	(24) SYSTEM		(34) Dump PID		(44) "
+menu['(6)']="Set PARAM		(15) Show Console	(25) Network Traffic	(35) 			(45) Bulk Extractor"
+menu['(7)']="			(16) Show Assist Keys	(26) 			(36)			(46) Clean and Exit"
 
 
 # -------------------------------------------------------------------------------------
@@ -386,11 +386,40 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 1.0
-# Details : Menu option selected - Show running processes.
+# Details : Menu option selected - Print hostname.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='10':
+      print ""
+      os.system("volatility -f " + fileName + PRO + " printkey -o " + SYS + " -K 'ControlSet001\Control\ComputerName\ComputerName'")
+      raw_input("\nPlease any key to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - Dump SAM file hashes.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='11':
+      print ""
+      if (SAM == "0x0000000000000000") or (SYS == "0x0000000000000000"):
+         print colored("Missing HIVE - its not possible to extract the hashes...",'white')	
+      else:
+         os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM)
+      raw_input("\nPlease any key to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - Show running processes.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='12':
       os.system("volatility -f " + fileName + PRO + " psscan | more")
       os.system("volatility -f " + fileName + PRO + " psscan --output greptext > F1.txt")
       os.system("tail -n +2 F1.txt > F2.txt")
@@ -448,7 +477,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='11':
+   if selection =='13':
       os.system("volatility -f " + fileName + PRO + " svcscan | more")
       raw_input("\nPlease any key to continue...")
 
@@ -460,7 +489,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='12':
+   if selection =='14':
       os.system("volatility -f " + fileName + PRO + " clipboard")
       raw_input("\nPlease any key to continue...")
 
@@ -472,7 +501,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='13':
+   if selection =='15':
       os.system("volatility -f " + fileName + PRO + " consoles")
       raw_input("\nPlease any key to continue...")
 
@@ -484,36 +513,9 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='14':
+   if selection =='16':
       os.system("volatility -f " + fileName + PRO + " userassist")
       raw_input("\nPlease any key to continue...")
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 1.0
-# Details : Menu option selected - Print hostname.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='15':
-      os.system("volatility -f " + fileName + PRO + " printkey -o " + SYS + " -K ControlSet001\Control\ComputerName\ComputerName")
-      raw_input("\nPlease any key to continue...")
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 1.0
-# Details : Menu option selected - Dump SAM file hashes.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='16':
-      if (SAM == "0x0000000000000000") or (SYS == "0x0000000000000000"):
-         print colored("Missing HIVE - its not possible to extract the hashes...",'white')	
-      else:
-         os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM)
-      raw_input("Please any key to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -723,7 +725,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='44':
+   if selection =='45':
       os.system("bulk_extractor -o bulkOut " + fileName)
       print "\nBulk extraction is now available in directory bulkOut...\n"
       raw_input("Please any key to continue...")
@@ -736,7 +738,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='45':
+   if selection =='46':
       if os.path.exists('timeline.txt'):
          os.remove('timeline.txt')
       if os.path.exists('mfttable.txt'):
