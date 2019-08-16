@@ -62,26 +62,27 @@ while len(fileName) < 25:
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
-PRO = "UNSELECTED              "
-DIS = "UNSELECTED              "
-PRM = "UNSELECTED              "
-PI1 = "0                       "
-OFF = "0                       "
+PRO = "UNSELECTED           "
+DIS = "UNSELECTED           "
+PRM = "UNSELECTED           "
+PI1 = "0                    "
+OFF = "0                    "
 SAM = "0x0000000000000000"
 SEC = "0x0000000000000000"
 SOF = "0x0000000000000000"
 COM = "0x0000000000000000"
 SYS = "0x0000000000000000"
-HST = "NOT FOUND         "
-ADM = "NOT FOUND         "
-GUS = "NOT FOUND         "
-USR = "NOT FOUND         "
-UN4 = "RESERVED          "
-UN5 = "RESERVED          "
-UN6 = "RESERVED          "
-UN7 = "RESERVED          "
-UN8 = "RESERVED          "
-UN9 = "RESERVED          "
+HST = "NOT FOUND     "
+ADM = "NOT FOUND     "
+GUS = "NOT FOUND     "
+USR = "NOT FOUND     "
+UN4 = "RESERVED      "
+UN5 = "EMPTY"
+UN6 = "EMPTY"
+UN7 = "EMPTY"
+UN8 = "EMPTY"
+UN9 = "EMPTY"
+BLK = "BLANK"
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -99,7 +100,7 @@ def header ():
    print "\t\t\t| |  | | |___| |  | | |_| |  _ < | |   | |  | |/ ___ \ ___) || | | |___|  _ <  "
    print "\t\t\t|_|  |_|_____|_|  |_|\___/|_| \_\|_|   |_|  |_/_/   \_\____/ |_| |_____|_| \_\ "
    print "                                                                                     "
-   print "\t\t\t            BY TERENCE BROADBENT BSC CYBER SECURITY (FIRST CLASS)            \n"
+   print "\t\t\t             BY TERENCE BROADBENT BSC CYBER SECURITY (FIRST CLASS)           \n"
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -121,7 +122,7 @@ with open("IMAGE.txt") as fp:
    DIS = PRO.replace(" --profile ","")
 fp.close()
 os.remove('IMAGE.txt')
-while len(DIS) < 24:
+while len(DIS) < 21:
    DIS = DIS + " "
 
 if PRO[:2] == "NO":
@@ -163,7 +164,7 @@ fp.close()
 os.remove('host.txt')
 wordlist = wordlist.split()
 HST = wordlist[-1].upper().rstrip('')
-while len(HST.encode()) < 19:          						# patch required len2 for X?
+while len(HST.encode()) < 15:          						# patch required len2 for X?
    HST = HST + " "
 
 os.system("echo 'HASH FILE' > hash.txt")
@@ -174,22 +175,22 @@ with open("hash.txt") as fp:
    while line:
       line = fp.readline()
       if "Administrator" in line:
-         ADM = "FOUND             "
+         ADM = "FOUND         "
       if "Guest" in line :
-         GUS = "FOUND             "
+         GUS = "FOUND         "
       usercount = usercount + 1
 fp.close()
 os.remove('hash.txt')
 
 usercount = usercount -1
-if ADM == "FOUND             ":
+if ADM == "FOUND         ":
    usercount = usercount -1
-if GUS == "FOUND             ":
+if GUS == "FOUND         ":
    usercount = usercount -1
 if usercount > 0:
    USR = "FOUND "
    USR = USR + str(usercount)
-while len(USR) < 18:
+while len(USR) < 14:
    USR = USR + " "
 
 # -------------------------------------------------------------------------------------
@@ -201,19 +202,17 @@ while len(USR) < 18:
 # -------------------------------------------------------------------------------------
 
 def display():
-   print "="*19,
-   print colored("SYSTEM",'white'),
-   print "="*25,
-   print colored("WINDOWS HIVES",'white'),
-   print "="*19,
-   print colored("COMPUTER",'white'),
-   print "="*23,
-   print colored("USERS",'white'),
-   print "="*7
+   print "="*15,
+   print colored("WINDOWS O/S",'white'),
+   print "="*20,
+   print colored("SYSTEM HIVES",'white'),
+   print "="*17,
+   print colored("HOST/USERS",'white'),
+   print "="*43
 
    print "FILENAME [",
-   print colored(str.upper(fileName[:24]),'blue'),
-   print "] SAM       [",
+   print colored(str.upper(fileName[:21]),'blue'),
+   print "] SAM      [",
    if (SAM == "0x0000000000000000"):
       print colored(SAM,'red'),
    else:
@@ -223,14 +222,15 @@ def display():
       print colored(HST,'red'),
    else:
        print colored(HST,'blue'),
-   print "] RESERVED [ " + UN5 + " ]"
+   print "] RESERVED [ " + UN5 + " ]",
+   print "RESERVED [ " + BLK + " ]"   #new
 
    print "PROFILE  [",
    if DIS == "UNSELECTED              ":
       print colored(str.upper(DIS),'red'),
    else:
       print colored(str.upper(DIS),'blue'),
-   print "] SECURITY  [",
+   print "] SECURITY [",
    if SEC == "0x0000000000000000":
       print colored(SEC,'red'),
    else:
@@ -240,14 +240,15 @@ def display():
       print colored(ADM,'red'),
    else:
       print colored(ADM,'blue'),
-   print "] RESERVED [ " + UN6 + " ]"
+   print "] RESERVED [ " + UN6 + " ]",
+   print "RESERVED [ " + BLK + " ]"   #new
 
    print "PID      [",
    if PI1[:1] == "0":
       print colored(PI1,'red'),
    else:
       print colored(PI1,'blue'),
-   print "] SOFTWARE  [",
+   print "] SOFTWARE [",
    if SOF == "0x0000000000000000":
       print colored(SOF,'red'),
    else:
@@ -257,36 +258,39 @@ def display():
       print colored(GUS,'red'),
    else:
       print colored(GUS,'blue'),
-   print "] RESERVED [ " + UN7 + " ]"
+   print "] RESERVED [ " + UN7 + " ]",
+   print "RESERVED [ " + BLK + " ]"   #new
 
    print "OFFSET   [",
    if OFF[:1] == "0":
       print colored(OFF,'red'),
    else:
       print colored(OFF,'blue'),
-   print "] COMPONENT [",
+   print "] COMPONENT[",
    if COM == "0x0000000000000000":
       print colored(COM,'red'),
    else:
       print colored(COM,'blue'),
-   print "] OTHERS   [",
+   print "] USERS    [",
    if USR == "NOT FOUND         ":
       print colored(USR,'red'),
    else:
       print colored(USR,'blue'),
-   print "] RESERVED [ " + UN8 + " ]"
+   print "] RESERVED [ " + UN8 + " ]",
+   print "RESERVED [ " + BLK + " ]"   #new
 
    print "PARAMETER[",
-   if PRM == "UNSELECTED              ":
+   if PRM == "UNSELECTED           ":
       print colored(PRM,'red'),
    else:
       print colored(str.upper(PRM),'blue'),
-   print "] SYSTEM    [",
+   print "] SYSTEM   [",
    if SYS == "0x0000000000000000":
       print colored(SYS,'red'),
    else:
       print colored(SYS,'blue'),
-   print "] RESERVED [ " + UN4 + " ] RESERVED [ " + UN9 + " ]"
+   print "] RESERVED [ " + UN4 + " ] RESERVED [ " + UN9 + " ]",
+   print "RESERVED [ " + BLK + " ]"   #new
 
    print "*"*134
    print " "*9,
@@ -311,13 +315,13 @@ def display():
 # -------------------------------------------------------------------------------------
 
 menu = {}
-menu['(1)']="Change PROFILE	(10) LSA Secrets	(20) SAM		(30) 			(40) Timeline"
-menu['(2)']="			(11) User Passwords	(21) SECURITY		(31) Malfind PID	(41) Screenshots"
-menu['(3)']="			(12) List Processes	(22) SOFTWARE		(32) Mutant PID		(42) MFT Table"
-menu['(4)']="Set PID		(13) List Services	(23) COMPONENT		(33) Vaddump PID	(43) " 
-menu['(5)']="Set OFFSET		(14) Show Clipboard	(24) SYSTEM		(34) Dump PID		(44) "
-menu['(6)']="Set PARAMETER	(15) Show Console	(25) Network Traffic	(35) 			(45) Bulk Extractor"
-menu['(7)']="Search PARAMETER	(16) Show Assist Keys	(26) Connscan PARAMETER	(36)			(46) Clean and Exit"
+menu['(1)']="Set PROFILE\t	(10) User Passwords	(20) SAM Hive		(30) PARAMETER Search	(40) Timeline"
+menu['(2)']="Set PID		(11) Default Password	(21) SECURITY Hive	(31) Malfind PID	(41) Screenshots"
+menu['(3)']="Set OFFSET		(12) Running Processes	(22) SOFTWARE Hive	(32) Mutant PID		(42) MFT Table"
+menu['(4)']="Set PARAMETER	(13) Running Services	(23) COMPONENT Hive	(33) Vaddump PID	(43) " 
+menu['(5)']="			(14) Clipboard Contents	(24) SYSTEM Hive	(34) Dump PID		(44) "
+menu['(6)']="			(15) Console Contents	(25) Network Traffic	(35) 			(45) "
+menu['(7)']="Clean and Exit	(16) User Assist Keys 	(26) Connscan PARAMETER	(36)			(46) Bulk Extractor"
 
 
 # -------------------------------------------------------------------------------------
@@ -362,31 +366,9 @@ while True:
       else:
          PRO = " --profile " + PRO
          DIS = PRO.replace(" --profile ","")
-         while len(DIS) < 30:
+         while len(DIS) < 21:
             DIS += " "
       fp.close()        
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 2.0
-# Details : Menu option selected - 
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='2':
-      print "2"      
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 2.0
-# Details : Menu option selected - 
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='3':
-      print "3"
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -396,9 +378,9 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='4':
+   if selection =='2':
       PI1 = raw_input("Please enter PID value: ")
-      while len(PI1) < 24:
+      while len(PI1) < 21:
          PI1 += " "
 
 # ------------------------------------------------------------------------------------- 
@@ -409,9 +391,9 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='5':
+   if selection =='3':
       OFF = raw_input("Please enter PPID value: ")
-      while len(OFF) < 24:
+      while len(OFF) < 21:
          OFF += " "
 
 # ------------------------------------------------------------------------------------- 
@@ -422,34 +404,37 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='6':
+   if selection =='4':
       PRM = raw_input("Please enter parameter value: ")
-      while len(PRM) < 24:
+      while len(PRM) < 21:
          PRM += " "
 
-#------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 2.0
-# Details : Menu option selected - Allows the iuser to Search the PARAM string.
-# Modified: N/A
-# ------------------------------------------------------------------------------------- 
-   
-   if selection =='7':
-      os.system("volatility -f " + fileName + " " + PRO + " pslist | grep " + PRM)
-      raw_input("Press ENTER to continue...")
-
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 2.0
-# Details : Menu option selected - Dispays any LSA secrets
+# Details : Menu option selected - Clean up system files and exit the program.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='10':
-      os.system("volatility -f " + fileName + PRO + " lsadump")
-      raw_input("\nPress ENTER to continue...")
+   if selection =='7':
+      if os.path.exists('timeline.txt'):
+         os.remove('timeline.txt')
+      if os.path.exists('mfttable.txt'):
+         os.remove('mfttable.txt')
+      if os.path.exists('screenShots'):
+         shutil.rmtree('screenShots') 
+      if os.path.exists('bulkOut'):
+         shutil.rmtree('bulkOut') 
+      if os.path.exists('PIData'):
+         shutil.rmtree('PIData')
+      if os.path.exists('malFind'):
+         shutil.rmtree('malFind')   
+      if os.path.exists('mutantFiles'):
+         shutil.rmtree('mutantFiles') 
+      if os.path.exists('vadDump'):
+         shutil.rmtree('vadDump')
+      exit(False)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -459,12 +444,24 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='11':
+   if selection =='10':
       print ""
       if (SAM == "0x0000000000000000") or (SYS == "0x0000000000000000"):
          print colored("Missing HIVE - its not possible to extract the hashes...",'white')	
       else:
          os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM)
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 2.0
+# Details : Menu option selected - Dispays any LSA secrets
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='11':
+      os.system("volatility -f " + fileName + PRO + " lsadump")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -673,6 +670,18 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 2.0
+# Details : Menu option selected - Allows the iuser to Search the PARAM string.
+# Modified: N/A
+# ------------------------------------------------------------------------------------- 
+   
+   if selection =='7':
+      os.system("volatility -f " + fileName + " " + PRO + " pslist | grep " + PRM)
+      raw_input("Press ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 2.0
 # Details : Menu option selected - Finds Malware!
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -781,36 +790,9 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='45':
+   if selection =='46':
       os.system("bulk_extractor -o bulkOut " + fileName)
       print "\nBulk extraction is now available in directory bulkOut...\n"
       raw_input("Press ENTER to continue...")
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 2.0
-# Details : Menu option selected - Clean up system files and exit the program.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='46':
-      if os.path.exists('timeline.txt'):
-         os.remove('timeline.txt')
-      if os.path.exists('mfttable.txt'):
-         os.remove('mfttable.txt')
-      if os.path.exists('screenShots'):
-         shutil.rmtree('screenShots') 
-      if os.path.exists('bulkOut'):
-         shutil.rmtree('bulkOut') 
-      if os.path.exists('PIData'):
-         shutil.rmtree('PIData')
-      if os.path.exists('malFind'):
-         shutil.rmtree('malFind')   
-      if os.path.exists('mutantFiles'):
-         shutil.rmtree('mutantFiles') 
-      if os.path.exists('vadDump'):
-         shutil.rmtree('vadDump')
-      exit(False)
 
 #Eof...
