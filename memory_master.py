@@ -20,7 +20,7 @@ import subprocess
 import os.path
 import fileinput
 import shutil
-import unicodedata
+import linecache
 from termcolor import colored					# pip install termcolor
 
 # -------------------------------------------------------------------------------------
@@ -63,7 +63,7 @@ while len(fileName) < 25:
 # -------------------------------------------------------------------------------------
 
 PRO = "UNSELECTED           "
-DIS = "UNSELECTED           "
+PR2 = "UNSELECTED           "
 PRM = "UNSELECTED           "
 PI1 = "0                    "
 OFF = "0                    "
@@ -72,23 +72,19 @@ SEC = "0x0000000000000000"
 SOF = "0x0000000000000000"
 COM = "0x0000000000000000"
 SYS = "0x0000000000000000"
-HST = "NOT FOUND     "
-ADM = "NOT FOUND     "
-GUS = "NOT FOUND     "
-USR = "NOT FOUND     "
-UN4 = "RESERVED      "
-UN5 = "EMPTY"
-UN6 = "EMPTY"
-UN7 = "EMPTY"
-UN8 = "EMPTY"
-UN9 = "EMPTY"
+HST = "NOT FOUND      "
+PRC = "0              "
+SER = "0              "
+ADM = "NOT FOUND"
+GUS = "NOT FOUND"
+USR = "NOT FOUND"
 BLK = "BLANK"
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 2.0                                                                
-# Details : Display a universal header.    
+# Details : PR2play a universal header.    
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
@@ -106,28 +102,48 @@ def header ():
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
 # Version : 2.0
-# Details : Populate system variables.
+# Details : Populate key program variables.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
 header()
-print "Booting!! - Please wait...\n"
+print "Booting system - Please wait...\n"
 
-os.system("volatility imageinfo -f " + fileName + " > IMAGE.txt")
-with open("IMAGE.txt") as fp:
-   line = fp.readline()
-   PRO = line.split(None,4)[3]
-   PRO = PRO.rstrip(',')
-   PRO = " --profile " + PRO
-   DIS = PRO.replace(" --profile ","")
-fp.close()
-os.remove('IMAGE.txt')
-while len(DIS) < 21:
-   DIS = DIS + " "
+os.system("volatility imageinfo -f " + fileName + " > image.txt")
+with open("image.txt") as search:
+   for word in search:
+      word = word
+      if "Suggested Profile(s) :" in word:
+         profiles = word
+      if "Number of Processors" in word:
+         PRC = word
+      if "Image Type (Service Pack) :" in word:
+         SER = word
+search.close()
+os.remove('image.txt')
 
-if PRO[:2] == "NO":
-   print "ERROR - Profile not found..."
-   exit(1)
+profiles = profiles.replace("Suggested Profile(s) :","")
+profiles = profiles.replace(" ","")
+profiles = profiles.split(",")
+PRO = " --profile " + profiles[0]
+PR2 = profiles[0]
+if PR2[:2] == "":
+   print "ERROR - Windows profile not found..."
+   exit(True)
+while len(PR2) < 21:
+   PR2 = PR2 + " "
+
+PRC = PRC.replace("Number of Processors :","")
+PRC = PRC.replace(" ","")
+PRC = PRC.replace("\n","")
+while len(PRC) < 15:
+   PRC = PRC + " "
+
+SER = SER.replace("Image Type (Service Pack) :","")
+SER = SER.replace(" ","")
+SER = SER.replace("\n","")
+while len(SER) < 15:
+   SER = SER + " "
 
 os.system("volatility -f " + fileName + PRO + " hivelist > hivelist.txt")
 with open("hivelist.txt") as fp:  
@@ -164,7 +180,7 @@ fp.close()
 os.remove('host.txt')
 wordlist = wordlist.split()
 HST = wordlist[-1].upper().rstrip('')
-while len(HST.encode()) < 15:          						# patch required len2 for X?
+while len(HST) < 15:          								# patch ????
    HST = HST + " "
 
 os.system("echo 'HASH FILE' > hash.txt")
@@ -175,41 +191,43 @@ with open("hash.txt") as fp:
    while line:
       line = fp.readline()
       if "Administrator" in line:
-         ADM = "FOUND         "
+         ADM = "FOUND    "
       if "Guest" in line :
-         GUS = "FOUND         "
+         GUS = "FOUND    "
       usercount = usercount + 1
 fp.close()
 os.remove('hash.txt')
 
 usercount = usercount -1
-if ADM == "FOUND         ":
+if ADM == "FOUND    ":
    usercount = usercount -1
-if GUS == "FOUND         ":
+if GUS == "FOUND    ":
    usercount = usercount -1
 if usercount > 0:
    USR = "FOUND "
    USR = USR + str(usercount)
-while len(USR) < 14:
+while len(USR) < 9:
    USR = USR + " "
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
 # Version : 2.0
-# Details : Display pertinant system information.
+# Details : PR2play pertinant system information.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
-def display():
-   print "="*15,
-   print colored("WINDOWS O/S",'white'),
-   print "="*20,
-   print colored("SYSTEM HIVES",'white'),
+def PR2play():
    print "="*17,
-   print colored("HOST/USERS",'white'),
-   print "="*43
-
+   print colored("SETTINGS",'white'),
+   print "="*21,
+   print colored("SYSTEM HIVES",'white'),
+   print "="*18,
+   print colored("HOST INFO",'white'),
+   print "="*11,
+   print colored("USER INFO",'white'),
+   print "="*20
+# -------------------------------------------------------------------------------------
    print "FILENAME [",
    print colored(str.upper(fileName[:21]),'blue'),
    print "] SAM      [",
@@ -219,30 +237,38 @@ def display():
       print colored(SAM,'blue'),
    print "] HOST NAME[",
    if HST == "NOT FOUND         ":
-      print colored(HST,'red'),
+      print colored(HST[:15],'red'),
    else:
-       print colored(HST,'blue'),
-   print "] RESERVED [ " + UN5 + " ]",
-   print "RESERVED [ " + BLK + " ]"   #new
-
+       print colored(HST[:15],'blue'),
+   print "] ADMIN [",
+   if ADM == "NOT FOUND":
+      print colored(ADM,'red'),
+   else:
+      print colored(ADM,'blue'),
+   print "] RESERVED [ " + BLK + " ]"
+# -------------------------------------------------------------------------------------
    print "PROFILE  [",
-   if DIS == "UNSELECTED              ":
-      print colored(str.upper(DIS),'red'),
+   if PR2 == "UNSELECTED              ":
+      print colored(str.upper(PR2),'red'),
    else:
-      print colored(str.upper(DIS),'blue'),
+      print colored(str.upper(PR2),'blue'),
    print "] SECURITY [",
    if SEC == "0x0000000000000000":
       print colored(SEC,'red'),
    else:
       print colored(SEC,'blue'),
-   print "] ADMIN    [",
-   if ADM == "NOT FOUND         ":
-      print colored(ADM,'red'),
+   print "] PROCESSOR[",
+   if PRC == 0:
+      print colored(HST,'red'),
    else:
-      print colored(ADM,'blue'),
-   print "] RESERVED [ " + UN6 + " ]",
-   print "RESERVED [ " + BLK + " ]"   #new
-
+       print colored(PRC,'blue'),
+   print "] GUEST [",
+   if ADM == "NOT FOUND":
+      print colored(GUS,'red'),
+   else:
+      print colored(GUS,'blue'),
+   print "] RESERVED [ " + BLK + " ]"
+# -------------------------------------------------------------------------------------
    print "PID      [",
    if PI1[:1] == "0":
       print colored(PI1,'red'),
@@ -253,14 +279,18 @@ def display():
       print colored(SOF,'red'),
    else:
       print colored(SOF,'blue'),
-   print "] GUEST    [",
-   if GUS == "NOT FOUND         ":
-      print colored(GUS,'red'),
+   print "] SERV PACK[",
+   if SER == "0             ":
+      print colored(SER,'red'),
    else:
-      print colored(GUS,'blue'),
-   print "] RESERVED [ " + UN7 + " ]",
-   print "RESERVED [ " + BLK + " ]"   #new
-
+      print colored(SER,'blue'),
+   print "] USERS [",
+   if USR == "NOT FOUND":
+      print colored(USR,'red'),
+   else:
+      print colored(USR,'blue'),
+   print "] RESERVED [ " + BLK + " ]"
+# -------------------------------------------------------------------------------------
    print "OFFSET   [",
    if OFF[:1] == "0":
       print colored(OFF,'red'),
@@ -271,14 +301,10 @@ def display():
       print colored(COM,'red'),
    else:
       print colored(COM,'blue'),
-   print "] USERS    [",
-   if USR == "NOT FOUND         ":
-      print colored(USR,'red'),
-   else:
-      print colored(USR,'blue'),
-   print "] RESERVED [ " + UN8 + " ]",
-   print "RESERVED [ " + BLK + " ]"   #new
-
+   print "] RESERVED [                 ]",
+   print "EMPTY [ BLANK     ]",
+   print "RESERVED [ " + BLK + " ]"
+# -------------------------------------------------------------------------------------
    print "PARAMETER[",
    if PRM == "UNSELECTED           ":
       print colored(PRM,'red'),
@@ -289,9 +315,10 @@ def display():
       print colored(SYS,'red'),
    else:
       print colored(SYS,'blue'),
-   print "] RESERVED [ " + UN4 + " ] RESERVED [ " + UN9 + " ]",
-   print "RESERVED [ " + BLK + " ]"   #new
-
+   print "] RESERVED [                 ]",
+   print "EMPTY [ BLANK     ]",
+   print "RESERVED [ " + BLK + " ]"
+# -------------------------------------------------------------------------------------
    print "*"*134
    print " "*9,
    print colored("SETTINGS",'white'),
@@ -334,7 +361,7 @@ menu['(7)']="Clean and Exit	(16) User Assist Keys 	(26) Connscan PARAMETER	(36)	
 
 while True: 
    header()
-   display()
+   PR2play()
    options=menu.keys()
    options.sort()
    for entry in options: 
@@ -365,9 +392,9 @@ while True:
          PRO = BAK
       else:
          PRO = " --profile " + PRO
-         DIS = PRO.replace(" --profile ","")
-         while len(DIS) < 21:
-            DIS += " "
+         PR2 = PRO.replace(" --profile ","")
+         while len(PR2) < 21:
+            PR2 += " "
       fp.close()        
 
 # ------------------------------------------------------------------------------------- 
@@ -456,7 +483,7 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 2.0
-# Details : Menu option selected - Dispays any LSA secrets
+# Details : Menu option selected - PR2pays any LSA secrets
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
