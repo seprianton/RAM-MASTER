@@ -75,6 +75,8 @@ SYS = "0x0000000000000000"
 HST = "NOT FOUND      "
 PRC = "0              "
 SER = "0              "
+DA1 = "NOT FOUND      "
+DA2 = "NOT FOUND      "
 ADM = "NOT FOUND"
 GUS = "NOT FOUND"
 USR = "NOT FOUND"
@@ -119,9 +121,10 @@ with open("image.txt") as search:
          PRC = word
       if "Image Type (Service Pack) :" in word:
          SER = word
+      if "Image date and time :" in word:
+         DA1 = word
 search.close()
-os.remove('image.txt')
-
+os.remove("image.txt")
 profiles = profiles.replace("Suggested Profile(s) :","")
 profiles = profiles.replace(" ","")
 profiles = profiles.split(",")
@@ -132,18 +135,26 @@ if PR2[:2] == "":
    exit(True)
 while len(PR2) < 21:
    PR2 = PR2 + " "
-
 PRC = PRC.replace("Number of Processors :","")
 PRC = PRC.replace(" ","")
 PRC = PRC.replace("\n","")
 while len(PRC) < 15:
    PRC = PRC + " "
-
 SER = SER.replace("Image Type (Service Pack) :","")
 SER = SER.replace(" ","")
 SER = SER.replace("\n","")
 while len(SER) < 15:
    SER = SER + " "
+DA1 = DA1.replace("Image date and time :","")
+DA1 = DA1.lstrip()
+DA1 = DA1.rstrip("\n")
+a,b,c = DA1.split()
+DA1 = a
+DA2 = b
+while len(DA1) < 15:
+   DA1 = DA1 + " "
+while len(DA2) < 15:
+   DA2 = DA2 + " "
 
 os.system("volatility -f " + fileName + PRO + " hivelist > hivelist.txt")
 with open("hivelist.txt") as fp:  
@@ -179,8 +190,8 @@ with open("host.txt") as fp:
 fp.close()
 os.remove('host.txt')
 wordlist = wordlist.split()
-HST = wordlist[-1].upper().rstrip('')
-while len(HST) < 15:          								# patch ????
+HST = wordlist[-1].upper()
+while len(HST) < 15:
    HST = HST + " "
 
 os.system("echo 'HASH FILE' > hash.txt")
@@ -197,7 +208,6 @@ with open("hash.txt") as fp:
       usercount = usercount + 1
 fp.close()
 os.remove('hash.txt')
-
 usercount = usercount -1
 if ADM == "FOUND    ":
    usercount = usercount -1
@@ -301,8 +311,12 @@ def PR2play():
       print colored(COM,'red'),
    else:
       print colored(COM,'blue'),
-   print "] RESERVED [                 ]",
-   print "EMPTY [ BLANK     ]",
+   print "] SYS DATE [",
+   if DA1 == "NOT FOUND      ":
+      print colored(DA1,'red'),
+   else:
+      print colored(DA1,'blue'),
+   print "] EMPTY [ BLANK     ]",
    print "RESERVED [ " + BLK + " ]"
 # -------------------------------------------------------------------------------------
    print "PARAMETER[",
@@ -315,8 +329,12 @@ def PR2play():
       print colored(SYS,'red'),
    else:
       print colored(SYS,'blue'),
-   print "] RESERVED [                 ]",
-   print "EMPTY [ BLANK     ]",
+   print "] SYS TIME [",
+   if DA2 == "NOT FOUND      ":
+      print colored(DA2,'red'),
+   else:
+      print colored(DA2,'blue'),
+   print "] EMPTY [ BLANK     ]",
    print "RESERVED [ " + BLK + " ]"
 # -------------------------------------------------------------------------------------
    print "*"*134
