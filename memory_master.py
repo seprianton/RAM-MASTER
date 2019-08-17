@@ -65,13 +65,17 @@ while len(fileName) < 25:
 PRO = "UNSELECTED           "
 PR2 = "UNSELECTED           "
 PRM = "UNSELECTED           "
+NNN = "UNSELECTED           "
 PI1 = "0                    "
+PI2 = "0                    "
 OFF = "0                    "
 SAM = "0x0000000000000000"
 SEC = "0x0000000000000000"
 SOF = "0x0000000000000000"
 COM = "0x0000000000000000"
 SYS = "0x0000000000000000"
+NTU = "0x0000000000000000"
+HRD = "0x0000000000000000"
 HST = "NOT FOUND      "
 PRC = "0              "
 SER = "0              "
@@ -90,7 +94,7 @@ BLK = "BLANK"
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
-def header ():
+def Header():
    os.system("clear")
    print "\t\t\t __  __ _____ __  __  ___  ______   __  __  __    _    ____ _____ _____ ____   "
    print "\t\t\t|  \/  | ____|  \/  |/ _ \|  _ \ \ / / |  \/  |  / \  / ___|_   _| ____|  _ \  "
@@ -108,9 +112,8 @@ def header ():
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
-header()
+Header()
 print "Booting system - Please wait...\n"
-
 os.system("volatility imageinfo -f " + fileName + " > image.txt")
 with open("image.txt") as search:
    for word in search:
@@ -155,7 +158,6 @@ while len(DA1) < 15:
    DA1 = DA1 + " "
 while len(DA2) < 15:
    DA2 = DA2 + " "
-
 os.system("volatility -f " + fileName + PRO + " hivelist > hivelist.txt")
 with open("hivelist.txt") as fp:  
    line = fp.readline()
@@ -181,9 +183,16 @@ with open("hivelist.txt") as fp:
          COM = line.split(None, 1)[0]
          while len(COM) < 18:
             COM = COM + " "
+      if "\Administrator\NTUSER.DAT" in line: 			# Administrator as most likely multiple NTUSERS.
+         NTU = line.split(None, 1)[0]
+         while len(NTU) < 18:
+            NTU = NTU + " "
+      if "\HARDWARE" in line:
+         HRD = line.split(None,1)[0]
+         while len(HRD) < 18:
+            HRD = HRD + " "
 fp.close()
 os.remove('hivelist.txt')
-
 os.system("volatility -f " + fileName + PRO + " printkey -o " + SYS + " -K 'ControlSet001\Control\ComputerName\ComputerName' > host.txt")
 with open("host.txt") as fp:
    wordlist = (list(fp)[-1])
@@ -193,7 +202,6 @@ wordlist = wordlist.split()
 HST = wordlist[-1].upper()
 while len(HST) < 15:
    HST = HST + " "
-
 os.system("echo 'HASH FILE' > hash.txt")
 os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM + " >> hash.txt")
 usercount = 0
@@ -227,10 +235,10 @@ while len(USR) < 9:
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
-def PR2play():
+def Display():
    print "="*17,
    print colored("SETTINGS",'white'),
-   print "="*21,
+   print "="*22,
    print colored("SYSTEM HIVES",'white'),
    print "="*18,
    print colored("HOST INFO",'white'),
@@ -284,11 +292,11 @@ def PR2play():
       print colored(PI1,'red'),
    else:
       print colored(PI1,'blue'),
-   print "] SOFTWARE [",
-   if SOF == "0x0000000000000000":
-      print colored(SOF,'red'),
+   print "] COMPONENT[",
+   if COM == "0x0000000000000000":
+      print colored(COM,'red'),
    else:
-      print colored(SOF,'blue'),
+      print colored(COM,'blue'),
    print "] SERV PACK[",
    if SER == "0             ":
       print colored(SER,'red'),
@@ -301,16 +309,16 @@ def PR2play():
       print colored(USR,'blue'),
    print "] RESERVED [ " + BLK + " ]"
 # -------------------------------------------------------------------------------------
-   print "OFFSET   [",
-   if OFF[:1] == "0":
-      print colored(OFF,'red'),
+   print "PPID     [",
+   if PI2[:1] == "0":
+      print colored(PI2,'red'),
    else:
-      print colored(OFF,'blue'),
-   print "] COMPONENT[",
-   if COM == "0x0000000000000000":
-      print colored(COM,'red'),
+      print colored(PI2,'blue'),
+   print "] SOFTWARE [",
+   if SOF == "0x0000000000000000":
+      print colored(SOF,'red'),
    else:
-      print colored(COM,'blue'),
+      print colored(SOF,'blue'),
    print "] SYS DATE [",
    if DA1 == "NOT FOUND      ":
       print colored(DA1,'red'),
@@ -319,11 +327,11 @@ def PR2play():
    print "] EMPTY [ BLANK     ]",
    print "RESERVED [ " + BLK + " ]"
 # -------------------------------------------------------------------------------------
-   print "PARAMETER[",
-   if PRM == "UNSELECTED           ":
-      print colored(PRM,'red'),
+   print "OFFSET   [",
+   if OFF[:1] == "0":
+      print colored(OFF,'red'),
    else:
-      print colored(str.upper(PRM[:21]),'blue'),
+      print colored(OFF,'blue'),
    print "] SYSTEM   [",
    if SYS == "0x0000000000000000":
       print colored(SYS,'red'),
@@ -335,6 +343,34 @@ def PR2play():
    else:
       print colored(DA2,'blue'),
    print "] EMPTY [ BLANK     ]",
+   print "RESERVED [ " + BLK + " ]"
+# -------------------------------------------------------------------------------------
+   print "PARAMETER[",
+   if PRM == "UNSELECTED           ":
+      print colored(PRM,'red'),
+   else:
+      print colored(str.upper(PRM[:21]),'blue'),
+   print "] NTUSER   [",					
+   if NTU == "0x0000000000000000":
+      print colored(NTU,'red'),
+   else:
+      print colored(NTU,'blue'),
+   print "] EMPTY    [ BLANK           ]",
+   print "EMPTY [ BLANK     ]",
+   print "RESERVED [ " + BLK + " ]"
+# -------------------------------------------------------------------------------------
+   print "RESERVED [",
+   if NNN == "UNSELECTED           ":
+      print colored(NNN,'red'),
+   else:
+      print colored(NNN,'blue'),
+   print "] HARDWARE [",					
+   if HRD == "0x0000000000000000":
+      print colored(HRD,'red'),
+   else:
+      print colored(HRD,'blue'),
+   print "] EMPTY    [ BLANK           ]",
+   print "EMPTY [ BLANK     ]",
    print "RESERVED [ " + BLK + " ]"
 # -------------------------------------------------------------------------------------
    print "*"*134
@@ -362,12 +398,12 @@ def PR2play():
 menu = {}
 menu['(1)']="Set PROFILE\t	(10) User Passwords	(20) SAM Hive		(30) PARAMETER Search	(40) Timeline"
 menu['(2)']="Set PID		(11) Default Password	(21) SECURITY Hive	(31) Malfind PID	(41) Screenshots"
-menu['(3)']="Set OFFSET		(12) Running Processes	(22) SOFTWARE Hive	(32) Mutant PID		(42) MFT Table"
-menu['(4)']="Set PARAMETER	(13) Running Services	(23) COMPONENT Hive	(33) Vaddump PID	(43) Bulk Extractor" 
-menu['(5)']="			(14) Clipboard Contents	(24) SYSTEM Hive	(34) Dump PID		(44) "
-menu['(6)']="			(15) Console Contents	(25) Network Traffic	(35) Cmdline		(45) "
-menu['(7)']="Clean and Exit	(16) User Assist Keys 	(26) Connscan PARAMETER	(36)			(46) "
-
+menu['(3)']="Set PPID		(12) Running Processes	(22) COMPONENT Hive	(32) Mutant PID		(42) MFT Table"
+menu['(4)']="Set OFFSET		(13) Running Services	(23) SOFTWARE Hive	(33) Vaddump PID	(43) Bulk Extractor" 
+menu['(5)']="Set PARAMETER	(14) Clipboard Contents	(24) SYSTEM Hive	(34) Dump PID		(44) "
+menu['(6)']="			(15) Console Contents	(25) NTUSER Hive	(35) 			(45) "
+menu['(7)']="			(16) Cmdline Contents	(26) Network Traffic	(36)			(46) "
+menu['(8)']="Clean and Exit	(17) User Assist Keys	(27) Connscan PARAMETER	(37)			(47) "
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -378,8 +414,9 @@ menu['(7)']="Clean and Exit	(16) User Assist Keys 	(26) Connscan PARAMETER	(36)	
 # -------------------------------------------------------------------------------------
 
 while True: 
-   header()
-   PR2play()
+   os.system("clear")
+   Header()
+   Display()
    options=menu.keys()
    options.sort()
    for entry in options: 
@@ -424,20 +461,32 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='2':
-      PI1 = raw_input("Please enter PID value: ")
+      PI1 = raw_input("Please enter PPID value: ")
       while len(PI1) < 21:
          PI1 += " "
 
 # ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
+# AUTHOR  : Terence Broadbent                                                           
 # CONTRACT: GitHub
 # Version : 2.0
-# Details : Menu option selected - Allows the user to set the PPID value.
+# Details : Menu option selected - Allowd the user to set the PID value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='3':
-      OFF = raw_input("Please enter PPID value: ")
+      PI2 = raw_input("Please enter PID value: ")
+      while len(PI2) < 21:
+         PI2 += " "
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 2.0
+# Details : Menu option selected - Allows the user to set the OFFSET value.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='4':
+      OFF = raw_input("Please enter OFFSET value: ")
       while len(OFF) < 21:
          OFF += " "
 
@@ -449,7 +498,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='4':
+   if selection =='5':
       PRM = raw_input("Please enter parameter value: ")
       while len(PRM) < 21:
          PRM += " "
@@ -462,7 +511,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='7':
+   if selection =='8':
       if os.path.exists('timeline.txt'):
          os.remove('timeline.txt')
       if os.path.exists('mfttable.txt'):
@@ -518,7 +567,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='12':
-      os.system("volatility -f " + fileName + PRO + " psscan | more")
+      os.system("volatility -f " + fileName + PRO + " pstree | more")
       os.system("volatility -f " + fileName + PRO + " psscan --output greptext > F1.txt")
       os.system("tail -n +2 F1.txt > F2.txt")
       os.system("sed -i 's/>//g' F2.txt")
@@ -607,11 +656,23 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 2.0
-# Details : Menu option selected - Show userassist key values.
+# Details : Menu option selected - Cmdline contents.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='16':
+      os.system("volatility -f " + fileName + PRO + " cmdline | more")
+      raw_input("Press ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 2.0
+# Details : Menu option selected - Show userassist key values.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='17':
       os.system("volatility -f " + fileName + PRO + " userassist")
       raw_input("\nPress ENTER to continue...")
 
@@ -646,30 +707,30 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 2.0
-# Details : Menu option selected - Shows SOFTWARE hive.
+# Details : Menu option selected - Shows COMPONENT hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='22':
-      if (SOF == "0x0000000000000000"):
+      if (COM == "0x0000000000000000"):
          print colored("Not possible...",'white')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + SOF)
+         os.system("volatility -f " + fileName + PRO + " hivedump -o " + COM)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 2.0
-# Details : Menu option selected - Shows COMPONENT hive.
+# Details : Menu option selected - Shows SOFTWARE hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='23':
-      if (COM == "0x0000000000000000"):
+      if (SOF == "0x0000000000000000"):
          print colored("Not possible...",'white')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + COM)
+         os.system("volatility -f " + fileName + PRO + " hivedump -o " + SOF)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -691,11 +752,26 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 2.0
-# Details : Menu option selected - Shows network traffic.
+# Details : Menu option selected - Shows NTUSER hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='25':
+      if (NTU == "0x0000000000000000"):
+         print colored("Not possible...",'white')
+      else:
+         os.system("volatility -f " + fileName + PRO + " hivedump -o " + NTU)
+      raw_input("\nPress ENTER to continue...") 
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 2.0
+# Details : Menu option selected - Shows network traffic.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='26':
       os.system("volatility -f " + fileName + PRO + " netscan")
       raw_input("\nPress ENTER to continue...") 
 
@@ -707,7 +783,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='26':
+   if selection =='27':
       os.system("volatility -f " + fileName + " connscan | egrep " + PRM)
       raw_input("\nPress ENTER to continue...") 
 
@@ -715,7 +791,7 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 2.0
-# Details : Menu option selected - Allows the iuser to Search the PARAM string.
+# Details : Menu option selected - Allows the user to Search the PARAM string.
 # Modified: N/A
 # ------------------------------------------------------------------------------------- 
    
@@ -785,18 +861,6 @@ while True:
          os.system('mkdir PIData') 
       os.system("volatility -f " + fileName + PRO + " memdump -p " + PI1 + " -D PIData")
       print "\nPID dump is now available in directory PIData...\n"
-      raw_input("Press ENTER to continue...")
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 2.0
-# Details : Menu option selected - Memory dump PID.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='35':
-      os.system("volatility -f " + fileName + PRO + " cmdline | more")
       raw_input("Press ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
