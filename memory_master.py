@@ -2,14 +2,14 @@
 # coding:UTF-8
 
 # -------------------------------------------------------------------------------------
-#   PYTHON UTILITY SCRIPT FILE FOR THE FORENSIC ANALYSIS OF WINDOWS MEMORY DUMP-FILES
+#      PYTHON SCRIPT FILE FOR THE FORENSIC ANALYSIS OF WINDOWS MEMORY DUMP-FILES
 #               BY TERENCE BROADBENT BSC CYBER SECURITY (FIRST CLASS)
 # -------------------------------------------------------------------------------------
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0                                                                
+# Version : 3.0                                                                
 # Details : Load required imports.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ from termcolor import colored					# pip install termcolor
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 2.0                                                                
+# Version : 3.0                                                                
 # Details : Conduct simple and routine tests on user supplied arguements.   
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
@@ -57,39 +57,42 @@ while len(fileName) < 25:
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 2.0
-# Details : Initialise system variables.
+# Version : 3.0
+# Details : Initialise program variables.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
 PRO = "UNSELECTED           "
 PR2 = "UNSELECTED           "
-PRM = "UNSELECTED           "
-NNN = "UNSELECTED           "
+DA1 = "NOT FOUND            "
 PI1 = "0                    "
 PI2 = "0                    "
 OFF = "0                    "
+PRM = "UNSELECTED           "
+DIR = "WORKAREA             "
 SAM = "0x0000000000000000"
 SEC = "0x0000000000000000"
-SOF = "0x0000000000000000"
 COM = "0x0000000000000000"
+SOF = "0x0000000000000000"
 SYS = "0x0000000000000000"
 NTU = "0x0000000000000000"
 HRD = "0x0000000000000000"
+NXT = "0x0000000000000000"
 HST = "NOT FOUND      "
 PRC = "0              "
-SER = "0              "
-DA1 = "NOT FOUND      "
+SVP = "0              "
 DA2 = "NOT FOUND      "
+TI2 = "NOT FOUND      "
+HIP = "000.000.000.000"
 ADM = "NOT FOUND"
 GUS = "NOT FOUND"
 USR = "NOT FOUND"
-BLK = "BLANK"
+BLK = "     "
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0                                                                
+# Version : 3.0                                                                
 # Details : PR2play a universal header.    
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
@@ -107,27 +110,30 @@ def Header():
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 2.0
-# Details : Populate key program variables.
+# Version : 3.0
+# Details : Boot the system with populated program variables.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
 Header()
-print "Booting system - Please wait...\n"
+print "Booting - Please wait...\n"
+os.mkdir("WORKAREA")
+
 os.system("volatility imageinfo -f " + fileName + " > image.txt")
 with open("image.txt") as search:
    for word in search:
-      word = word
       if "Suggested Profile(s) :" in word:
          profiles = word
       if "Number of Processors" in word:
          PRC = word
       if "Image Type (Service Pack) :" in word:
-         SER = word
+         SVP = word
       if "Image date and time :" in word:
          DA1 = word
-search.close()
+      if "Image local date and time :" in word:
+         DA2 = word
 os.remove("image.txt")
+
 profiles = profiles.replace("Suggested Profile(s) :","")
 profiles = profiles.replace(" ","")
 profiles = profiles.split(",")
@@ -143,63 +149,77 @@ PRC = PRC.replace(" ","")
 PRC = PRC.replace("\n","")
 while len(PRC) < 15:
    PRC = PRC + " "
-SER = SER.replace("Image Type (Service Pack) :","")
-SER = SER.replace(" ","")
-SER = SER.replace("\n","")
-while len(SER) < 15:
-   SER = SER + " "
+SVP = SVP.replace("Image Type (Service Pack) :","")
+SVP = SVP.replace(" ","")
+SVP = SVP.replace("\n","")
+while len(SVP) < 15:
+   SVP = SVP + " "
 DA1 = DA1.replace("Image date and time :","")
 DA1 = DA1.lstrip()
 DA1 = DA1.rstrip("\n")
 a,b,c = DA1.split()
-DA1 = a
-DA2 = b
-while len(DA1) < 15:
+TMP = b
+DA1 = str(a)
+DA1 = DA1 + " "
+DA1 = DA1 + TMP
+while len(DA1) < 21:
    DA1 = DA1 + " "
+DA2 = DA2.replace("Image local date and time :","")
+DA2 = DA2.lstrip()
+DA2 = DA2.rstrip("\n")
+a,b,c = DA2.split()
+DA2 = a
+TI2 = b
 while len(DA2) < 15:
    DA2 = DA2 + " "
-os.system("volatility -f " + fileName + PRO + " hivelist > hivelist.txt")
-with open("hivelist.txt") as fp:  
-   line = fp.readline()
-   while line:
-      line = fp.readline()
-      if "\SAM" in line:
-         SAM = line.split(None, 1)[0]
-         while len(SAM) < 18:
-            SAM = SAM + " "
-      if "SECURITY" in line:
-         SEC = line.split(None, 1)[0]
-         while len(SEC) < 18:
-            SEC = SEC + " "
-      if "\SOFTWARE" in line:
-         SOF = line.split(None, 1)[0]
-         while len(SOF) < 18:
-            SOF = SOF + " "
-      if "\SYSTEM" in line:
-         SYS = line.split(None, 1)[0]
-         while len(SYS) < 18:
-            SYS = SYS + " "
-      if "\COMPONENTS" in line:
-         COM = line.split(None, 1)[0]
-         while len(COM) < 18:
-            COM = COM + " "
-      if "\Administrator\NTUSER.DAT" in line: 			# Administrator as most likely multiple NTUSERS.
-         NTU = line.split(None, 1)[0]
-         while len(NTU) < 18:
-            NTU = NTU + " "
-      if "\HARDWARE" in line:
-         HRD = line.split(None,1)[0]
-         while len(HRD) < 18:
-            HRD = HRD + " "
-fp.close()
-os.remove('hivelist.txt')
+while len(TI2) < 15:
+   TI2 = TI2 + " "
+
+# UNMARK TO BOOT WITH POPULATED HIVES
+
+#os.system("volatility -f " + fileName + PRO + " hivelist > hivelist.txt")
+#with open("hivelist.txt") as fp:  
+#   line = fp.readline()
+#   while line:
+#      line = fp.readline()
+#      if "\SAM" in line:
+#         SAM = line.split(None, 1)[0]
+#         while len(SAM) < 18:
+#            SAM = SAM + " "
+#      if "SECURITY" in line:
+#         SEC = line.split(None, 1)[0]
+#         while len(SEC) < 18:
+#            SEC = SEC + " "
+#      if "\SOFTWARE" in line:
+#         SOF = line.split(None, 1)[0]
+#         while len(SOF) < 18:
+#            SOF = SOF + " "
+#      if "\SYSTEM" in line:
+#         SYS = line.split(None, 1)[0]
+#         while len(SYS) < 18:
+#            SYS = SYS + " "
+#      if "\COMPONENTS" in line:
+#         COM = line.split(None, 1)[0]
+#         while len(COM) < 18:
+#            COM = COM + " "
+#      if "\Administrator\NTUSVP.DAT" in line: 			# Administrator as most likely multiple NTUSVPS.
+#         NTU = line.split(None, 1)[0]
+#         while len(NTU) < 18:
+#            NTU = NTU + " "
+#      if "\HARDWARE" in line:
+#         HRD = line.split(None,1)[0]
+#         while len(HRD) < 18:
+#            HRD = HRD + " "
+#os.remove('hivelist.txt')
+
 os.system("volatility -f " + fileName + PRO + " printkey -o " + SYS + " -K 'ControlSet001\Control\ComputerName\ComputerName' > host.txt")
 with open("host.txt") as fp:
    wordlist = (list(fp)[-1])
-fp.close()
 os.remove('host.txt')
 wordlist = wordlist.split()
 HST = wordlist[-1].upper()
+if HST == "SEARCHED":
+   HST = "NOT FOUND"
 while len(HST) < 15:
    HST = HST + " "
 os.system("echo 'HASH FILE' > hash.txt")
@@ -227,22 +247,35 @@ if usercount > 0:
 while len(USR) < 9:
    USR = USR + " "
 
+# UNMARK TO BOOT WITH IP ADDRESS
+
+#os.system("volatility -f " + fileName + PRO + " connscan > connscan.txt")
+#getip = linecache.getline('connscan.txt', 3)
+#if getip != "":
+#   getip = getip.split()
+#   getip = getip[1].replace(':',' ')  
+#   HIP = getip.rsplit(' ', 1)[0]
+#   HIP = HIP.rstrip('\n')
+#   while len(HIP) < 15:
+#      HIP = HIP + " "
+#os.remove("connscan.txt")
+
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 2.0
-# Details : PR2play pertinant system information.
+# Version : 3.0
+# Details : Build the top half of the screen display.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
 def Display():
    print "="*17,
    print colored("SETTINGS",'white'),
-   print "="*22,
+   print "="*21,
    print colored("SYSTEM HIVES",'white'),
    print "="*18,
    print colored("HOST INFO",'white'),
-   print "="*11,
+   print "="*12,
    print colored("USER INFO",'white'),
    print "="*20
 # -------------------------------------------------------------------------------------
@@ -254,7 +287,7 @@ def Display():
    else:
       print colored(SAM,'blue'),
    print "] HOST NAME[",
-   if HST == "NOT FOUND         ":
+   if HST == "NOT FOUND      ":
       print colored(HST[:15],'red'),
    else:
        print colored(HST[:15],'blue'),
@@ -287,21 +320,21 @@ def Display():
       print colored(GUS,'blue'),
    print "] RESERVED [ " + BLK + " ]"
 # -------------------------------------------------------------------------------------
-   print "PID      [",
-   if PI1[:1] == "0":
-      print colored(PI1,'red'),
+   print "CREATED  [",
+   if DA1 == "NOT FOUND            ":
+      print colored(DA1,'red'),
    else:
-      print colored(PI1,'blue'),
+      print colored(DA1,'blue'),
    print "] COMPONENT[",
    if COM == "0x0000000000000000":
       print colored(COM,'red'),
    else:
       print colored(COM,'blue'),
    print "] SERV PACK[",
-   if SER == "0             ":
-      print colored(SER,'red'),
+   if SVP == "0             ":
+      print colored(SVP,'red'),
    else:
-      print colored(SER,'blue'),
+      print colored(SVP,'blue'),
    print "] USERS [",
    if USR == "NOT FOUND":
       print colored(USR,'red'),
@@ -309,113 +342,142 @@ def Display():
       print colored(USR,'blue'),
    print "] RESERVED [ " + BLK + " ]"
 # -------------------------------------------------------------------------------------
-   print "PPID     [",
-   if PI2[:1] == "0":
-      print colored(PI2,'red'),
+   print "PID      [",
+   if PI1[:1] == "0":
+      print colored(PI1,'red'),
    else:
-      print colored(PI2,'blue'),
+      print colored(PI1,'blue'),
    print "] SOFTWARE [",
    if SOF == "0x0000000000000000":
       print colored(SOF,'red'),
    else:
       print colored(SOF,'blue'),
    print "] SYS DATE [",
-   if DA1 == "NOT FOUND      ":
-      print colored(DA1,'red'),
+   if DA2 == "NOT FOUND      ":
+      print colored(DA2,'red'),
    else:
-      print colored(DA1,'blue'),
-   print "] EMPTY [ BLANK     ]",
-   print "RESERVED [ " + BLK + " ]"
+      print colored(DA2,'blue'),
+   print "]",
+   print "      [           ]",
+   print "RESERVED [       ]"
 # -------------------------------------------------------------------------------------
-   print "OFFSET   [",
-   if OFF[:1] == "0":
-      print colored(OFF,'red'),
+   print "PPID     [",
+   if PI2[:1] == "0":
+      print colored(PI2,'red'),
    else:
-      print colored(OFF,'blue'),
+      print colored(PI2,'blue'),
    print "] SYSTEM   [",
    if SYS == "0x0000000000000000":
       print colored(SYS,'red'),
    else:
       print colored(SYS,'blue'),
    print "] SYS TIME [",
-   if DA2 == "NOT FOUND      ":
-      print colored(DA2,'red'),
+   if TI2 == "NOT FOUND      ":
+      print colored(TI2,'red'),
    else:
-      print colored(DA2,'blue'),
-   print "] EMPTY [ BLANK     ]",
-   print "RESERVED [ " + BLK + " ]"
+      print colored(TI2,'blue'),
+   print "]",
+   print "      [           ]",
+   print "RESERVED [       ]"
+# -------------------------------------------------------------------------------------
+   print "OFFSET   [",
+   if OFF[:1] == "0":
+      print colored(OFF,'red'),
+   else:
+      print colored(OFF,'blue'),
+   print "] NTUSER   [",					
+   if NTU == "0x0000000000000000":
+      print colored(NTU,'red'),
+   else:
+      print colored(NTU,'blue'),
+   print "] LOCAL IP [",
+   if HIP == "000.000.000.000":
+      print colored(HIP,'red'),
+   else:
+      print colored(HIP,'blue'),
+   print "]",
+   print "      [           ]",
+   print "RESERVED [       ]"
 # -------------------------------------------------------------------------------------
    print "PARAMETER[",
    if PRM == "UNSELECTED           ":
       print colored(PRM,'red'),
    else:
       print colored(str.upper(PRM[:21]),'blue'),
-   print "] NTUSER   [",					
-   if NTU == "0x0000000000000000":
-      print colored(NTU,'red'),
-   else:
-      print colored(NTU,'blue'),
-   print "] EMPTY    [ BLANK           ]",
-   print "EMPTY [ BLANK     ]",
-   print "RESERVED [ " + BLK + " ]"
-# -------------------------------------------------------------------------------------
-   print "RESERVED [",
-   if NNN == "UNSELECTED           ":
-      print colored(NNN,'red'),
-   else:
-      print colored(NNN,'blue'),
    print "] HARDWARE [",					
    if HRD == "0x0000000000000000":
       print colored(HRD,'red'),
    else:
       print colored(HRD,'blue'),
-   print "] EMPTY    [ BLANK           ]",
-   print "EMPTY [ BLANK     ]",
-   print "RESERVED [ " + BLK + " ]"
+   print "]          [                 ]",
+   print "      [           ]",
+   print "RESERVED [       ]"
+
 # -------------------------------------------------------------------------------------
-   print "*"*134
-   print " "*9,
-   print colored("SETTINGS",'white'),
-   print " "*14,
-   print colored("IDENTIFY",'white'),
-   print " "*15,
-   print colored("ANALYSE",'white'),
-   print " "*13,
-   print colored("INVESTIGATE",'white'),
-   print " "*18,
-   print colored("EXTRACT",'white'),
-   print " "*10
-   print "*"*134
+   print "WORK DIR [",
+   print colored(DIR,'blue'),
+   print "]          [",					
+   #if NXT == "0x0000000000000000":
+   #   print colored(NXT,'red'),
+   #else:
+   #   print colored(NXT,'blue'),
+   print "                  ", # temp patch
+   print "]          [                 ]",
+   print "      [           ]",
+   print "RESERVED [       ]"
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 2.0
-# Details : Create the menu system.
+# Version : 3.0
+# Details : Build the lower half of the screen display.
+# Modified: N/A                                                               
+# -------------------------------------------------------------------------------------
+	
+   print "="*134
+   print " "*7,
+   print colored("SETTINGS",'white'),
+   print " "*11,
+   print colored("IDENTIFY",'white'),
+   print " "*18,
+   print colored("ANALYSE",'white'),
+   print " "*28,
+   print colored("INVESTIGATE",'white'),
+   print " "*13,
+   print colored("EXTRACT",'white')
+   print "="*134
+
+# -------------------------------------------------------------------------------------
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub                                                               
+# Version : 3.0
+# Details : Main menu system.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
 menu = {}
-menu['(1)']="Set PROFILE\t	(10) User Passwords	(20) SAM Hive		(30) PARAMETER Search	(40) Timeline"
-menu['(2)']="Set PID		(11) Default Password	(21) SECURITY Hive	(31) Malfind PID	(41) Screenshots"
-menu['(3)']="Set PPID		(12) Running Processes	(22) COMPONENT Hive	(32) Mutant PID		(42) MFT Table"
-menu['(4)']="Set OFFSET		(13) Running Services	(23) SOFTWARE Hive	(33) Vaddump PID	(43) Bulk Extractor" 
-menu['(5)']="Set PARAMETER	(14) Clipboard Contents	(24) SYSTEM Hive	(34) Dump PID		(44) "
-menu['(6)']="			(15) Console Contents	(25) NTUSER Hive	(35) 			(45) "
-menu['(7)']="			(16) Cmdline Contents	(26) Network Traffic	(36)			(46) "
-menu['(8)']="Clean and Exit	(17) User Assist Keys	(27) Connscan PARAMETER	(37)			(47) "
+menu['(0)']="Change PROFILE (10) User Passwords     (20) Hivelist  (30) Connections (40) PARAMETER Search (50) Desktop     (60) Timeline"
+menu['(1)']="Set PID        (11) Default Password   (21) SAM       (31) Netscan     (41) Malfind PID DIR  (51) Clipboard   (61) Screenshots"
+menu['(2)']="Set PPID       (12) Running Processes  (22) SECURITY  (32) Sockets     (42) Mutantscan       (52) Notepad     (62) MFT Table"
+menu['(3)']="Set OFFSET     (13) Hidden Processes   (23) COMPONENT (33)             (43) Vaddump PID DIR  (53)             (63)" 
+menu['(4)']="Set PARAMETER  (14) Running Services   (24) SOFTWARE  (34)             (44) Procdump PID DIR (54)             (64)"
+menu['(5)']="               (15) Command History    (25) SYSTEM    (35)             (45) Memdump PID DIR  (55)             (65)"
+menu['(6)']="               (16) Console History    (26) NTUSER    (36)             (46)                  (56)             (66)"
+menu['(7)']="               (17) Cmdline Arguments  (27) HARDWARE  (37)             (47)                  (57)             (67)"
+menu['(8)']="Change DIR     (18)                    (28)           (38)             (48)                  (58)             (68)"
+menu['(9)']="Clean and Exit (19) User Assist Keys   (29) Printkey  (39)             (49)                  (59)             (69) Bulk Extracter"
+
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 2.0
+# Version : 3.0
 # Details : Start the main menu controller.
 # Modified: N/A                                                               	
 # -------------------------------------------------------------------------------------
 
 while True: 
    os.system("clear")
-   Header()
    Display()
    options=menu.keys()
    options.sort()
@@ -426,12 +488,12 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected - Lets the user select a new Windows profile.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='1':
+   if selection =='0':
       BAK = PRO
       MATCH = 0
       PRO = raw_input("Please enter profile: ")
@@ -455,12 +517,12 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected - Allowd the user to set the PID value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='2':
+   if selection =='1':
       PI1 = raw_input("Please enter PPID value: ")
       while len(PI1) < 21:
          PI1 += " "
@@ -468,24 +530,24 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                           
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected - Allowd the user to set the PID value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='3':
+   if selection =='2':
       PI2 = raw_input("Please enter PID value: ")
       while len(PI2) < 21:
          PI2 += " "
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected - Allows the user to set the OFFSET value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='4':
+   if selection =='3':
       OFF = raw_input("Please enter OFFSET value: ")
       while len(OFF) < 21:
          OFF += " "
@@ -493,12 +555,12 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected - Allows the user to set the Parameter string.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='5':
+   if selection =='4':
       PRM = raw_input("Please enter parameter value: ")
       while len(PRM) < 21:
          PRM += " "
@@ -506,12 +568,34 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
-# Details : Menu option selected - Clean up system files and exit the program.
+# Version : 3.0
+# Details : Menu option selected - Allows the user to set the Parameter string.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='8':
+      directory = raw_input("Please enter new working directory value: ")
+      if os.path.exists(directory):
+         print "Directory already Exists...."
+      else:
+         DIR = directory.upper()
+         os.mkdir(directory)
+         while len(DIR) < 21:
+            DIR += " "
+         print "Working directory changed..."
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 3.0
+# Details : Menu option selected - Clean up system files and exit the program.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='9':
+      if os.path.exists('WORKAREA'):
+         shutil.rmtree('WORKAREA')
       if os.path.exists('timeline.txt'):
          os.remove('timeline.txt')
       if os.path.exists('mfttable.txt'):
@@ -533,23 +617,25 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected - Dumps the SAM file hashes for export to hashcat.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='10':
-      print ""
       if (SAM == "0x0000000000000000") or (SYS == "0x0000000000000000"):
-         print colored("Missing HIVE - its not possible to extract the hashes...",'white')	
+         if SAM == "0x0000000000000000":
+            print colored("SAM HIVE missing - its not possible to extract the hashes...",'red')
+         if SYS == "0x0000000000000000":
+            print colored("SYSTEM HIVE missing - its not possible to extract the hashes...",'red')
       else:
          os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM)
-      raw_input("\nPress ENTER to continue...")
+         raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected - PR2pays any LSA secrets
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -561,7 +647,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected - Shows running processes and provides a brief analyse.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -619,86 +705,148 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
-# Details : Menu option selected - Shows running services.
+# Version : 3.0
+# Details : Menu option selected - Shows hidden processes.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='13':
+      os.system("volatility -f " + fileName + PRO + " psxview | more")
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 3.0
+# Details : Menu option selected - Shows running services.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='14':
       os.system("volatility -f " + fileName + PRO + " svcscan | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
-# Details : Menu option selected - Shows clipboard information.
+# Version : 3.0
+# Details : Menu option selected - Last commands run.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='14':
-      os.system("volatility -f " + fileName + PRO + " clipboard")
+   if selection =='15':
+      os.system("volatility -f " + fileName + PRO + " cmdscan")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
-# Details : Menu option selected - Shows console information.
+# Version : 3.0
+# Details : Menu option selected - Last commands run.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='15':
+   if selection =='16':
       os.system("volatility -f " + fileName + PRO + " consoles")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
-# Details : Menu option selected - Cmdline contents.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='16':
-      os.system("volatility -f " + fileName + PRO + " cmdline | more")
-      raw_input("Press ENTER to continue...")
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 2.0
-# Details : Menu option selected - Show userassist key values.
+# Version : 3.0
+# Details : Menu option selected - Last commands run.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='17':
+      os.system("volatility -f " + fileName + PRO + " cmdline")
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 3.0
+# Details : Menu option selected - Show userassist key values.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='19':
       os.system("volatility -f " + fileName + PRO + " userassist")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
-# Details : Menu option selected - Shows SAM hive.
+# Version : 3.0
+# Details : Menu option selected - Hivelist.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='20':
-      os.system("volatility -f " + fileName + PRO + " hivedump -o " + SAM)
-      raw_input("Press ENTER to continue...")
+      os.system("volatility -f " + fileName + PRO + " hivelist > hivelist.txt")
+      with open("hivelist.txt") as fp:  
+         line = fp.readline()
+         while line:
+            line = fp.readline()
+            if "\SAM" in line:
+                SAM = line.split(None, 1)[0]
+                while len(SAM) < 18:
+                   SAM = SAM + " "
+            if "SECURITY" in line:
+               SEC = line.split(None, 1)[0]
+               while len(SEC) < 18:
+                   SEC = SEC + " "
+            if "\SOFTWARE" in line:
+               SOF = line.split(None, 1)[0]
+               while len(SOF) < 18:
+                   SOF = SOF + " "
+            if "\SYSTEM" in line:
+               SYS = line.split(None, 1)[0]
+               while len(SYS) < 18:
+                   SYS = SYS + " "
+            if "\COMPONENTS" in line:
+                COM = line.split(None, 1)[0]
+                while len(COM) < 18:
+                   COM = COM + " "
+            if "\Administrator\NTUSVP.DAT" in line: # \Administrator as multiple NTUSERS.
+                NTU = line.split(None, 1)[0]
+                while len(NTU) < 18:
+                   NTU = NTU + " "
+            if "\HARDWARE" in line:
+               HRD = line.split(None,1)[0]
+               while len(HRD) < 18:
+                  HRD = HRD + " "
+      with open("hivelist.txt") as f:
+         print f.read()
+      os.remove('hivelist.txt')
+      raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
-# Details : Menu option selected - Shows SECURITY hive.
+# Version : 3.0
+# Details : Menu option selected - Shows SAM hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='21':
+      if (SAM == "0x0000000000000000"):
+         print colored("SAM Hive missing - it is not possible to extract data...",'red')
+      else:
+         os.system("volatility -f " + fileName + PRO + " hivedump -o " + SAM)
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 3.0
+# Details : Menu option selected - Shows SECURITY hive.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='22':
       if (SEC == "0x0000000000000000"):
-         print colored("Not possible...",'white')
+         print colored("SECURITY Hive missing - it is not possible to extract data...",'red')
       else:
          os.system("volatility -f " + fileName + PRO + " hivedump -o " + SEC)
       raw_input("\nPress ENTER to continue...")
@@ -706,14 +854,14 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected - Shows COMPONENT hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='22':
+   if selection =='23':
       if (COM == "0x0000000000000000"):
-         print colored("Not possible...",'white')
+         print colored("COMPONENTS Hive missing - it is not possible to extract data...",'red')
       else:
          os.system("volatility -f " + fileName + PRO + " hivedump -o " + COM)
       raw_input("\nPress ENTER to continue...")
@@ -721,14 +869,14 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected - Shows SOFTWARE hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='23':
+   if selection =='24':
       if (SOF == "0x0000000000000000"):
-         print colored("Not possible...",'white')
+         print colored("SOFTWARE Hive missing - it is not possible to extract data...",'red')
       else:
          os.system("volatility -f " + fileName + PRO + " hivedump -o " + SOF)
       raw_input("\nPress ENTER to continue...")
@@ -736,14 +884,14 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected - Shows SYSTEM hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='24':
+   if selection =='25':
       if (SYS == "0x0000000000000000"):
-         print colored("Not possible...",'white')
+         print colored("SYSTEM Hive missing - it is not possible to extract data...",'red')
       else:
          os.system("volatility -f " + fileName + PRO + " hivedump -o " + SYS)
       raw_input("\nPress ENTER to continue...")    
@@ -751,14 +899,14 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
-# Details : Menu option selected - Shows NTUSER hive.
+# Version : 3.0
+# Details : Menu option selected - Shows NTUSVP hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='25':
+   if selection =='26':
       if (NTU == "0x0000000000000000"):
-         print colored("Not possible...",'white')
+         print colored("NTUSER (Administrator) Hive missing - it is not possible to extract data...",'red')
       else:
          os.system("volatility -f " + fileName + PRO + " hivedump -o " + NTU)
       raw_input("\nPress ENTER to continue...") 
@@ -766,154 +914,235 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
-# Details : Menu option selected - Shows network traffic.
+# Version : 3.0
+# Details : Menu option selected - Shows NTUSVP hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='26':
+   if selection =='27':
+      if (HRD == "0x0000000000000000"):
+         print colored("HARDWARE Hive missing - it is not possible to extract data...",'red')
+      else:
+         os.system("volatility -f " + fileName + PRO + " hivedump -o " + HRD)
+      raw_input("\nPress ENTER to continue...")     
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 3.0
+# Details : Menu option selected - Print specified key from hive.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='29':
+      KEY = raw_input("Please enter the key value in quotes: ")
+      os.system("volatility -f " + fileName + PRO + " printkey -K " + KEY)
+      raw_input("\nPress ENTER to continue...") 
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 3.0
+# Details : Menu option selected - Analyse the NETWORK.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='30':
+      os.system("volatility -f " + fileName + PRO + " connscan > connscan.txt")
+      getip = linecache.getline('connscan.txt', 3)
+      if getip != "":
+         getip = getip.split()
+         getip = getip[1].replace(':',' ')  
+         HIP = getip.rsplit(' ', 1)[0]
+         HIP = HIP.rstrip('\n')
+         while len(HIP) < 15:
+            HIP = HIP + " "
+      with open("connscan.txt") as f:
+         print f.read()
+      os.remove("connscan.txt")
+      raw_input("\nPress ENTER to continue...") 
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 3.0
+# Details : Menu option selected - Analyse the NETWORK.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='31':
       os.system("volatility -f " + fileName + PRO + " netscan")
       raw_input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
-# Details : Menu option selected - Extracts specific network traffic.
+# Version : 3.0
+# Details : Menu option selected - Analyse the NETWORK.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='27':
-      os.system("volatility -f " + fileName + " connscan | egrep " + PRM)
+   if selection =='32':
+      os.system("volatility -f " + fileName + PRO + " sockets")
       raw_input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected - Allows the user to Search the PARAM string.
 # Modified: N/A
 # ------------------------------------------------------------------------------------- 
    
-   if selection =='30':
+   if selection =='40':
       os.system("volatility -f " + fileName + " " + PRO + " pslist | grep " + PRM)
-      raw_input("Press ENTER to continue...")
+      raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected - Finds Malware!
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='31':
-      test = os.path.exists('malFind')
-      if test !=1:
-         os.system('mkdir malFind')
-      os.system("volatility -f " + fileName + PRO + " malfind -p " + PI1 + " --dump-dir malFind")
-      print "\nMalfind extraction is now available in directory malFind...\n"
-      raw_input("Press ENTER to continue...")
+   if selection =='41':
+      os.system("volatility -f " + fileName + PRO + " malfind -p " + PI1 + " --dump-dir " + DIR)
+      raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected - Finds Mutants!
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='32':
-      test = os.path.exists('mutantFiles')
-      if test !=1:
-         os.system('mkdir mutantFiles')
-      os.system("volatility -f " + fileName + PRO + " handles -p " + PI1 + " -t mutantFiles -s")
-      print "\nMutant extraction is now available in directory mutantFiles...\n"
-      raw_input("Press ENTER to continue...")
+   if selection =='42':
+      os.system("volatility -f " + fileName + PRO + " mutantscan")
+      raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected -  Vaddump!
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='33':
-      test = os.path.exists('vadDump')
-      if test !=1:
-         os.system('mkdir vadDump')
-      os.system("volatility -f " + fileName + PRO + " vaddump -p " + PI1 + " -D vadDump")
-      print "\nVaddunp extraction is now available in directory vadDump...\n"
-      raw_input("Press ENTER to continue...")
+   if selection =='43':
+      os.system("volatility -f " + fileName + PRO + " vaddump -p " + PI1 + " --dump-dir " + DIR)
+      raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
+# Details : Menu option selected - Proc dump PID.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='44':
+      os.system("volatility -f " + fileName + PRO + " procdump  -p " + PI1 + " --dump-dir " + DIR)
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 3.0
 # Details : Menu option selected - Memory dump PID.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='34':
-      test = os.path.exists('PIData')
-      if test !=1:
-         os.system('mkdir PIData') 
-      os.system("volatility -f " + fileName + PRO + " memdump -p " + PI1 + " -D PIData")
-      print "\nPID dump is now available in directory PIData...\n"
-      raw_input("Press ENTER to continue...")
+   if selection =='45':
+      os.system("volatility -f " + fileName + PRO + " memdump  -p " + PI1 + " --dump-dir " + DIR)
+      raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
+# Details : Menu option selected - Shows desktop information.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='50':
+      os.system("volatility -f " + fileName + PRO + " deskscan")
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 3.0
+# Details : Menu option selected - Shows clipboard information.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='51':
+      os.system("volatility -f " + fileName + PRO + " clipboard")
+      raw_input("\nPress ENTER to continue...")
+
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 3.0
+# Details : Menu option selected - Shows notepad information.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='52':
+      os.system("volatility -f " + fileName + PRO + " notepad")
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 3.0
 # Details : Menu option selected - Build timeline.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='40':
+   if selection =='60':
       os.system("volatility -f " + fileName + PRO + " timeliner --output-file timeline.txt")
+      raw_input("\nPress ENTER to continue...")
 
 #------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected - Download windows screenshots.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='41':
-      test = os.path.exists('screenShots')
-      if test !=1:
-         os.system('mkdir screenShots')   
-      os.system("volatility -f " + fileName + PRO + " -D screenShots screenshot")
-      print "\nScreenshots are now available in directory screenShots...\n"
-      raw_input("Press ENTER to continue...")
+   if selection =='61':
+      os.system("volatility -f " + fileName + PRO + " -D " + DIR + " screenshot")
+      raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected - Extracts the MFT table and it contents.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='42':
+   if selection =='62':
       os.system("volatility -f " + fileName + PRO + " mftparser >> mfttable.txt")
       print "The MFT has been sucessfully exported to mfttable.txt..."
-      raw_input("Press ENTER to continue...")
+      raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 2.0
+# Version : 3.0
 # Details : Menu option selected - Bulk Extract files.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='43':
+   if selection =='69':
       os.system("bulk_extractor -o bulkOut " + fileName)
       print "\nBulk extraction is now available in directory bulkOut...\n"
-      raw_input("Press ENTER to continue...")
+      raw_input("\nPress ENTER to continue...")
 
 #Eof...
