@@ -2,8 +2,8 @@
 Python script file to forensically investigate memory dump files via volatility. 
 
 - [x] Requires volatility (https://github.com/volatilityfoundation/volatility) to be installed.
-- [x] Sample memory dump files (https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples)
-- [ ] Still under construction, but what is there is working but not fully tested.
+- [x] Sample memory dump files (https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples) available here.
+- [ ] Still under construction, but what is there is working but has not been fully tested.
 
 | LANGUAGE  | FILENAME         | MD5 Hash                         |
 |------     |------            | -------                          |
@@ -12,7 +12,7 @@ Python script file to forensically investigate memory dump files via volatility.
 | bash file | patch.sh         | 7a4231731982e09d9a703f7357170755 |
 
 
-A python script file that forensically examines windows memory dumps - It can pull password hashs, dump pcap files and mft information, and much much more.
+A python script file that forensically examines Windows memory-dump files - It can pull password hashs, extracy pcap files and MFT executables, and much much more.
 
 ## CONSOLE DISPLAY
 ![Screenshot](picture1.png)
