@@ -323,7 +323,7 @@ def PR2play():
    if PRM == "UNSELECTED           ":
       print colored(PRM,'red'),
    else:
-      print colored(str.upper(PRM),'blue'),
+      print colored(str.upper(PRM[:21]),'blue'),
    print "] SYSTEM   [",
    if SYS == "0x0000000000000000":
       print colored(SYS,'red'),
@@ -363,10 +363,10 @@ menu = {}
 menu['(1)']="Set PROFILE\t	(10) User Passwords	(20) SAM Hive		(30) PARAMETER Search	(40) Timeline"
 menu['(2)']="Set PID		(11) Default Password	(21) SECURITY Hive	(31) Malfind PID	(41) Screenshots"
 menu['(3)']="Set OFFSET		(12) Running Processes	(22) SOFTWARE Hive	(32) Mutant PID		(42) MFT Table"
-menu['(4)']="Set PARAMETER	(13) Running Services	(23) COMPONENT Hive	(33) Vaddump PID	(43) " 
+menu['(4)']="Set PARAMETER	(13) Running Services	(23) COMPONENT Hive	(33) Vaddump PID	(43) Bulk Extractor" 
 menu['(5)']="			(14) Clipboard Contents	(24) SYSTEM Hive	(34) Dump PID		(44) "
-menu['(6)']="			(15) Console Contents	(25) Network Traffic	(35) 			(45) "
-menu['(7)']="Clean and Exit	(16) User Assist Keys 	(26) Connscan PARAMETER	(36)			(46) Bulk Extractor"
+menu['(6)']="			(15) Console Contents	(25) Network Traffic	(35) Cmdline		(45) "
+menu['(7)']="Clean and Exit	(16) User Assist Keys 	(26) Connscan PARAMETER	(36)			(46) "
 
 
 # -------------------------------------------------------------------------------------
@@ -719,7 +719,7 @@ while True:
 # Modified: N/A
 # ------------------------------------------------------------------------------------- 
    
-   if selection =='7':
+   if selection =='30':
       os.system("volatility -f " + fileName + " " + PRO + " pslist | grep " + PRM)
       raw_input("Press ENTER to continue...")
 
@@ -791,6 +791,18 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 2.0
+# Details : Menu option selected - Memory dump PID.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='35':
+      os.system("volatility -f " + fileName + PRO + " cmdline | more")
+      raw_input("Press ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 2.0
 # Details : Menu option selected - Build timeline.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -835,7 +847,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='46':
+   if selection =='43':
       os.system("bulk_extractor -o bulkOut " + fileName)
       print "\nBulk extraction is now available in directory bulkOut...\n"
       raw_input("Press ENTER to continue...")
