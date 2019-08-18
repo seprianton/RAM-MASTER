@@ -77,7 +77,8 @@ SOF = "0x0000000000000000"
 SYS = "0x0000000000000000"
 NTU = "0x0000000000000000"
 HRD = "0x0000000000000000"
-NXT = "0x0000000000000000"
+DEF = "0x0000000000000000"
+BCD = "0x0000000000000000"
 HST = "NOT FOUND      "
 PRC = "0              "
 SVP = "0              "
@@ -93,7 +94,7 @@ BLK = "     "
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 3.0                                                                
-# Details : PR2play a universal header.    
+# Details : Display my universal header.    
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
@@ -118,7 +119,9 @@ def Header():
 Header()
 print "Booting - Please wait...\n"
 os.mkdir("WORKAREA")
-
+# -------------------------------------------------------------------------------------
+# Grab image information.
+# -------------------------------------------------------------------------------------
 os.system("volatility imageinfo -f " + fileName + " > image.txt")
 with open("image.txt") as search:
    for word in search:
@@ -133,7 +136,9 @@ with open("image.txt") as search:
       if "Image local date and time :" in word:
          DA2 = word
 os.remove("image.txt")
-
+#-------------------------------------------------------------------------------------
+# Find appropriate profile.
+#-------------------------------------------------------------------------------------
 profiles = profiles.replace("Suggested Profile(s) :","")
 profiles = profiles.replace(" ","")
 profiles = profiles.split(",")
@@ -144,6 +149,9 @@ if PR2[:2] == "":
    exit(True)
 while len(PR2) < 21:
    PR2 = PR2 + " "
+#-------------------------------------------------------------------------------------
+# Find number of processors, service pack status and creation & local dates and times.
+#-------------------------------------------------------------------------------------
 PRC = PRC.replace("Number of Processors :","")
 PRC = PRC.replace(" ","")
 PRC = PRC.replace("\n","")
@@ -174,54 +182,22 @@ while len(DA2) < 15:
    DA2 = DA2 + " "
 while len(TI2) < 15:
    TI2 = TI2 + " "
-
-# UNMARK TO BOOT WITH POPULATED HIVES
-
-#os.system("volatility -f " + fileName + PRO + " hivelist > hivelist.txt")
-#with open("hivelist.txt") as fp:  
-#   line = fp.readline()
-#   while line:
-#      line = fp.readline()
-#      if "\SAM" in line:
-#         SAM = line.split(None, 1)[0]
-#         while len(SAM) < 18:
-#            SAM = SAM + " "
-#      if "SECURITY" in line:
-#         SEC = line.split(None, 1)[0]
-#         while len(SEC) < 18:
-#            SEC = SEC + " "
-#      if "\SOFTWARE" in line:
-#         SOF = line.split(None, 1)[0]
-#         while len(SOF) < 18:
-#            SOF = SOF + " "
-#      if "\SYSTEM" in line:
-#         SYS = line.split(None, 1)[0]
-#         while len(SYS) < 18:
-#            SYS = SYS + " "
-#      if "\COMPONENTS" in line:
-#         COM = line.split(None, 1)[0]
-#         while len(COM) < 18:
-#            COM = COM + " "
-#      if "\Administrator\NTUSVP.DAT" in line: 			# Administrator as most likely multiple NTUSVPS.
-#         NTU = line.split(None, 1)[0]
-#         while len(NTU) < 18:
-#            NTU = NTU + " "
-#      if "\HARDWARE" in line:
-#         HRD = line.split(None,1)[0]
-#         while len(HRD) < 18:
-#            HRD = HRD + " "
-#os.remove('hivelist.txt')
-
+#-------------------------------------------------------------------------------------
+# Grab host name if avialable.
+#-------------------------------------------------------------------------------------
 os.system("volatility -f " + fileName + PRO + " printkey -o " + SYS + " -K 'ControlSet001\Control\ComputerName\ComputerName' > host.txt")
 with open("host.txt") as fp:
    wordlist = (list(fp)[-1])
 os.remove('host.txt')
 wordlist = wordlist.split()
 HST = wordlist[-1].upper()
-if HST == "SEARCHED":
+if HST == "SEARCHED" or HST:
    HST = "NOT FOUND"
 while len(HST) < 15:
    HST = HST + " "
+#-------------------------------------------------------------------------------------
+# Grab user information if avialable.
+#-------------------------------------------------------------------------------------
 os.system("echo 'HASH FILE' > hash.txt")
 os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM + " >> hash.txt")
 usercount = 0
@@ -234,8 +210,7 @@ with open("hash.txt") as fp:
       if "Guest" in line :
          GUS = "FOUND    "
       usercount = usercount + 1
-fp.close()
-os.remove('hash.txt')
+os.remove("hash.txt")
 usercount = usercount -1
 if ADM == "FOUND    ":
    usercount = usercount -1
@@ -247,24 +222,71 @@ if usercount > 0:
 while len(USR) < 9:
    USR = USR + " "
 
-# UNMARK TO BOOT WITH IP ADDRESS
+#-------------------------------------------------------------------------------------
+# Grab hive information if available.
+#-------------------------------------------------------------------------------------
+os.system("volatility -f " + fileName + PRO + " hivelist > hivelist.txt")
+with open("hivelist.txt") as fp:
+   line = fp.readline()
+   while line:
+      line = fp.readline()
+      if "\SAM" in line:
+         SAM = line.split(None, 1)[0]
+         while len(SAM) < 18:
+            SAM = SAM + " "
+      if "SECURITY" in line:
+         SEC = line.split(None, 1)[0]
+         while len(SEC) < 18:
+            SEC = SEC + " "
+      if "\SOFTWARE" in line:
+         SOF = line.split(None, 1)[0]
+         while len(SOF) < 18:
+            SOF = SOF + " "
+      if "\SYSTEM" in line:
+         SYS = line.split(None, 1)[0]
+         while len(SYS) < 18:
+            SYS = SYS + " "
+      if "\COMPONENTS" in line:
+         COM = line.split(None, 1)[0]
+         while len(COM) < 18:
+            COM = COM + " "
+      if "\Administrator\NTUSER.DAT" in line: # \Administrator\NTUSER.DAT as multiple NTUSERS.
+         NTU = line.split(None, 1)[0]
+         while len(NTU) < 18:
+            NTU = NTU + " "
+      if "\HARDWARE" in line:
+         HRD = line.split(None,1)[0]
+         while len(HRD) < 18:
+            HRD = HRD + " "
+      if "\DEFAULT" in line:
+         DEF = line.split(None,1)[0]
+         while len(DEF) < 18:
+            DEF = DEF + " "
+      if "\BCD" in line:
+         BCD = line.split(None,1)[0]
+         while len(BCD) < 18:
+            BCD = BCD + " "
+os.remove("hivelist.txt")
 
-#os.system("volatility -f " + fileName + PRO + " connscan > connscan.txt")
-#getip = linecache.getline('connscan.txt', 3)
-#if getip != "":
-#   getip = getip.split()
-#   getip = getip[1].replace(':',' ')  
-#   HIP = getip.rsplit(' ', 1)[0]
-#   HIP = HIP.rstrip('\n')
-#   while len(HIP) < 15:
-#      HIP = HIP + " "
-#os.remove("connscan.txt")
+#-------------------------------------------------------------------------------------
+# Grab local IP if alvailable.
+#-------------------------------------------------------------------------------------
+os.system("volatility -f " + fileName + PRO + " connscan > connscan.txt")
+getip = linecache.getline('connscan.txt', 3)
+if getip != "":
+   getip = getip.split()
+   getip = getip[1].replace(':',' ')  
+   HIP = getip.rsplit(' ', 1)[0]
+   HIP = HIP.rstrip('\n')
+   while len(HIP) < 15:
+      HIP = HIP + " "
+os.remove('connscan.txt')
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
 # Version : 3.0
-# Details : Build the top half of the screen display.
+# Details : Build the top half of the screen display as a function call.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
@@ -281,12 +303,12 @@ def Display():
 # -------------------------------------------------------------------------------------
    print "FILENAME [",
    print colored(str.upper(fileName[:21]),'blue'),
-   print "] SAM      [",
+   print "] SAM       [",
    if (SAM == "0x0000000000000000"):
       print colored(SAM,'red'),
    else:
       print colored(SAM,'blue'),
-   print "] HOST NAME[",
+   print "] HOST NAME [",
    if HST == "NOT FOUND      ":
       print colored(HST[:15],'red'),
    else:
@@ -296,19 +318,20 @@ def Display():
       print colored(ADM,'red'),
    else:
       print colored(ADM,'blue'),
-   print "] RESERVED [ " + BLK + " ]"
+   print "]",
+   print "RESERVED [     ]" 
 # -------------------------------------------------------------------------------------
    print "PROFILE  [",
    if PR2 == "UNSELECTED              ":
       print colored(str.upper(PR2),'red'),
    else:
       print colored(str.upper(PR2),'blue'),
-   print "] SECURITY [",
+   print "] SECURITY  [",
    if SEC == "0x0000000000000000":
       print colored(SEC,'red'),
    else:
       print colored(SEC,'blue'),
-   print "] PROCESSOR[",
+   print "] PROCESSORS[",
    if PRC == 0:
       print colored(HST,'red'),
    else:
@@ -318,19 +341,20 @@ def Display():
       print colored(GUS,'red'),
    else:
       print colored(GUS,'blue'),
-   print "] RESERVED [ " + BLK + " ]"
+   print "]",
+   print "RESERVED [     ]"
 # -------------------------------------------------------------------------------------
    print "CREATED  [",
    if DA1 == "NOT FOUND            ":
       print colored(DA1,'red'),
    else:
       print colored(DA1,'blue'),
-   print "] COMPONENT[",
+   print "] COMPONENTS[",
    if COM == "0x0000000000000000":
       print colored(COM,'red'),
    else:
       print colored(COM,'blue'),
-   print "] SERV PACK[",
+   print "] SERV PACK [",
    if SVP == "0             ":
       print colored(SVP,'red'),
    else:
@@ -340,97 +364,111 @@ def Display():
       print colored(USR,'red'),
    else:
       print colored(USR,'blue'),
-   print "] RESERVED [ " + BLK + " ]"
+   print "]",
+   print "RESERVED [     ]"
 # -------------------------------------------------------------------------------------
-   print "PID      [",
-   if PI1[:1] == "0":
-      print colored(PI1,'red'),
-   else:
-      print colored(PI1,'blue'),
-   print "] SOFTWARE [",
+   print "-"*32,
+   print "] SOFTWARE  [",
    if SOF == "0x0000000000000000":
       print colored(SOF,'red'),
    else:
       print colored(SOF,'blue'),
-   print "] SYS DATE [",
+   print "] SYS DATE  [",
    if DA2 == "NOT FOUND      ":
       print colored(DA2,'red'),
    else:
       print colored(DA2,'blue'),
    print "]",
    print "      [           ]",
-   print "RESERVED [       ]"
+   print "RESERVED [     ]"
 # -------------------------------------------------------------------------------------
-   print "PPID     [",
-   if PI2[:1] == "0":
-      print colored(PI2,'red'),
+   print "PID      [",
+   if PI1[:1] == "0":
+      print colored(PI1,'red'),
    else:
-      print colored(PI2,'blue'),
-   print "] SYSTEM   [",
+      print colored(PI1,'blue'),
+   print "] SYSTEM    [",
    if SYS == "0x0000000000000000":
       print colored(SYS,'red'),
    else:
       print colored(SYS,'blue'),
-   print "] SYS TIME [",
+   print "] SYS TIME  [",
    if TI2 == "NOT FOUND      ":
       print colored(TI2,'red'),
    else:
       print colored(TI2,'blue'),
    print "]",
    print "      [           ]",
-   print "RESERVED [       ]"
+   print "RESERVED [     ]"
 # -------------------------------------------------------------------------------------
-   print "OFFSET   [",
-   if OFF[:1] == "0":
-      print colored(OFF,'red'),
+   print "PPID     [",
+   if PI2[:1] == "0":
+      print colored(PI2,'red'),
    else:
-      print colored(OFF,'blue'),
-   print "] NTUSER   [",					
+      print colored(PI2,'blue'),
+   print "] ADM NTUSER[",					
    if NTU == "0x0000000000000000":
       print colored(NTU,'red'),
    else:
       print colored(NTU,'blue'),
-   print "] LOCAL IP [",
+   print "] LOCAL IP  [",
    if HIP == "000.000.000.000":
       print colored(HIP,'red'),
    else:
       print colored(HIP,'blue'),
    print "]",
    print "      [           ]",
-   print "RESERVED [       ]"
+   print "RESERVED [     ]"
+# -------------------------------------------------------------------------------------
+   print "OFFSET   [",
+   if OFF[:1] == "0":
+      print colored(OFF,'red'),
+   else:
+      print colored(OFF,'blue'),
+   print "] HARDWARE  [",					
+   if HRD == "0x0000000000000000":
+      print colored(HRD,'red'),
+   else:
+      print colored(HRD,'blue'),
+   print "]           [                 ]",
+   print "      [           ]",
+   print "RESERVED [     ]"
+
 # -------------------------------------------------------------------------------------
    print "PARAMETER[",
    if PRM == "UNSELECTED           ":
       print colored(PRM,'red'),
    else:
       print colored(str.upper(PRM[:21]),'blue'),
-   print "] HARDWARE [",					
-   if HRD == "0x0000000000000000":
-      print colored(HRD,'red'),
+   print "] DEFAULT   [",					
+   if DEF == "0x0000000000000000":
+      print colored(DEF,'red'),
    else:
-      print colored(HRD,'blue'),
-   print "]          [                 ]",
+      print colored(DEF,'blue'),
+   print "]           [                 ]",
    print "      [           ]",
-   print "RESERVED [       ]"
+   print "RESERVED [     ]"
 
 # -------------------------------------------------------------------------------------
    print "WORK DIR [",
-   print colored(DIR,'blue'),
-   print "]          [",					
-   #if NXT == "0x0000000000000000":
-   #   print colored(NXT,'red'),
-   #else:
-   #   print colored(NXT,'blue'),
-   print "                  ", # temp patch
-   print "]          [                 ]",
+   if DIR == "WORKAREA             ":
+      print colored(DIR,'red'),
+   else:
+      print colored(DIR,'blue'),
+   print "] BOOT BCD  [",					
+   if BCD == "0x0000000000000000":
+      print colored(BCD,'red'),
+   else:
+      print colored(BCD,'blue'),
+   print "]           [                 ]",
    print "      [           ]",
-   print "RESERVED [       ]"
+   print "RESERVED [     ]"
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
 # Version : 3.0
-# Details : Build the lower half of the screen display.
+# Details : Build lower half as a screen display.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 	
@@ -456,16 +494,16 @@ def Display():
 # -------------------------------------------------------------------------------------
 
 menu = {}
-menu['(0)']="Change PROFILE (10) User Passwords     (20) Hivelist  (30) Connections (40) PARAMETER Search (50) Desktop     (60) Timeline"
-menu['(1)']="Set PID        (11) Default Password   (21) SAM       (31) Netscan     (41) Malfind PID DIR  (51) Clipboard   (61) Screenshots"
-menu['(2)']="Set PPID       (12) Running Processes  (22) SECURITY  (32) Sockets     (42) Mutantscan       (52) Notepad     (62) MFT Table"
-menu['(3)']="Set OFFSET     (13) Hidden Processes   (23) COMPONENT (33)             (43) Vaddump PID DIR  (53)             (63)" 
+menu['(0)']="Change PROFILE (10) User Passwords     (20) Hivelist  (30) PrintKey    (40) PARAMETER Search (50) Desktop     (60) Timeline"
+menu['(1)']="Set PID        (11) Default Password   (21) SAM       (31) Connections (41) Malfind PID DIR  (51) Clipboard   (61) Screenshots"
+menu['(2)']="Set PPID       (12) Running Processes  (22) SECURITY  (32) Netscan     (42) Mutantscan       (52) Notepad     (62) MFT Table"
+menu['(3)']="Set OFFSET     (13) Hidden Processes   (23) COMPONENTS(33) Sockets     (43) Vaddump PID DIR  (53)             (63)" 
 menu['(4)']="Set PARAMETER  (14) Running Services   (24) SOFTWARE  (34)             (44) Procdump PID DIR (54)             (64)"
 menu['(5)']="               (15) Command History    (25) SYSTEM    (35)             (45) Memdump PID DIR  (55)             (65)"
 menu['(6)']="               (16) Console History    (26) NTUSER    (36)             (46)                  (56)             (66)"
 menu['(7)']="               (17) Cmdline Arguments  (27) HARDWARE  (37)             (47)                  (57)             (67)"
-menu['(8)']="Change DIR     (18)                    (28)           (38)             (48)                  (58)             (68)"
-menu['(9)']="Clean and Exit (19) User Assist Keys   (29) Printkey  (39)             (49)                  (59)             (69) Bulk Extracter"
+menu['(8)']="Change DIR     (18)                    (28) DEFAULT   (38)             (48)                  (58)             (68)"
+menu['(9)']="Clean and Exit (19) User Assist Keys   (29) BOOT BCD  (39)             (49)                  (59)             (69) Bulk Extracter"
 
 
 # -------------------------------------------------------------------------------------
@@ -522,7 +560,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='1':
+   if selection == '1':
       PI1 = raw_input("Please enter PPID value: ")
       while len(PI1) < 21:
          PI1 += " "
@@ -535,7 +573,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='2':
+   if selection == '2':
       PI2 = raw_input("Please enter PID value: ")
       while len(PI2) < 21:
          PI2 += " "
@@ -547,7 +585,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='3':
+   if selection == '3':
       OFF = raw_input("Please enter OFFSET value: ")
       while len(OFF) < 21:
          OFF += " "
@@ -560,7 +598,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='4':
+   if selection == '4':
       PRM = raw_input("Please enter parameter value: ")
       while len(PRM) < 21:
          PRM += " "
@@ -573,7 +611,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='8':
+   if selection == '8':
       directory = raw_input("Please enter new working directory value: ")
       if os.path.exists(directory):
          print "Directory already Exists...."
@@ -593,7 +631,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='9':
+   if selection == '9':
       if os.path.exists('WORKAREA'):
          shutil.rmtree('WORKAREA')
       if os.path.exists('timeline.txt'):
@@ -622,7 +660,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='10':
+   if selection == '10':
       if (SAM == "0x0000000000000000") or (SYS == "0x0000000000000000"):
          if SAM == "0x0000000000000000":
             print colored("SAM HIVE missing - its not possible to extract the hashes...",'red')
@@ -640,7 +678,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='11':
+   if selection == '11':
       os.system("volatility -f " + fileName + PRO + " lsadump")
       raw_input("\nPress ENTER to continue...")
 
@@ -652,7 +690,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='12':
+   if selection == '12':
       os.system("volatility -f " + fileName + PRO + " pstree | more")
       os.system("volatility -f " + fileName + PRO + " psscan --output greptext > F1.txt")
       os.system("tail -n +2 F1.txt > F2.txt")
@@ -710,7 +748,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='13':
+   if selection == '13':
       os.system("volatility -f " + fileName + PRO + " psxview | more")
       raw_input("\nPress ENTER to continue...")
 
@@ -722,7 +760,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='14':
+   if selection == '14':
       os.system("volatility -f " + fileName + PRO + " svcscan | more")
       raw_input("\nPress ENTER to continue...")
 
@@ -734,7 +772,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='15':
+   if selection == '15':
       os.system("volatility -f " + fileName + PRO + " cmdscan")
       raw_input("\nPress ENTER to continue...")
 
@@ -746,7 +784,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='16':
+   if selection == '16':
       os.system("volatility -f " + fileName + PRO + " consoles")
       raw_input("\nPress ENTER to continue...")
 
@@ -758,7 +796,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='17':
+   if selection == '17':
       os.system("volatility -f " + fileName + PRO + " cmdline")
       raw_input("\nPress ENTER to continue...")
 
@@ -770,7 +808,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='19':
+   if selection == '19':
       os.system("volatility -f " + fileName + PRO + " userassist")
       raw_input("\nPress ENTER to continue...")
 
@@ -778,47 +816,12 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 3.0
-# Details : Menu option selected - Hivelist.
+# Details : Menu option selected - Hivelist all
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='20':
-      os.system("volatility -f " + fileName + PRO + " hivelist > hivelist.txt")
-      with open("hivelist.txt") as fp:  
-         line = fp.readline()
-         while line:
-            line = fp.readline()
-            if "\SAM" in line:
-                SAM = line.split(None, 1)[0]
-                while len(SAM) < 18:
-                   SAM = SAM + " "
-            if "SECURITY" in line:
-               SEC = line.split(None, 1)[0]
-               while len(SEC) < 18:
-                   SEC = SEC + " "
-            if "\SOFTWARE" in line:
-               SOF = line.split(None, 1)[0]
-               while len(SOF) < 18:
-                   SOF = SOF + " "
-            if "\SYSTEM" in line:
-               SYS = line.split(None, 1)[0]
-               while len(SYS) < 18:
-                   SYS = SYS + " "
-            if "\COMPONENTS" in line:
-                COM = line.split(None, 1)[0]
-                while len(COM) < 18:
-                   COM = COM + " "
-            if "\Administrator\NTUSVP.DAT" in line: # \Administrator as multiple NTUSERS.
-                NTU = line.split(None, 1)[0]
-                while len(NTU) < 18:
-                   NTU = NTU + " "
-            if "\HARDWARE" in line:
-               HRD = line.split(None,1)[0]
-               while len(HRD) < 18:
-                  HRD = HRD + " "
-      with open("hivelist.txt") as f:
-         print f.read()
-      os.remove('hivelist.txt')
+   if selection == '20':
+      os.system("volatility -f " + fileName + PRO + " hivelist")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -829,7 +832,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='21':
+   if selection == '21':
       if (SAM == "0x0000000000000000"):
          print colored("SAM Hive missing - it is not possible to extract data...",'red')
       else:
@@ -855,7 +858,7 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 3.0
-# Details : Menu option selected - Shows COMPONENT hive.
+# Details : Menu option selected - Shows COMPONENTS hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
@@ -900,7 +903,7 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 3.0
-# Details : Menu option selected - Shows NTUSVP hive.
+# Details : Menu option selected - Shows NTUSER hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
@@ -915,7 +918,7 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 3.0
-# Details : Menu option selected - Shows NTUSVP hive.
+# Details : Menu option selected - Shows HARDWARE hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
@@ -930,11 +933,42 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 3.0
-# Details : Menu option selected - Print specified key from hive.
+# Details : Menu option selected - Shows DEFUALT hive.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='28':
+      if (HRD == "0x0000000000000000"):
+         print colored("DEFUALT Hive missing - it is not possible to extract data...",'red')
+      else:
+         os.system("volatility -f " + fileName + PRO + " hivedump -o " + DEF)
+      raw_input("\nPress ENTER to continue...")   
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 3.0
+# Details : Menu option selected - Shows BOOT BCD hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='29':
+      if (BCD == "0x0000000000000000"):
+         print colored("BOOT BCD Hive missing - it is not possible to extract data...",'red')
+      else:
+         os.system("volatility -f " + fileName + PRO + " hivedump -o " + BCD)
+      raw_input("\nPress ENTER to continue...")   
+
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 3.0
+# Details : Menu option selected - Print specified key from hive.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='30':
       KEY = raw_input("Please enter the key value in quotes: ")
       os.system("volatility -f " + fileName + PRO + " printkey -K " + KEY)
       raw_input("\nPress ENTER to continue...") 
@@ -947,31 +981,8 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='30':
-      os.system("volatility -f " + fileName + PRO + " connscan > connscan.txt")
-      getip = linecache.getline('connscan.txt', 3)
-      if getip != "":
-         getip = getip.split()
-         getip = getip[1].replace(':',' ')  
-         HIP = getip.rsplit(' ', 1)[0]
-         HIP = HIP.rstrip('\n')
-         while len(HIP) < 15:
-            HIP = HIP + " "
-      with open("connscan.txt") as f:
-         print f.read()
-      os.remove("connscan.txt")
-      raw_input("\nPress ENTER to continue...") 
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 3.0
-# Details : Menu option selected - Analyse the NETWORK.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
    if selection =='31':
-      os.system("volatility -f " + fileName + PRO + " netscan")
+      os.system("volatility -f " + fileName + PRO + " connscan")
       raw_input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
@@ -983,6 +994,18 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='32':
+      os.system("volatility -f " + fileName + PRO + " netscan")
+      raw_input("\nPress ENTER to continue...") 
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 3.0
+# Details : Menu option selected - Analyse the NETWORK.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='33':
       os.system("volatility -f " + fileName + PRO + " sockets")
       raw_input("\nPress ENTER to continue...") 
 
