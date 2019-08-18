@@ -293,13 +293,13 @@ os.remove('connscan.txt')
 def Display():
    print "="*17,
    print colored("SETTINGS",'white'),
-   print "="*21,
+   print "="*22,
    print colored("SYSTEM HIVES",'white'),
-   print "="*18,
+   print "="*19,
    print colored("HOST INFO",'white'),
    print "="*12,
    print colored("USER INFO",'white'),
-   print "="*20
+   print "="*18
 # -------------------------------------------------------------------------------------
    print "FILENAME [",
    print colored(str.upper(fileName[:21]),'blue'),
