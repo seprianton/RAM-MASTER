@@ -191,12 +191,12 @@ with open("host.txt") as fp:
 os.remove('host.txt')
 wordlist = wordlist.split()
 HST = wordlist[-1].upper()
-if HST == "SEARCHED" or HST:
+if HST == "SEARCHED":
    HST = "NOT FOUND"
 while len(HST) < 15:
    HST = HST + " "
 #-------------------------------------------------------------------------------------
-# Grab user information if avialable.
+# Grab user information if available.
 #-------------------------------------------------------------------------------------
 os.system("echo 'HASH FILE' > hash.txt")
 os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM + " >> hash.txt")
@@ -421,7 +421,7 @@ def Display():
    print "RESERVED [     ]"
 # -------------------------------------------------------------------------------------
    print "OFFSET   [",
-   if OFF[:1] == "0":
+   if OFF == "0                    ":
       print colored(OFF,'red'),
    else:
       print colored(OFF,'blue'),
@@ -497,13 +497,13 @@ menu = {}
 menu['(0)']="Change PROFILE (10) User Passwords     (20) Hivelist  (30) PrintKey    (40) PARAMETER Search (50) Desktop     (60) Timeline"
 menu['(1)']="Set PID        (11) Default Password   (21) SAM       (31) Connections (41) Malfind PID DIR  (51) Clipboard   (61) Screenshots"
 menu['(2)']="Set PPID       (12) Running Processes  (22) SECURITY  (32) Netscan     (42) Mutantscan       (52) Notepad     (62) MFT Table"
-menu['(3)']="Set OFFSET     (13) Hidden Processes   (23) COMPONENTS(33) Sockets     (43) Vaddump PID DIR  (53)             (63)" 
+menu['(3)']="Set OFFSET     (13) Hidden Processes   (23) COMPONENTS(33) Sockets     (43) Vaddump PID DIR  (53)             (63) File OFFSET" 
 menu['(4)']="Set PARAMETER  (14) Running Services   (24) SOFTWARE  (34)             (44) Procdump PID DIR (54)             (64)"
 menu['(5)']="               (15) Command History    (25) SYSTEM    (35)             (45) Memdump PID DIR  (55)             (65)"
 menu['(6)']="               (16) Console History    (26) NTUSER    (36)             (46)                  (56)             (66)"
 menu['(7)']="               (17) Cmdline Arguments  (27) HARDWARE  (37)             (47)                  (57)             (67)"
-menu['(8)']="Change DIR     (18)                    (28) DEFAULT   (38)             (48)                  (58)             (68)"
-menu['(9)']="Clean and Exit (19) User Assist Keys   (29) BOOT BCD  (39)             (49)                  (59)             (69) Bulk Extracter"
+menu['(8)']="Change DIR     (18) User Assist Keys   (28) DEFAULT   (38)             (48)                  (58)             (68)"
+menu['(9)']="Clean and Exit (19)                    (29) BOOT BCD  (39)             (49)                  (59)             (69) Bulk Extracter"
 
 
 # -------------------------------------------------------------------------------------
@@ -616,11 +616,12 @@ while True:
       if os.path.exists(directory):
          print "Directory already Exists...."
       else:
-         DIR = directory.upper()
-         os.mkdir(directory)
-         while len(DIR) < 21:
-            DIR += " "
-         print "Working directory changed..."
+         if len(DIR) > 0:
+            DIR = directory.upper()
+            os.mkdir(directory)
+            while len(DIR) < 21:
+               DIR += " "
+            print "Working directory changed..."
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -668,7 +669,7 @@ while True:
             print colored("SYSTEM HIVE missing - its not possible to extract the hashes...",'red')
       else:
          os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM)
-         raw_input("\nPress ENTER to continue...")
+      raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -808,7 +809,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '19':
+   if selection == '18':
       os.system("volatility -f " + fileName + PRO + " userassist")
       raw_input("\nPress ENTER to continue...")
 
@@ -1019,6 +1020,7 @@ while True:
    
    if selection =='40':
       os.system("volatility -f " + fileName + " " + PRO + " pslist | grep " + PRM)
+      os.system("volatility -f " + fileName + " " + PRO + " filescan | grep " + PRM)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1153,6 +1155,22 @@ while True:
    if selection =='62':
       os.system("volatility -f " + fileName + PRO + " mftparser >> mfttable.txt")
       print "The MFT has been sucessfully exported to mfttable.txt..."
+      os.system("strings mfttable.txt | grep '0000000000:' > count.txt")
+      fileNum = sum(1 for line in open('count.txt'))
+      print "The table contains " + str(fileNum) + " extractable files < 1024 bytes in length."
+      os.remove("count.txt")
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 3.0
+# Details : Menu option selected - Extracts the file based on physical OFFSET
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='63':
+      os.system("volatility -f " + fileName + PRO + " dumpfiles -Q " + OFF + " -D " + DIR + " -u -n")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
