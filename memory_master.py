@@ -85,6 +85,7 @@ SVP = "0              "
 DA2 = "NOT FOUND      "
 TI2 = "NOT FOUND      "
 HIP = "000.000.000.000"
+POR = "000            "
 ADM = "NOT FOUND"
 GUS = "NOT FOUND"
 USR = "NOT FOUND"
@@ -144,11 +145,13 @@ profiles = profiles.replace(" ","")
 profiles = profiles.split(",")
 PRO = " --profile " + profiles[0]
 PR2 = profiles[0]
-if PR2[:2] == "":
+if (PR2[:1] == "W") or (PR2[:1] == "V"):
+   while len(PR2) < 21:
+      PR2 = PR2 + " "
+else:
    print "ERROR - Windows profile not found..."
    exit(True)
-while len(PR2) < 21:
-   PR2 = PR2 + " "
+
 #-------------------------------------------------------------------------------------
 # Find number of processors, service pack status and creation & local dates and times.
 #-------------------------------------------------------------------------------------
@@ -234,7 +237,7 @@ with open("hivelist.txt") as fp:
          SAM = line.split(None, 1)[0]
          while len(SAM) < 18:
             SAM = SAM + " "
-      if "SECURITY" in line:
+      if "\SECURITY" in line:
          SEC = line.split(None, 1)[0]
          while len(SEC) < 18:
             SEC = SEC + " "
@@ -250,7 +253,7 @@ with open("hivelist.txt") as fp:
          COM = line.split(None, 1)[0]
          while len(COM) < 18:
             COM = COM + " "
-      if "\Administrator\NTUSER.DAT" in line: # \Administrator\NTUSER.DAT as multiple NTUSERS.
+      if "\Administrator\NTUSER.DAT" in line: # \Administrator\NTUSER.DAT as multiple NTUSERS files. 
          NTU = line.split(None, 1)[0]
          while len(NTU) < 18:
             NTU = NTU + " "
@@ -277,9 +280,12 @@ if getip != "":
    getip = getip.split()
    getip = getip[1].replace(':',' ')  
    HIP = getip.rsplit(' ', 1)[0]
+   POR = getip.rsplit(' ', 1)[1]
    HIP = HIP.rstrip('\n')
    while len(HIP) < 15:
       HIP = HIP + " "
+   while len(POR) < 15:
+      POR = POR + " "
 os.remove('connscan.txt')
 
 # -------------------------------------------------------------------------------------
@@ -430,7 +436,12 @@ def Display():
       print colored(HRD,'red'),
    else:
       print colored(HRD,'blue'),
-   print "]           [                 ]",
+   print "] LOCAL PORT[",
+   if POR == "000            ":
+      print colored(POR,'red'),
+   else:
+      print colored(POR,'blue'),
+   print "]",
    print "      [           ]",
    print "RESERVED [     ]"
 
@@ -939,7 +950,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='28':
-      if (HRD == "0x0000000000000000"):
+      if (DEF == "0x0000000000000000"):
          print colored("DEFUALT Hive missing - it is not possible to extract data...",'red')
       else:
          os.system("volatility -f " + fileName + PRO + " hivedump -o " + DEF)
