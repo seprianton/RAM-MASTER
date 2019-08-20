@@ -9,7 +9,7 @@
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0                                                                
+# Version : 1.0                                                                
 # Details : Load required imports.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ from termcolor import colored					# pip install termcolor
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 3.0                                                                
+# Version : 1.0                                                                
 # Details : Conduct simple and routine tests on user supplied arguements.   
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
@@ -57,7 +57,7 @@ while len(fileName) < 25:
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 3.0
+# Version : 1.0
 # Details : Initialise program variables.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
@@ -94,7 +94,7 @@ BLK = "     "
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0                                                                
+# Version : 1.0                                                                
 # Details : Display my universal header.    
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
@@ -112,7 +112,7 @@ def Header():
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 3.0
+# Version : 1.0
 # Details : Boot the system with populated program variables.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
@@ -185,45 +185,6 @@ while len(DA2) < 15:
    DA2 = DA2 + " "
 while len(TI2) < 15:
    TI2 = TI2 + " "
-#-------------------------------------------------------------------------------------
-# Grab host name if avialable.
-#-------------------------------------------------------------------------------------
-os.system("volatility -f " + fileName + PRO + " printkey -o " + SYS + " -K 'ControlSet001\Control\ComputerName\ComputerName' > host.txt")
-with open("host.txt") as fp:
-   wordlist = (list(fp)[-1])
-os.remove('host.txt')
-wordlist = wordlist.split()
-HST = wordlist[-1].upper()
-if HST == "SEARCHED":
-   HST = "NOT FOUND"
-while len(HST) < 15:
-   HST = HST + " "
-#-------------------------------------------------------------------------------------
-# Grab user information if available.
-#-------------------------------------------------------------------------------------
-os.system("echo 'HASH FILE' > hash.txt")
-os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM + " >> hash.txt")
-usercount = 0
-with open("hash.txt") as fp:
-   line = fp.readline()
-   while line:
-      line = fp.readline()
-      if "Administrator" in line:
-         ADM = "FOUND    "
-      if "Guest" in line :
-         GUS = "FOUND    "
-      usercount = usercount + 1
-os.remove("hash.txt")
-usercount = usercount -1
-if ADM == "FOUND    ":
-   usercount = usercount -1
-if GUS == "FOUND    ":
-   usercount = usercount -1
-if usercount > 0:
-   USR = "FOUND "
-   USR = USR + str(usercount)
-while len(USR) < 9:
-   USR = USR + " "
 
 #-------------------------------------------------------------------------------------
 # Grab hive information if available.
@@ -272,6 +233,46 @@ with open("hivelist.txt") as fp:
 os.remove("hivelist.txt")
 
 #-------------------------------------------------------------------------------------
+# Grab host name if avialable.
+#-------------------------------------------------------------------------------------
+os.system("volatility -f " + fileName + PRO + " printkey -o " + SYS + " -K 'ControlSet001\Control\ComputerName\ComputerName' > host.txt")
+with open("host.txt") as fp:
+   wordlist = (list(fp)[-1])
+os.remove('host.txt')
+wordlist = wordlist.split()
+HST = wordlist[-1].upper()
+if HST == "SEARCHED":
+   HST = "NOT FOUND"
+while len(HST) < 15:
+   HST = HST + " "
+#-------------------------------------------------------------------------------------
+# Grab user information if available.
+#-------------------------------------------------------------------------------------
+os.system("echo 'HASH FILE' > hash.txt")
+os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM + " >> hash.txt")
+usercount = 0
+with open("hash.txt") as fp:
+   line = fp.readline()
+   while line:
+      line = fp.readline()
+      if "Administrator" in line:
+         ADM = "FOUND    "
+      if "Guest" in line :
+         GUS = "FOUND    "
+      usercount = usercount + 1
+os.remove("hash.txt")
+usercount = usercount -1
+if ADM == "FOUND    ":
+   usercount = usercount -1
+if GUS == "FOUND    ":
+   usercount = usercount -1
+if usercount > 0:
+   USR = "FOUND "
+   USR = USR + str(usercount)
+while len(USR) < 9:
+   USR = USR + " "
+
+#-------------------------------------------------------------------------------------
 # Grab local IP if alvailable.
 #-------------------------------------------------------------------------------------
 os.system("volatility -f " + fileName + PRO + " connscan > connscan.txt")
@@ -291,7 +292,7 @@ os.remove('connscan.txt')
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 3.0
+# Version : 1.0
 # Details : Build the top half of the screen display as a function call.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
@@ -478,7 +479,7 @@ def Display():
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 3.0
+# Version : 1.0
 # Details : Build lower half as a screen display.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
@@ -499,7 +500,7 @@ def Display():
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 3.0
+# Version : 1.0
 # Details : Main menu system.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
@@ -520,7 +521,7 @@ menu['(9)']="Clean and Exit (19)                    (29) BOOT BCD  (39)         
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 3.0
+# Version : 1.0
 # Details : Start the main menu controller.
 # Modified: N/A                                                               	
 # -------------------------------------------------------------------------------------
@@ -537,7 +538,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Lets the user select a new Windows profile.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -566,7 +567,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Allowd the user to set the PID value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -579,7 +580,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                           
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Allowd the user to set the PID value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -591,7 +592,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Allows the user to set the OFFSET value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -604,7 +605,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Allows the user to set the Parameter string.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -617,7 +618,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Allows the user to set the Parameter string.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -638,7 +639,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Clean up system files and exit the program.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -667,7 +668,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Dumps the SAM file hashes for export to hashcat.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -685,7 +686,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - PR2pays any LSA secrets
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -697,7 +698,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Shows running processes and provides a brief analyse.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -755,7 +756,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Shows hidden processes.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -767,7 +768,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Shows running services.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -779,7 +780,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Last commands run.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -791,7 +792,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Last commands run.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -803,7 +804,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Last commands run.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -815,7 +816,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Show userassist key values.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -827,7 +828,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Hivelist all
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -839,7 +840,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Shows SAM hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -854,7 +855,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Shows SECURITY hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -869,7 +870,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Shows COMPONENTS hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -884,7 +885,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Shows SOFTWARE hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -899,7 +900,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Shows SYSTEM hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -914,7 +915,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Shows NTUSER hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -929,7 +930,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Shows HARDWARE hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -944,7 +945,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Shows DEFUALT hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -959,7 +960,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Shows BOOT BCD hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -975,7 +976,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Print specified key from hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -988,7 +989,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Analyse the NETWORK.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1000,7 +1001,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Analyse the NETWORK.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1012,7 +1013,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Analyse the NETWORK.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1024,7 +1025,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Allows the user to Search the PARAM string.
 # Modified: N/A
 # ------------------------------------------------------------------------------------- 
@@ -1037,7 +1038,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Finds Malware!
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1049,7 +1050,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Finds Mutants!
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1061,7 +1062,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected -  Vaddump!
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1073,7 +1074,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Proc dump PID.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1085,7 +1086,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Memory dump PID.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1097,7 +1098,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Shows desktop information.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1109,7 +1110,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Shows clipboard information.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1122,7 +1123,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Shows notepad information.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1134,7 +1135,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Build timeline.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1146,7 +1147,7 @@ while True:
 #------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Download windows screenshots.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1158,7 +1159,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Extracts the MFT table and it contents.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1175,7 +1176,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Extracts the file based on physical OFFSET
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1187,7 +1188,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 3.0
+# Version : 1.0
 # Details : Menu option selected - Bulk Extract files.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
