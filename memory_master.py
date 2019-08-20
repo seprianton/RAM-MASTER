@@ -518,10 +518,10 @@ menu['(1)']="Set PID        (11) Default Password  (21) SAM       (31) Set SAM  
 menu['(2)']="Set PPID       (12) Running Processes (22) SECURITY  (32) Set SECURITY  (42) Socket Scan      (52) Notepad   (62) MFT Table"
 menu['(3)']="Set OFFSET     (13) Hidden Processes  (23) COMPONENTS(33) Set COMPONETS (43) Mutant Scan      (53)           (63) File OFFSET" 
 menu['(4)']="Set PARAMETER  (14) Running Services  (24) SOFTWARE  (34) Set SOFTWARE  (44) Malfind PID DIR  (54)           (64)"
-menu['(5)']="               (15) Command History   (25) SYSTEM    (35) Set SYSTEM    (45) PARAMETER Search (55)           (65)"
+menu['(5)']="Set DIRECTORY  (15) Command History   (25) SYSTEM    (35) Set SYSTEM    (45) PARAMETER Search (55)           (65)"
 menu['(6)']="               (16) Console History   (26) NTUSER    (36) Set NTUSER    (46) VadDump PID DIR  (56)           (66)"
-menu['(7)']="set NTUSER     (17) Cmdline Arguments (27) HARDWARE  (37) Set HARDWARE  (47) ProcDump PID DIR (57)           (67)"
-menu['(8)']="set DIRECTORY  (18) User Assist Keys  (28) DEFAULT   (38) Set DEFUALT   (48) MemDump PID DIR  (58)           (68)"
+menu['(7)']="               (17) Cmdline Arguments (27) HARDWARE  (37) Set HARDWARE  (47) ProcDump PID DIR (57)           (67)"
+menu['(8)']="               (18) User Assist Keys  (28) DEFAULT   (38) Set DEFUALT   (48) MemDump PID DIR  (58)           (68)"
 menu['(9)']="Clean and Exit (19)                   (29) BOOT BCD  (39) Set BOOT BCD  (49)                  (59)           (69) Bulk Extracter"
 
 
@@ -630,7 +630,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '8':
+   if selection == '5':
       directory = raw_input("Please enter new working directory value: ")
       if os.path.exists(directory):
          print "Directory already Exists...."
