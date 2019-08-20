@@ -276,10 +276,16 @@ while len(USR) < 9:
 # Grab local IP if alvailable.
 #-------------------------------------------------------------------------------------
 os.system("volatility -f " + fileName + PRO + " connscan > connscan.txt")
-getip = linecache.getline('connscan.txt', 3)
+os.system("sed '1d' connscan.txt > conn1.txt")
+os.system("sed '1d' conn1.txt > connscan.txt")
+#os.remove("conn1.txt")
+os.system("cut -f 2 -d ' ' connscan.txt > conn1.txt")
+os.system("strings conn1.txt | sort | uniq -c | sort -nr > connscan.txt")
+os.system("sed '1d' conn1.txt > connscan.txt")
+getip = linecache.getline('connscan.txt', 1)
 if getip != "":
    getip = getip.split()
-   getip = getip[1].replace(':',' ')  
+   getip = getip[0].replace(':',' ')  
    HIP = getip.rsplit(' ', 1)[0]
    POR = getip.rsplit(' ', 1)[1]
    HIP = HIP.rstrip('\n')
@@ -288,6 +294,7 @@ if getip != "":
    while len(POR) < 15:
       POR = POR + " "
 os.remove('connscan.txt')
+os.remove('conn1.txt')
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -506,16 +513,16 @@ def Display():
 # -------------------------------------------------------------------------------------
 
 menu = {}
-menu['(0)']="Set PROFILE    (10) User Passwords     (20) Hivelist  (30) PrintKey    (40) PARAMETER Search (50) Desktop     (60) Timeline"
-menu['(1)']="Set PID        (11) Default Password   (21) SAM       (31) Connections (41) Malfind PID DIR  (51) Clipboard   (61) Screenshots"
-menu['(2)']="Set PPID       (12) Running Processes  (22) SECURITY  (32) Netscan     (42) Mutantscan       (52) Notepad     (62) MFT Table"
-menu['(3)']="Set OFFSET     (13) Hidden Processes   (23) COMPONENTS(33) Sockets     (43) Vaddump PID DIR  (53)             (63) File OFFSET" 
-menu['(4)']="Set PARAMETER  (14) Running Services   (24) SOFTWARE  (34)             (44) Procdump PID DIR (54)             (64)"
-menu['(5)']="               (15) Command History    (25) SYSTEM    (35)             (45) Memdump PID DIR  (55)             (65)"
-menu['(6)']="               (16) Console History    (26) NTUSER    (36)             (46)                  (56)             (66)"
-menu['(7)']="set NTUSER     (17) Cmdline Arguments  (27) HARDWARE  (37)             (47)                  (57)             (67)"
-menu['(8)']="set DIRECTORY  (18) User Assist Keys   (28) DEFAULT   (38)             (48)                  (58)             (68)"
-menu['(9)']="Clean and Exit (19)                    (29) BOOT BCD  (39)             (49)                  (59)             (69) Bulk Extracter"
+menu['(0)']="Set PROFILE    (10) User Passwords    (20) Hivelist  (30) PrintKey      (40) Connection Scan  (50) Desktop   (60) Timeline"
+menu['(1)']="Set PID        (11) Default Password  (21) SAM       (31) Set SAM       (41) Network Scan     (51) Clipboard (61) Screenshots"
+menu['(2)']="Set PPID       (12) Running Processes (22) SECURITY  (32) Set SECURITY  (42) Socket Scan      (52) Notepad   (62) MFT Table"
+menu['(3)']="Set OFFSET     (13) Hidden Processes  (23) COMPONENTS(33) Set COMPONETS (43) Mutant Scan      (53)           (63) File OFFSET" 
+menu['(4)']="Set PARAMETER  (14) Running Services  (24) SOFTWARE  (34) Set SOFTWARE  (44) Malfind PID DIR  (54)           (64)"
+menu['(5)']="               (15) Command History   (25) SYSTEM    (35) Set SYSTEM    (45) PARAMETER Search (55)           (65)"
+menu['(6)']="               (16) Console History   (26) NTUSER    (36) Set NTUSER    (46) VadDump PID DIR  (56)           (66)"
+menu['(7)']="set NTUSER     (17) Cmdline Arguments (27) HARDWARE  (37) Set HARDWARE  (47) ProcDump PID DIR (57)           (67)"
+menu['(8)']="set DIRECTORY  (18) User Assist Keys  (28) DEFAULT   (38) Set DEFUALT   (48) MemDump PID DIR  (58)           (68)"
+menu['(9)']="Clean and Exit (19)                   (29) BOOT BCD  (39) Set BOOT BCD  (49)                  (59)           (69) Bulk Extracter"
 
 
 # -------------------------------------------------------------------------------------
@@ -619,19 +626,6 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 1.0
-# Details : Menu option selected - Change NTUSER from \Admininstrator to user choice.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection == '7':
-      NTU = raw_input("Please enter NTUSER value: ")
-      while len(NTU) < 18:
-         NTU += " "
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 1.0
 # Details : Menu option selected - Allows the user to set the Parameter string.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -687,11 +681,8 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '10':
-      if (SAM == "0x0000000000000000") or (SYS == "0x0000000000000000"):
-         if SAM == "0x0000000000000000":
-            print colored("SAM HIVE missing - its not possible to extract the hashes...",'red')
-         if SYS == "0x0000000000000000":
-            print colored("SYSTEM HIVE missing - its not possible to extract the hashes...",'red')
+      if SAM == "0x0000000000000000":
+         print colored("SAM HIVE missing - its not possible to extract the hashes...",'red')
       else:
          os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM)
       raw_input("\nPress ENTER to continue...")
@@ -717,7 +708,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '12':
-      os.system("volatility -f " + fileName + PRO + " pstree | more")
+      os.system("volatility -f " + fileName + PRO + " psscan | more")
       os.system("volatility -f " + fileName + PRO + " psscan --output greptext > F1.txt")
       os.system("tail -n +2 F1.txt > F2.txt")
       os.system("sed -i 's/>//g' F2.txt")
@@ -1003,11 +994,128 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 1.0
+# Details : Menu option selected - Change SAM via user choice.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '31':
+      SAM = raw_input("Please enter SAM value: ")
+      while len(SAM) < 18:
+         SAM += " "
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - Change SECURITY via user choice.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '32':
+      SEC = raw_input("Please enter SECURITY value: ")
+      while len(SEC) < 18:
+         SEC += " "
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - Change COMPENENTS via user choice.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '33':
+      COM = raw_input("Please enter COMPENENTS value: ")
+      while len(COM) < 18:
+         COM += " "
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - Change SOFTWARE via user choice.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '34':
+      SOF = raw_input("Please enter SOFTWARE value: ")
+      while len(SOF) < 18:
+         SOF += " "
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - Change SYSTEM via user choice.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '35':
+      SYS = raw_input("Please enter SYSTEM value: ")
+      while len(SYS) < 18:
+         SYS += " "
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - Change NTUSER via user choice.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '36':
+      NTU = raw_input("Please enter NTUSER value: ")
+      while len(NTU) < 18:
+         NTU += " "
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - Change HARDWARE via user choice.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '37':
+      HRD = raw_input("Please enter HARDWARE value: ")
+      while len(HRD) < 18:
+         HRD += " "
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - Change DEFAULT via user choice.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '38':
+      DEF = raw_input("Please enter DEFUALT value: ")
+      while len(DEF) < 18:
+         DEF += " "
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - Change BOOT BCD via user choice.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '39':
+      BCD = raw_input("Please enter BOOT BCD value: ")
+      while len(BCD) < 18:
+         BCD += " "
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
 # Details : Menu option selected - Analyse the NETWORK.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='31':
+   if selection =='40':
       os.system("volatility -f " + fileName + PRO + " connscan")
       raw_input("\nPress ENTER to continue...") 
 
@@ -1019,7 +1127,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='32':
+   if selection =='41':
       os.system("volatility -f " + fileName + PRO + " netscan")
       raw_input("\nPress ENTER to continue...") 
 
@@ -1031,7 +1139,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='33':
+   if selection =='42':
       os.system("volatility -f " + fileName + PRO + " sockets")
       raw_input("\nPress ENTER to continue...") 
 
@@ -1039,13 +1147,12 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 1.0
-# Details : Menu option selected - Allows the user to Search the PARAM string.
+# Details : Menu option selected - Finds Mutants!
 # Modified: N/A
-# ------------------------------------------------------------------------------------- 
-   
-   if selection =='40':
-      os.system("volatility -f " + fileName + " " + PRO + " pslist | grep " + PRM)
-      os.system("volatility -f " + fileName + " " + PRO + " filescan | grep " + PRM)
+# -------------------------------------------------------------------------------------
+
+   if selection =='43':
+      os.system("volatility -f " + fileName + PRO + " mutantscan")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1056,20 +1163,21 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='41':
-      os.system("volatility -f " + fileName + PRO + " malfind -p " + PI1 + " --dump-dir " + DIR)
+   if selection =='44':
+      os.system("volatility -f " + fileName + PRO + " malfind -p " + PI1 + " -D " + DIR)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 1.0
-# Details : Menu option selected - Finds Mutants!
+# Details : Menu option selected - Allows the user to Search the PARAM string.
 # Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='42':
-      os.system("volatility -f " + fileName + PRO + " mutantscan")
+# ------------------------------------------------------------------------------------- 
+   
+   if selection =='45':
+      os.system("volatility -f " + fileName + " " + PRO + " pslist | grep " + PRM)
+      os.system("volatility -f " + fileName + " " + PRO + " filescan | grep " + PRM)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1080,7 +1188,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='43':
+   if selection =='46':
       os.system("volatility -f " + fileName + PRO + " vaddump -p " + PI1 + " --dump-dir " + DIR)
       raw_input("\nPress ENTER to continue...")
 
@@ -1092,7 +1200,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='44':
+   if selection =='47':
       os.system("volatility -f " + fileName + PRO + " procdump  -p " + PI1 + " --dump-dir " + DIR)
       raw_input("\nPress ENTER to continue...")
 
@@ -1104,7 +1212,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='45':
+   if selection =='48':
       os.system("volatility -f " + fileName + PRO + " memdump  -p " + PI1 + " --dump-dir " + DIR)
       raw_input("\nPress ENTER to continue...")
 
