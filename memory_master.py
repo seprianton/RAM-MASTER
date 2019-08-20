@@ -413,7 +413,7 @@ def Display():
       print colored(PI2,'red'),
    else:
       print colored(PI2,'blue'),
-   print "] ADM NTUSER[",					
+   print "] NTUSER    [",					
    if NTU == "0x0000000000000000":
       print colored(NTU,'red'),
    else:
@@ -462,7 +462,7 @@ def Display():
    print "RESERVED [     ]"
 
 # -------------------------------------------------------------------------------------
-   print "WORK DIR [",
+   print "DIRECTORY[",
    if DIR == "WORKAREA             ":
       print colored(DIR,'red'),
    else:
@@ -506,15 +506,15 @@ def Display():
 # -------------------------------------------------------------------------------------
 
 menu = {}
-menu['(0)']="Change PROFILE (10) User Passwords     (20) Hivelist  (30) PrintKey    (40) PARAMETER Search (50) Desktop     (60) Timeline"
+menu['(0)']="Set PROFILE    (10) User Passwords     (20) Hivelist  (30) PrintKey    (40) PARAMETER Search (50) Desktop     (60) Timeline"
 menu['(1)']="Set PID        (11) Default Password   (21) SAM       (31) Connections (41) Malfind PID DIR  (51) Clipboard   (61) Screenshots"
 menu['(2)']="Set PPID       (12) Running Processes  (22) SECURITY  (32) Netscan     (42) Mutantscan       (52) Notepad     (62) MFT Table"
 menu['(3)']="Set OFFSET     (13) Hidden Processes   (23) COMPONENTS(33) Sockets     (43) Vaddump PID DIR  (53)             (63) File OFFSET" 
 menu['(4)']="Set PARAMETER  (14) Running Services   (24) SOFTWARE  (34)             (44) Procdump PID DIR (54)             (64)"
 menu['(5)']="               (15) Command History    (25) SYSTEM    (35)             (45) Memdump PID DIR  (55)             (65)"
 menu['(6)']="               (16) Console History    (26) NTUSER    (36)             (46)                  (56)             (66)"
-menu['(7)']="               (17) Cmdline Arguments  (27) HARDWARE  (37)             (47)                  (57)             (67)"
-menu['(8)']="Change DIR     (18) User Assist Keys   (28) DEFAULT   (38)             (48)                  (58)             (68)"
+menu['(7)']="set NTUSER     (17) Cmdline Arguments  (27) HARDWARE  (37)             (47)                  (57)             (67)"
+menu['(8)']="set DIRECTORY  (18) User Assist Keys   (28) DEFAULT   (38)             (48)                  (58)             (68)"
 menu['(9)']="Clean and Exit (19)                    (29) BOOT BCD  (39)             (49)                  (59)             (69) Bulk Extracter"
 
 
@@ -614,6 +614,19 @@ while True:
       PRM = raw_input("Please enter parameter value: ")
       while len(PRM) < 21:
          PRM += " "
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 1.0
+# Details : Menu option selected - Change NTUSER from \Admininstrator to user choice.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '7':
+      NTU = raw_input("Please enter NTUSER value: ")
+      while len(NTU) < 18:
+         NTU += " "
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -849,7 +862,7 @@ while True:
       if (SAM == "0x0000000000000000"):
          print colored("SAM Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + SAM)
+         os.system("volatility -f " + fileName + PRO + " hivedump -o " + SAM + " | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -864,7 +877,7 @@ while True:
       if (SEC == "0x0000000000000000"):
          print colored("SECURITY Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + SEC)
+         os.system("volatility -f " + fileName + PRO + " hivedump -o " + SEC + " | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -879,7 +892,7 @@ while True:
       if (COM == "0x0000000000000000"):
          print colored("COMPONENTS Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + COM)
+         os.system("volatility -f " + fileName + PRO + " hivedump -o " + COM + " | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -894,7 +907,7 @@ while True:
       if (SOF == "0x0000000000000000"):
          print colored("SOFTWARE Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + SOF)
+         os.system("volatility -f " + fileName + PRO + " hivedump -o " + SOF + " | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -909,7 +922,7 @@ while True:
       if (SYS == "0x0000000000000000"):
          print colored("SYSTEM Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + SYS)
+         os.system("volatility -f " + fileName + PRO + " hivedump -o " + SYS + " | more")
       raw_input("\nPress ENTER to continue...")    
 
 # ------------------------------------------------------------------------------------- 
@@ -924,7 +937,7 @@ while True:
       if (NTU == "0x0000000000000000"):
          print colored("NTUSER (Administrator) Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + NTU)
+         os.system("volatility -f " + fileName + PRO + " hivedump -o " + NTU + " | more")
       raw_input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
@@ -939,7 +952,7 @@ while True:
       if (HRD == "0x0000000000000000"):
          print colored("HARDWARE Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + HRD)
+         os.system("volatility -f " + fileName + PRO + " hivedump -o " + HRD + " | more")
       raw_input("\nPress ENTER to continue...")     
 
 # ------------------------------------------------------------------------------------- 
@@ -954,7 +967,7 @@ while True:
       if (DEF == "0x0000000000000000"):
          print colored("DEFUALT Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + DEF)
+         os.system("volatility -f " + fileName + PRO + " hivedump -o " + DEF + " | more")
       raw_input("\nPress ENTER to continue...")   
 
 # ------------------------------------------------------------------------------------- 
@@ -969,7 +982,7 @@ while True:
       if (BCD == "0x0000000000000000"):
          print colored("BOOT BCD Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + BCD)
+         os.system("volatility -f " + fileName + PRO + " hivedump -o " + BCD + " | more")
       raw_input("\nPress ENTER to continue...")   
 
 

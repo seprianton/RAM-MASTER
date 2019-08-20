@@ -7,7 +7,7 @@ Python utility file to forensically investigate memory-dump files via volatility
 
 | LANGUAGE  | FILENAME         | MD5 Hash                         |
 |------     |------            | -------                          |
-| python    | memory_master.py | e37872b95b35200eaa72677613b458f9 |
+| python    | memory_master.py | bd2145cfe5fb4052e832a7c3085dfc11 |
 | text file | profiles.txt     | 90a98544725dc945df30c20fabeb3e80 |
 | bash file | patch.sh         | 7a4231731982e09d9a703f7357170755 |
 
