@@ -520,15 +520,15 @@ def Display():
 # -------------------------------------------------------------------------------------
 	
    print "="*134
-   print " "*8,
+   print " "*7,
    print colored("SETTINGS",'white'),
-   print " "*14,
+   print " "*12,
    print colored("IDENTIFY",'white'),
    print " "*17,
    print colored("ANALYSE",'white'),
-   print " "*20,
+   print " "*26,
    print colored("INVESTIGATE",'white'),
-   print " "*18,
+   print " "*17,
    print colored("EXTRACT",'white')
    print "="*134
 
@@ -541,16 +541,16 @@ def Display():
 # -------------------------------------------------------------------------------------
 
 menu = {}
-menu['(0)']="Set PROFILE         (10) Users/Passwords   (20) Hivelist  (30) PrintKey (40) Connection Scan  (50) Desktop   (60) Timeline"
-menu['(1)']="Set PID             (11) Default Password  (21) SAM       (31) Re/Set   (41) Network Scan     (51) Clipboard (61) Screenshots"
-menu['(2)']="Set PPID            (12) Running Processes (22) SECURITY  (32) Re/Set   (42) Socket Scan      (52) Notepad   (62) MFT Table"
-menu['(3)']="Set OFFSET          (13) Hidden Processes  (23) COMPONENT (33) Re/Set   (43) Mutant Scan      (53)           (63) File OFFSET" 
-menu['(4)']="Set PARAM           (14) Running Services  (24) SOFTWARE  (34) Re/Set   (44) Malfind PID DIR  (54)           (64)"
-menu['(5)']="Set DIR             (15) Command History   (25) SYSTEM    (35) Re/Set   (45) Search PARAM     (55)           (65)"
-menu['(6)']="                    (16) Console History   (26) NTUSER    (36) Re/Set   (46) VadDump PID DIR  (56)           (66)"
-menu['(7)']="                    (17) Cmdline Arguments (27) HARDWARE  (37) Re/Set   (47) ProcDump PID DIR (57)           (67)"
-menu['(8)']="                    (18) User Assist Keys  (28) DEFAULT   (38) Re/Set   (48) MemDump PID DIR  (58)           (68)"
-menu['(9)']="Clean/Exit          (19)                   (29) BOOT BCD  (39) Re/Set   (49)                  (59)           (69) Bulk Extracter"
+menu['(0)']="Re/Set PROFILE  (10) Users/Passwords    (20) Hivelist   (30) PrintKey  (40) Connection Scan   (50) Desktop    (60) Timeline"
+menu['(1)']="Re/Set PID      (11) Default Password   (21) SAM        (31) Re/Set    (41) Network Scan      (51) Clipboard  (61) Screenshots"
+menu['(2)']="Re/Set PPID     (12) Running Processes  (22) SECURITY   (32) Re/Set    (42) Socket Scan       (52) Notepad    (62) MFT Table"
+menu['(3)']="Re/Set OFFSET   (13) Hidden Processes   (23) COMPONENT  (33) Re/Set    (43) Mutant Scan       (53)            (63) PARAM OFFSET" 
+menu['(4)']="Re/Set PARAM    (14) Running Services   (24) SOFTWARE   (34) Re/Set    (44) Malfind PID DIR   (54)            (64)"
+menu['(5)']="Re/Set DIR      (15) Command History    (25) SYSTEM     (35) Re/Set    (45) PARAM Search      (55)            (65)"
+menu['(6)']="                (16) Console History    (26) NTUSER     (36) Re/Set    (46) VadDump PID DIR   (56)            (66)"
+menu['(7)']="                (17) Cmdline Arguments  (27) HARDWARE   (37) Re/Set    (47) ProcDump PID DIR  (57)            (67)"
+menu['(8)']="                (18) User Assist Keys   (28) DEFAULT    (38) Re/Set    (48) MemDump PID DIR   (58)            (68)"
+menu['(9)']="Clean/Exit      (19)                    (29) BOOT BCD   (39) Re/Set    (49)                   (59)            (69) Bulk Extracter"
 
 
 # -------------------------------------------------------------------------------------
