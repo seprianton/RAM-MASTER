@@ -51,7 +51,7 @@ if extTest != "mem":
     print "This is not a .mem file...\n"
     exit (True)
 
-while len(fileName) < 25:
+while len(fileName) < 13:
   fileName += " "
 
 # -------------------------------------------------------------------------------------
@@ -62,14 +62,14 @@ while len(fileName) < 25:
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
-PRO = "UNSELECTED           "
-PR2 = "UNSELECTED           "
-DA1 = "NOT FOUND            "
-PI1 = "0                    "
-PI2 = "0                    "
-OFF = "0                    "
-PRM = "UNSELECTED           "
-DIR = "WORKAREA             "
+PRO = "UNSELECTED"
+PR2 = "UNSELECTED"
+DA1 = "NOT FOUND "
+PI1 = "0            "
+PI2 = "0            "
+OFF = "0            "
+PRM = "UNSELECTED   "
+DIR = "WORKAREA     "
 SAM = "0x0000000000000000"
 SEC = "0x0000000000000000"
 COM = "0x0000000000000000"
@@ -89,7 +89,14 @@ POR = "000            "
 ADM = "NOT FOUND"
 GUS = "NOT FOUND"
 USR = "NOT FOUND"
-BLK = "     "
+
+U = "              "
+US = []
+US = [U,U,U,U,U,U,U]
+PAA = "                                "
+PAG = "                                "
+PA = []
+PA = [PAA,PAA,PAA,PAA,PAA,PAA,PAA]
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -146,7 +153,7 @@ profiles = profiles.split(",")
 PRO = " --profile " + profiles[0]
 PR2 = profiles[0]
 if (PR2[:1] == "W") or (PR2[:1] == "V"):
-   while len(PR2) < 21:
+   while len(PR2) < 16:
       PR2 = PR2 + " "
 else:
    print "ERROR - Windows profile not found..."
@@ -169,11 +176,9 @@ DA1 = DA1.replace("Image date and time :","")
 DA1 = DA1.lstrip()
 DA1 = DA1.rstrip("\n")
 a,b,c = DA1.split()
-TMP = b
 DA1 = str(a)
 DA1 = DA1 + " "
-DA1 = DA1 + TMP
-while len(DA1) < 21:
+while len(DA1) < 13:
    DA1 = DA1 + " "
 DA2 = DA2.replace("Image local date and time :","")
 DA2 = DA2.lstrip()
@@ -252,25 +257,44 @@ os.system("echo 'HASH FILE' > hash.txt")
 os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM + " >> hash.txt")
 usercount = 0
 with open("hash.txt") as fp:
-   line = fp.readline()
+   count = 0
+   line = fp.readline() # Header!!
    while line:
       line = fp.readline()
       if "Administrator" in line:
-         ADM = "FOUND    "
+         catch = line.replace(":"," ")
+         catch2 = catch.split()
+         catch3 = catch2[3]
+         PAA = catch3
       if "Guest" in line :
-         GUS = "FOUND    "
-      usercount = usercount + 1
+         catch = line.replace(":"," ")
+         catch2 = catch.split()
+         catch3 = catch2[3]
+         PAG = catch3
+      elif ("Guest") and ("Administrator") not in line:
+         if line !="":
+           catch = line.replace(":"," ")
+           catch2 = catch.split()
+           catch3 = catch2[3]
+           PA[count] = catch3
+           US[count] = catch2[0][:13].upper()
+           temp = US[count]
+           while len(US[count]) < 14:
+              US[count] = US[count] + " "
+           count = count + 1
+
+
 os.remove("hash.txt")
 usercount = usercount -1
-if ADM == "FOUND    ":
+if ADM == "                  ":
    usercount = usercount -1
-if GUS == "FOUND    ":
+if GUS == "                  ":
    usercount = usercount -1
 if usercount > 0:
-   USR = "FOUND "
-   USR = USR + str(usercount)
-while len(USR) < 9:
-   USR = USR + " "
+   USR = "                  "
+#   USR = USR + str(usercount)
+#while len(USR) < 9:
+#   USR = USR + " "
 
 #-------------------------------------------------------------------------------------
 # Grab local IP if alvailable.
@@ -278,7 +302,7 @@ while len(USR) < 9:
 os.system("volatility -f " + fileName + PRO + " connscan > connscan.txt")
 os.system("sed '1d' connscan.txt > conn1.txt")
 os.system("sed '1d' conn1.txt > connscan.txt")
-#os.remove("conn1.txt")
+os.remove("conn1.txt")
 os.system("cut -f 2 -d ' ' connscan.txt > conn1.txt")
 os.system("strings conn1.txt | sort | uniq -c | sort -nr > connscan.txt")
 os.system("sed '1d' conn1.txt > connscan.txt")
@@ -305,183 +329,187 @@ os.remove('conn1.txt')
 # -------------------------------------------------------------------------------------
 
 def Display():
-   print "="*17,
-   print colored("SETTINGS",'white'),
-   print "="*22,
-   print colored("SYSTEM HIVES",'white'),
+   print "="*13,
+   print colored("SYSTEM",'white'),
    print "="*19,
+   print colored("SYSTEM HIVES",'white'),
+   print "="*14,
    print colored("HOST INFO",'white'),
-   print "="*12,
+   print "="*6,
    print colored("USER INFO",'white'),
-   print "="*18
+   print "="*14,
+   print colored("PASSWORDS",'white'),
+   print "="*13
+
 # -------------------------------------------------------------------------------------
    print "FILENAME [",
-   print colored(str.upper(fileName[:21]),'blue'),
-   print "] SAM       [",
+   print colored(fileName[:13],'blue'),
+   print "] SAM      [",
    if (SAM == "0x0000000000000000"):
       print colored(SAM,'red'),
    else:
       print colored(SAM,'blue'),
-   print "] HOST NAME [",
+   print "] HOST [",
    if HST == "NOT FOUND      ":
       print colored(HST[:15],'red'),
    else:
        print colored(HST[:15],'blue'),
-   print "] ADMIN [",
-   if ADM == "NOT FOUND":
-      print colored(ADM,'red'),
-   else:
-      print colored(ADM,'blue'),
-   print "]",
-   print "RESERVED [     ]" 
+   print "] ADMINISTRATOR [",
+   print colored(PAA,'blue'),
+   print "]"
+
 # -------------------------------------------------------------------------------------
    print "PROFILE  [",
    if PR2 == "UNSELECTED              ":
-      print colored(str.upper(PR2),'red'),
+      print colored(PR2[:13],'red'),
    else:
-      print colored(str.upper(PR2),'blue'),
-   print "] SECURITY  [",
+      print colored(PR2[:13],'blue'),
+   print "] SECURITY [",
    if SEC == "0x0000000000000000":
       print colored(SEC,'red'),
    else:
       print colored(SEC,'blue'),
-   print "] PROCESSORS[",
+   print "] PROC [",
    if PRC == 0:
       print colored(HST,'red'),
    else:
        print colored(PRC,'blue'),
-   print "] GUEST [",
-   if ADM == "NOT FOUND":
-      print colored(GUS,'red'),
-   else:
-      print colored(GUS,'blue'),
-   print "]",
-   print "RESERVED [     ]"
+   print "] GUEST         [",
+   print colored(PAG,'blue'),
+   print "]"
+
 # -------------------------------------------------------------------------------------
    print "CREATED  [",
    if DA1 == "NOT FOUND            ":
-      print colored(DA1,'red'),
+      print colored(DA1[:13],'red'),
    else:
-      print colored(DA1,'blue'),
-   print "] COMPONENTS[",
+      print colored(DA1[:13],'blue'),
+   print "] COMPONEN [",
    if COM == "0x0000000000000000":
       print colored(COM,'red'),
    else:
       print colored(COM,'blue'),
-   print "] SERV PACK [",
+   print "] SVPK [",
    if SVP == "0             ":
       print colored(SVP,'red'),
    else:
       print colored(SVP,'blue'),
-   print "] USERS [",
-   if USR == "NOT FOUND":
-      print colored(USR,'red'),
-   else:
-      print colored(USR,'blue'),
    print "]",
-   print "RESERVED [     ]"
+   print US[0] + "[",
+   print colored(PA[0],'blue'),
+   print "]"
+
 # -------------------------------------------------------------------------------------
-   print "-"*32,
-   print "] SOFTWARE  [",
+   print "-"*24,
+   print "| SOFTWARE [",
    if SOF == "0x0000000000000000":
       print colored(SOF,'red'),
    else:
       print colored(SOF,'blue'),
-   print "] SYS DATE  [",
+   print "] DATE [",
    if DA2 == "NOT FOUND      ":
       print colored(DA2,'red'),
    else:
       print colored(DA2,'blue'),
    print "]",
-   print "      [           ]",
-   print "RESERVED [     ]"
+   print US[1] + "[",
+   print colored(PA[1],'blue'),
+   print "]"
+
 # -------------------------------------------------------------------------------------
    print "PID      [",
-   if PI1[:1] == "0":
+   if PI1 == "0            ":
       print colored(PI1,'red'),
    else:
       print colored(PI1,'blue'),
-   print "] SYSTEM    [",
+   print "] SYSTEM   [",
    if SYS == "0x0000000000000000":
       print colored(SYS,'red'),
    else:
       print colored(SYS,'blue'),
-   print "] SYS TIME  [",
+   print "] TIME [",
    if TI2 == "NOT FOUND      ":
       print colored(TI2,'red'),
    else:
       print colored(TI2,'blue'),
    print "]",
-   print "      [           ]",
-   print "RESERVED [     ]"
+   print US[2] + "[",
+   print colored(PA[2],'blue'),
+   print "]"
+
 # -------------------------------------------------------------------------------------
    print "PPID     [",
    if PI2[:1] == "0":
       print colored(PI2,'red'),
    else:
       print colored(PI2,'blue'),
-   print "] NTUSER    [",					
+   print "] NTUSER   [",					
    if NTU == "0x0000000000000000":
       print colored(NTU,'red'),
    else:
       print colored(NTU,'blue'),
-   print "] LOCAL IP  [",
+   print "] IP   [",
    if HIP == "000.000.000.000":
       print colored(HIP,'red'),
    else:
       print colored(HIP,'blue'),
    print "]",
-   print "      [           ]",
-   print "RESERVED [     ]"
+   print US[3] + "[",
+   print colored(PA[3],'blue'),
+   print "]"
+
 # -------------------------------------------------------------------------------------
    print "OFFSET   [",
-   if OFF == "0                    ":
-      print colored(OFF,'red'),
+   if OFF == "0            ":
+      print colored(OFF[:13],'red'),
    else:
-      print colored(OFF,'blue'),
-   print "] HARDWARE  [",					
+      print colored(OFF[:13],'blue'),
+   print "] HARDWARE [",					
    if HRD == "0x0000000000000000":
       print colored(HRD,'red'),
    else:
       print colored(HRD,'blue'),
-   print "] LOCAL PORT[",
+   print "] PORT [",
    if POR == "000            ":
       print colored(POR,'red'),
    else:
       print colored(POR,'blue'),
    print "]",
-   print "      [           ]",
-   print "RESERVED [     ]"
+   print US[4] + "[",
+   print colored(PA[4],'blue'),
+   print "]"
 
 # -------------------------------------------------------------------------------------
-   print "PARAMETER[",
-   if PRM == "UNSELECTED           ":
-      print colored(PRM,'red'),
+   print "PARAM    [",
+   if PRM == "UNSELECTED   ":
+      print colored(PRM[:13],'red'),
    else:
-      print colored(str.upper(PRM[:21]),'blue'),
-   print "] DEFAULT   [",					
+      print colored(PRM[:13],'blue'),
+   print "] DEFAULT  [",					
    if DEF == "0x0000000000000000":
       print colored(DEF,'red'),
    else:
       print colored(DEF,'blue'),
-   print "]           [                 ]",
-   print "      [           ]",
-   print "RESERVED [     ]"
+   print "]      [                 ]",
+   print US[5] + "[",
+   print colored(PA[5],'blue'),
+   print "]"
 
 # -------------------------------------------------------------------------------------
-   print "DIRECTORY[",
-   if DIR == "WORKAREA             ":
-      print colored(DIR,'red'),
+   print "DIR      [",
+   if DIR == "WORKAREA     ":
+      print colored(DIR[:13],'red'),
    else:
-      print colored(DIR,'blue'),
-   print "] BOOT BCD  [",					
+      print colored(DIR[:13],'blue'),
+   print "] BOOT BCD [",					
    if BCD == "0x0000000000000000":
       print colored(BCD,'red'),
    else:
       print colored(BCD,'blue'),
-   print "]           [                 ]",
-   print "      [           ]",
-   print "RESERVED [     ]"
+   print "]      [                 ]",
+   print US[6] + "[",
+   print colored(PA[6],'blue'),
+   print "]"
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -492,15 +520,15 @@ def Display():
 # -------------------------------------------------------------------------------------
 	
    print "="*134
-   print " "*7,
+   print " "*8,
    print colored("SETTINGS",'white'),
-   print " "*11,
+   print " "*14,
    print colored("IDENTIFY",'white'),
-   print " "*18,
+   print " "*17,
    print colored("ANALYSE",'white'),
-   print " "*28,
+   print " "*20,
    print colored("INVESTIGATE",'white'),
-   print " "*13,
+   print " "*18,
    print colored("EXTRACT",'white')
    print "="*134
 
@@ -513,16 +541,16 @@ def Display():
 # -------------------------------------------------------------------------------------
 
 menu = {}
-menu['(0)']="Set PROFILE    (10) User Passwords    (20) Hivelist  (30) PrintKey      (40) Connection Scan  (50) Desktop   (60) Timeline"
-menu['(1)']="Set PID        (11) Default Password  (21) SAM       (31) Set SAM       (41) Network Scan     (51) Clipboard (61) Screenshots"
-menu['(2)']="Set PPID       (12) Running Processes (22) SECURITY  (32) Set SECURITY  (42) Socket Scan      (52) Notepad   (62) MFT Table"
-menu['(3)']="Set OFFSET     (13) Hidden Processes  (23) COMPONENTS(33) Set COMPONETS (43) Mutant Scan      (53)           (63) File OFFSET" 
-menu['(4)']="Set PARAMETER  (14) Running Services  (24) SOFTWARE  (34) Set SOFTWARE  (44) Malfind PID DIR  (54)           (64)"
-menu['(5)']="Set DIRECTORY  (15) Command History   (25) SYSTEM    (35) Set SYSTEM    (45) PARAMETER Search (55)           (65)"
-menu['(6)']="               (16) Console History   (26) NTUSER    (36) Set NTUSER    (46) VadDump PID DIR  (56)           (66)"
-menu['(7)']="               (17) Cmdline Arguments (27) HARDWARE  (37) Set HARDWARE  (47) ProcDump PID DIR (57)           (67)"
-menu['(8)']="               (18) User Assist Keys  (28) DEFAULT   (38) Set DEFUALT   (48) MemDump PID DIR  (58)           (68)"
-menu['(9)']="Clean and Exit (19)                   (29) BOOT BCD  (39) Set BOOT BCD  (49)                  (59)           (69) Bulk Extracter"
+menu['(0)']="Set PROFILE         (10) Users/Passwords   (20) Hivelist  (30) PrintKey (40) Connection Scan  (50) Desktop   (60) Timeline"
+menu['(1)']="Set PID             (11) Default Password  (21) SAM       (31) Re/Set   (41) Network Scan     (51) Clipboard (61) Screenshots"
+menu['(2)']="Set PPID            (12) Running Processes (22) SECURITY  (32) Re/Set   (42) Socket Scan      (52) Notepad   (62) MFT Table"
+menu['(3)']="Set OFFSET          (13) Hidden Processes  (23) COMPONENT (33) Re/Set   (43) Mutant Scan      (53)           (63) File OFFSET" 
+menu['(4)']="Set PARAM           (14) Running Services  (24) SOFTWARE  (34) Re/Set   (44) Malfind PID DIR  (54)           (64)"
+menu['(5)']="Set DIR             (15) Command History   (25) SYSTEM    (35) Re/Set   (45) Search PARAM     (55)           (65)"
+menu['(6)']="                    (16) Console History   (26) NTUSER    (36) Re/Set   (46) VadDump PID DIR  (56)           (66)"
+menu['(7)']="                    (17) Cmdline Arguments (27) HARDWARE  (37) Re/Set   (47) ProcDump PID DIR (57)           (67)"
+menu['(8)']="                    (18) User Assist Keys  (28) DEFAULT   (38) Re/Set   (48) MemDump PID DIR  (58)           (68)"
+menu['(9)']="Clean/Exit          (19)                   (29) BOOT BCD  (39) Re/Set   (49)                  (59)           (69) Bulk Extracter"
 
 
 # -------------------------------------------------------------------------------------
@@ -567,7 +595,7 @@ while True:
       else:
          PRO = " --profile " + PRO
          PR2 = PRO.replace(" --profile ","")
-         while len(PR2) < 21:
+         while len(PR2) < 13:
             PR2 += " "
       fp.close()        
 
@@ -580,8 +608,10 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '1':
-      PI1 = raw_input("Please enter PPID value: ")
-      while len(PI1) < 21:
+      temp = raw_input("Please enter PPID value: ")
+      if temp != '':
+         PI1 = temp
+      while len(PI1) < 13:
          PI1 += " "
 
 # ------------------------------------------------------------------------------------- 
@@ -593,8 +623,10 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '2':
-      PI2 = raw_input("Please enter PID value: ")
-      while len(PI2) < 21:
+      temp = raw_input("Please enter PID value: ")
+      if temp != '':
+         PI2 = temp
+      while len(PI2) < 13:
          PI2 += " "
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -605,8 +637,10 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '3':
-      OFF = raw_input("Please enter OFFSET value: ")
-      while len(OFF) < 21:
+      temp = raw_input("Please enter OFFSET value: ")
+      if temp != '':
+         OFF = temp
+      while len(OFF) < 13:
          OFF += " "
 
 # ------------------------------------------------------------------------------------- 
@@ -618,8 +652,10 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '4':
-      PRM = raw_input("Please enter parameter value: ")
-      while len(PRM) < 21:
+      temp = raw_input("Please enter parameter value: ")
+      if temp != '':
+         PRM = temp.upper()
+      while len(PRM) < 13:
          PRM += " "
 
 # ------------------------------------------------------------------------------------- 
@@ -638,7 +674,7 @@ while True:
          if len(DIR) > 0:
             DIR = directory.upper()
             os.mkdir(directory)
-            while len(DIR) < 21:
+            while len(DIR) < 13:
                DIR += " "
             print "Working directory changed..."
       raw_input("\nPress ENTER to continue...")
