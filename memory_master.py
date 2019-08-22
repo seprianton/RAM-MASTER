@@ -64,6 +64,12 @@ def padding(variable,value):
       variable += " "
    return variable
 
+def rpadding(variable,value):
+   while len(variable) < value:
+      temp = variable
+      variable = " " + temp
+   return variable
+
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
@@ -72,22 +78,21 @@ def padding(variable,value):
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
-COL1 = 13
+COL1 = 19
 COL2 = 18
-COL3 = 15
-COL4 = 14
-COL5 = 32
+COL3 = 32
+COL4 = 32
 MAN1 = 0
 MAN2 = 0
 
-PRO = "UNSELECTED   "
-PR2 = "UNSELECTED   "
-DA1 = "NOT FOUND    "
-PI1 = "0            "
-PI2 = "0            "
-OFF = "0            "
-PRM = "UNSELECTED   "
-DIR = "WORKAREA     "
+PRO = "UNSELECTED         "
+PR2 = "UNSELECTED         "
+DA1 = "NOT FOUND          "
+PI1 = "0                  "
+PI2 = "0                  "
+OFF = "0                  "
+PRM = "UNSELECTED         "
+DIR = "WORKAREA           "
 
 SAM = "0x0000000000000000"
 SEC = "0x0000000000000000"
@@ -98,21 +103,22 @@ NTU = "0x0000000000000000"
 HRD = "0x0000000000000000"
 DEF = "0x0000000000000000"
 BCD = "0x0000000000000000"
+BLK = "0x0000000000000000"
 
-HST = "NOT FOUND      "
-PRC = "0              "
-SVP = "0              "
-DA2 = "NOT FOUND      "
-TI2 = "NOT FOUND      "
-HIP = "000.000.000.000"
-POR = "000            "
+HST = "NOT FOUND          "
+PRC = "0                  "
+SVP = "0                  "
+DA2 = "NOT FOUND          "
 
-X1 = " "*COL4
-X2 = " "*COL5
+HIP = "000.000.000.000    "
+POR = "000                "
+
+X1 = " "*COL3
+X2 = " "*COL4
 US = []
 PA = []
-US = [X1,X1,X1,X1,X1,X1,X1,X1,X1]
-PA = [X2,X2,X2,X2,X2,X2,X2,X2,X2]
+US = [X1,X1,X1,X1,X1,X1,X1,X1,X1,X1,X1,X1]
+PA = [X2,X2,X2,X2,X2,X2,X2,X2,X2,X2,X2,X2]
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -141,7 +147,14 @@ print "\t\t\t             BY TERENCE BROADBENT BSC CYBER SECURITY (FIRST CLASS) 
 
 print "Booting - Please wait...\n"
 
+os.system("md5sum " + fileName + " > md5.txt")
+MD5 = linecache.getline('md5.txt', 1)
+MD5 = MD5.replace(fileName,"")
+MD5 = MD5.rstrip()
+os.remove("md5.txt")
+
 fileName = padding(fileName,COL1)
+
 if not os.path.exists('WORKAREA'):
    os.mkdir("WORKAREA")
 
@@ -188,24 +201,20 @@ PRC = padding(PRC, COL3)
 SVP = SVP.replace("Image Type (Service Pack) :","")
 SVP = SVP.replace(" ","")
 SVP = SVP.replace("\n","")
-SVP = padding(SVP, COL3)
+SVP = padding(SVP, COL1)
 
 DA1 = DA1.replace("Image date and time :","")
 DA1 = DA1.lstrip()
 DA1 = DA1.rstrip("\n")
 a,b,c = DA1.split()
-DA1 = str(a)
-DA1 = DA1 + " "
-DA1 = padding(DA1, COL1)
+DA1 = a + " @ " + b
 
 DA2 = DA2.replace("Image local date and time :","")
 DA2 = DA2.lstrip()
 DA2 = DA2.rstrip("\n")
 a,b,c = DA2.split()
-DA2 = a
-TI2 = b
-DA2 = padding(DA2, COL3)
-TI2 = padding(TI2, COL3)
+DA2 = a + " " + b
+DA2 = padding(DA2, COL1)
 
 #-------------------------------------------------------------------------------------
 # Grab hive information if available.
@@ -250,11 +259,27 @@ with open("host.txt") as search:
    wordlist = (list(search)[-1])
 wordlist = wordlist.split()
 HST = wordlist[-1]
-if HST == "SEARCHED":
-   HST = "NOT FOUND"
-else:
-   HST = padding(HST, COL3)
+if HST == "searched":
+   HST = "Not found"
+HST = padding(HST, COL1+1)
 os.remove('host.txt')
+
+#-------------------------------------------------------------------------------------
+# Grab user information if available.
+#-------------------------------------------------------------------------------------
+os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM + " >> hash.txt")
+with open("hash.txt") as search:
+   count = 0
+   for line in search:
+      if line != "":
+         catch = line.replace(":"," ")
+         catch2 = catch.split()
+         catch3 = catch2[3]
+         PA[count] = catch3
+         US[count] = catch2[0][:COL4-1] + " "
+         US[count] = rpadding(US[count], COL4)
+         count = count + 1
+os.remove("hash.txt")
 
 #-------------------------------------------------------------------------------------
 # Grab local IP if alvailable.
@@ -272,28 +297,10 @@ if getip != "":
    getip = getip[0].replace(':',' ')  
    HIP = getip.rsplit(' ', 1)[0]
    POR = getip.rsplit(' ', 1)[1]
-   HIP = padding(HIP, COL3)
-   POR = padding(POR, COL3)
+   HIP = padding(HIP, COL1)
+   POR = padding(POR, COL1)
 os.remove('connscan.txt')
 os.remove('conn1.txt')
-
-#-------------------------------------------------------------------------------------
-# Grab user information if available.
-#-------------------------------------------------------------------------------------
-os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM + " >> hash.txt")
-with open("hash.txt") as search:
-   count = 0
-   for line in search:
-      if line !="":
-         catch = line.replace(":"," ")
-         catch2 = catch.split()
-         catch3 = catch2[3]
-         PA[count] = catch3
-         US[count] = catch2[0][:COL4-1]
-         temp = US[count]
-         US[count] = padding(US[count], COL4)
-         count = count + 1
-os.remove("hash.txt")
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -304,194 +311,234 @@ os.remove("hash.txt")
 # -------------------------------------------------------------------------------------
 
 def Display():
-   print "="*13,
+   print "="*17,
    print colored("SYSTEM",'white'),
-   print "="*19,
+   print "="*22	,
    print colored("SYSTEM HIVES",'white'),
    print "="*14,
-   print colored("HOST INFO",'white'),
-   print "="*6,
    print colored("USER INFO",'white'),
-   print "="*14,
+   print "="*25,
    print colored("PASSWORDS",'white'),
-   print "="*13
+   print "="*11
 
 # -------------------------------------------------------------------------------------
-   print "FILENAME [",
-   print colored(fileName[:COL1],'blue'),
-   print "] SAM      [",
+   print "PROFILE   [",
+   if PR2 == "UNSELECTED              ":
+      print colored(PR2,'red'),
+   else:
+      print colored(PR2,'blue'),   
+   print "]",
+
+   print "SAM      [",
    if (SAM == "0x0000000000000000"):
       print colored(SAM,'red'),
    else:
       print colored(SAM,'blue'),
-   print "] HOST [",
-   if HST == "NOT FOUND      ":
-      print colored(HST[:COL2],'red'),
-   else:
-       print colored(HST[:COL2],'blue'),
    print "]",
+
    print US[0] + "[",
    print colored(PA[0],'blue'),
    print "]"
+
 # -------------------------------------------------------------------------------------
-   print "PROFILE  [",
-   if PR2 == "UNSELECTED              ":
-      print colored(PR2,'red'),
+   print "HOST NAME [",
+   if HST == "Not found          ":
+      print colored(HST,'red'),
    else:
-      print colored(PR2,'blue'),
-   print "] SECURITY [",
+       print colored(HST,'blue'),
+   print "]",
+
+   print "SECURITY [",
    if SEC == "0x0000000000000000":
       print colored(SEC,'red'),
    else:
       print colored(SEC,'blue'),
-   print "] PROC [",
-   if PRC == "0              ":
-      print colored(HST,'red'),
-   else:
-       print colored(PRC,'blue'),
    print "]",
    print US[1] + "[",
    print colored(PA[1],'blue'),
    print "]"
+
 # -------------------------------------------------------------------------------------
-   print "CREATED  [",
-   if DA1 == "NOT FOUND            ":
-      print colored(DA1,'red'),
+   print "SERV PACK [",
+   if SVP == "0                  ":
+      print colored(SVP,'red'),
    else:
-      print colored(DA1,'blue'),
+      print colored(SVP,'blue'),
    print "] COMPONEN [",
    if COM == "0x0000000000000000":
       print colored(COM,'red'),
    else:
       print colored(COM,'blue'),
-   print "] SVPK [",
-   if SVP == "0             ":
-      print colored(SVP,'red'),
-   else:
-      print colored(SVP,'blue'),
    print "]",
+
    print US[2] + "[",
    print colored(PA[2],'blue'),
    print "]"
 
 # -------------------------------------------------------------------------------------
-   print "-"*24,
-   print "| SOFTWARE [",
+   print "TIMESTAMP [",
+   print colored(DA2,'blue'),
+   print "] SOFTWARE [",
    if SOF == "0x0000000000000000":
       print colored(SOF,'red'),
    else:
       print colored(SOF,'blue'),
-   print "] DATE [",
-   if DA2 == "NOT FOUND      ":
-      print colored(DA2,'red'),
-   else:
-      print colored(DA2,'blue'),
    print "]",
    print US[3] + "[",
    print colored(PA[3],'blue'),
    print "]"
 
-# -------------------------------------------------------------------------------------
-   print "PID      [",
-   if PI1 == "0            ":
-      print colored(PI1,'yellow'),
+# ------------------------------------------------------------------------------------- 
+   print "LOCAL IP  [",
+   if HIP == "000.000.000.000    ":
+      print colored(HIP,'red'),
    else:
-      print colored(PI1,'blue'),
-   print "] SYSTEM   [",
+     if MAN1 == 0:
+        print colored(HIP,'yellow'),    
+     else:
+        print colored(HIP,'blue'),
+   print "]",
+
+   print "SYSTEM   [",
    if SYS == "0x0000000000000000":
       print colored(SYS,'red'),
    else:
       print colored(SYS,'blue'),
-   print "] TIME [",
-   if TI2 == "NOT FOUND      ":
-      print colored(TI2,'red'),
-   else:
-      print colored(TI2,'blue'),
+   
    print "]",
    print US[4] + "[",
    print colored(PA[4],'blue'),
    print "]"
 
 # -------------------------------------------------------------------------------------
-   print "PPID     [",
-   if PI2 == "0            ":
-      print colored(PI2,'yellow'),
+   print "LOCAL PORT[",
+   if POR == "000                ":
+      print colored(POR,'red'),
    else:
-      print colored(PI2,'blue'),
-   print "] NTUSER   [",					
+      if MAN2 == 0:
+         print colored(POR,'yellow'),
+      else:
+         print colored(POR,'blue'),
+   print "]",
+   
+   print "NTUSER   [",					
    if NTU == "0x0000000000000000":
       print colored(NTU,'red'),
    else:
       print colored(NTU,'blue'),
-   print "] IP   [",
-   if HIP == "000.000.000.000":
-      print colored(HIP,'red'),
-   else:
-      if MAN1 == 0:
-         print colored(HIP,'yellow'),
-      else:
-         print colored(HIP,'blue'),
    print "]",
+
    print US[5] + "[",
    print colored(PA[5],'blue'),
    print "]"
 
-# -------------------------------------------------------------------------------------
-   print "OFFSET   [",
-   if OFF == "0            ":
-      print colored(OFF,'yellow'),
-   else:
-      print colored(OFF,'blue'),
-   print "] HARDWARE [",					
+# ------------------------------------------------------------------------------------- 
+   print "-"*31,
+
+   print "| HARDWARE [",
    if HRD == "0x0000000000000000":
       print colored(HRD,'red'),
    else:
       print colored(HRD,'blue'),
-   print "] PORT [",
-   if POR == "000            ":
-      print colored(POR,'red'),
-   else:
-     if MAN2 == 0:
-        print colored(POR,'yellow'),
-     else:
-        print colored(POR,'blue'),
    print "]",
+
    print US[6] + "[",
    print colored(PA[6],'blue'),
    print "]"
 
-# -------------------------------------------------------------------------------------
-   print "FILE     [",
-   if PRM == "UNSELECTED   ":
-      print colored(PRM,'yellow'),
+# ------------------------------------------------------------------------------------- 
+   print "PID       [",
+   if PI1 == "0                  ":
+      print colored(PI1,'red'),
    else:
-      print colored(PRM,'blue'),
-   print "] DEFAULT  [",					
+      print colored(PI1,'blue'),
+   print "]",
+
+   print "DEFAULT  [",					
    if DEF == "0x0000000000000000":
       print colored(DEF,'red'),
    else:
       print colored(DEF,'blue'),
-   print "]      [                 ]",
+   print "]",
+
    print US[7] + "[",
    print colored(PA[7],'blue'),
    print "]"
 
-# -------------------------------------------------------------------------------------
-   print "DIR      [",
-   if DIR == "WORKAREA     ":
-      print colored(DIR,'yellow'),
+# ------------------------------------------------------------------------------------- 
+   print "PPID      [",
+   if PI2 == "0                  ":
+      print colored(PI2,'red'),
    else:
-      print colored(DIR,'blue'),
-   print "] BOOT BCD [",					
+      print colored(PI2,'blue'),
+   print "]",
+
+   print "BOOT BCD [",					
    if BCD == "0x0000000000000000":
       print colored(BCD,'red'),
    else:
       print colored(BCD,'blue'),
-   print "]      [                 ]",
+   print "]",
+
    print US[8] + "[",
    print colored(PA[8],'blue'),
    print "]"
 
+# ------------------------------------------------------------------------------------- 
+   print "OFFSET    [",
+   if OFF == "0                  ":
+      print colored(OFF,'red'),
+   else:
+      print colored(OFF,'blue'),
+   print "]",
+
+   print "HIVE X   [",					
+   if BLK == "0x0000000000000000":
+      print colored(BLK,'grey'),
+   else:
+      print colored(BLK,'blue'),
+   print "]",
+
+   print US[8] + "[",
+   print colored(PA[9],'blue'),
+   print "]"
+
+# ------------------------------------------------------------------------------------- 
+   print "PARAMETER [",
+   if PRM == "UNSELECTED         ":
+      print colored(PRM,'red'),
+   else:
+      print colored(PRM,'blue'),
+
+   print "] HIVE X   [",					
+   if BLK == "0x0000000000000000":
+      print colored(BLK,'grey'),
+   else:
+      print colored(BLK,'blue'),
+   print "]",
+
+   print US[8] + "[",
+   print colored(PA[10],'blue'),
+   print "]"
+
+# -------------------------------------------------------------------------------------
+   print "DIRECTORY [",
+   if DIR == "WORKAREA           ":
+      print colored(DIR,'red'),
+   else:
+      print colored(DIR,'blue'),
+   print "]",
+  
+   print "HIVE X   [",
+   if BLK == "0x0000000000000000":
+      print colored(BLK,'grey'),
+   else:
+      print colored(BLK,'blue'),
+   print "]",
+
+   print US[8] + "[",
+   print colored(PA[11],'blue'),
+   print "]"
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
@@ -507,9 +554,9 @@ def Display():
    print colored("IDENTIFY",'white'),
    print " "*17,
    print colored("ANALYSE",'white'),
-   print " "*26,
+   print " "*24,
    print colored("INVESTIGATE",'white'),
-   print " "*17,
+   print " "*15,
    print colored("EXTRACT",'white')
    print "="*134
 
@@ -522,16 +569,16 @@ def Display():
 # -------------------------------------------------------------------------------------
 
 menu = {}
-menu['(0)']="Re/Set PROFILE  (10) Users/Passwords    (20) Hivelist   (30) PrintKey  (40) Connection Scan   (50) Desktop    (60) Timeline"
-menu['(1)']="Re/Set PID      (11) Default Password   (21) SAM        (31) Re/Set    (41) Network Scan      (51) Clipboard  (61) Screenshots"
-menu['(2)']="Re/Set PPID     (12) Running Processes  (22) SECURITY   (32) Re/Set    (42) Socket Scan       (52) Notepad    (62) MFT Table"
-menu['(3)']="Re/Set OFFSET   (13) Hidden Processes   (23) COMPONENT  (33) Re/Set    (43) Mutant Scan       (53)            (63) FILE OFFSET" 
-menu['(4)']="Re/Set FILE     (14) Running Services   (24) SOFTWARE   (34) Re/Set    (44) Malfind PID DIR   (54)            (64)"
-menu['(5)']="Re/Set DIR      (15) Command History    (25) SYSTEM     (35) Re/Set    (45) Search FILE       (55)            (65)"
-menu['(6)']="Re/Set IP       (16) Console History    (26) NTUSER     (36) Re/Set    (46) VadDump PID DIR   (56)            (66)"
-menu['(7)']="Re/Set PORT     (17) Cmdline Arguments  (27) HARDWARE   (37) Re/Set    (47) ProcDump PID DIR  (57)            (67)"
-menu['(8)']="Exit            (18) User Assist Keys   (28) DEFAULT    (38) Re/Set    (48) MemDump PID DIR   (58)            (68)"
-menu['(9)']="Clean/Exit      (19)                    (29) BOOT BCD   (39) Re/Set    (49)                   (59)            (69) Bulk Extracter"
+menu['(0)']="Re/Set PROFILE   (10) Users/Passwords   (20) Hivelist (30) PrintKey (40) Connection Scan  (50) Desktop   (60) Timeline"
+menu['(1)']="Re/Set PID       (11) Default Password  (21) SAM      (31) Re/Set   (41) Network Scan     (51) Clipboard (61) Screenshots"
+menu['(2)']="Re/Set PPID      (12) Running Processes (22) SECURITY (32) Re/Set   (42) Socket Scan      (52) Notepad   (62) MFT Table"
+menu['(3)']="Re/Set OFFSET    (13) Hidden Processes  (23) COMPONEN (33) Re/Set   (43) Mutant Scan      (53)           (63) PARAMETER OFFSET" 
+menu['(4)']="Re/Set PARAMETER (14) Running Services  (24) SOFTWARE (34) Re/Set   (44) Malfind PID DIR  (54)           (64)"
+menu['(5)']="Re/Set DIRECTORY (15) Command History   (25) SYSTEM   (35) Re/Set   (45) Search FILE      (55)           (65)"
+menu['(6)']="Re/Set IP        (16) Console History   (26) NTUSER   (36) Re/Set   (46) VadDump PID DIR  (56)           (66)"
+menu['(7)']="Re/Set PORT      (17) Cmdline Arguments (27) HARDWARE (37) Re/Set   (47) ProcDump PID DIR (57)           (67)"
+menu['(8)']="Exit             (18) User Assist Keys  (28) DEFAULT  (38) Re/Set   (48) MemDump PID DIR  (58)           (68)"
+menu['(9)']="Clean/Exit       (19)                   (29) BOOT BCD (39) Re/Set   (49)                  (59)           (69) Bulk Extracter"
 
 
 # -------------------------------------------------------------------------------------
@@ -661,7 +708,7 @@ while True:
    if selection == '6':
       temp = raw_input("Please enter IP value: ")
       if temp != '':
-         HIP = padding(temp, COL3)
+         HIP = padding(temp, COL1)
          MAN1 = 1
 
 # ------------------------------------------------------------------------------------- 
@@ -675,7 +722,7 @@ while True:
    if selection == '7':
       temp = raw_input("Please enter PORT value: ")
       if temp != '':
-         POR = padding(temp, COL3)
+         POR = padding(temp, COL1)
          MAN2 = 1
 
 # ------------------------------------------------------------------------------------- 
