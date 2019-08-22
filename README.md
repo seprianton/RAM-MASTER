@@ -15,5 +15,5 @@ Python utility file to forensically investigate memory-dump files via volatility
 A python utility file that forensically examines Windows memory-dump files - It can pull usernames and password hashs, extract pcap files, MFT executables and much much more.
 
 ## CONSOLE DISPLAY
-![Screenshot](picture2.png)
 ![Screenshot](picture3.png)
+![Screenshot](picture2.png)
