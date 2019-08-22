@@ -12,7 +12,7 @@ Python utility file to forensically investigate memory-dump files via volatility
 | bash file | patch.sh         | 7a4231731982e09d9a703f7357170755 |
 
 
-A python utility file that forensically examines Windows memory-dump files - It can pull usernames and password hashs, extract pcap files, MFT executables and much much more. Recently added - 12 users can now be displayed at any one time.
+A python utility file that forensically examines Windows memory-dump files - It can pull usernames and password hashs, extract pcap files, MFT executables and much much more. Recently added the function to display 12 systemm users at any one time.
 
 ## CONSOLE DISPLAY
 ![Screenshot](picture3.png)
