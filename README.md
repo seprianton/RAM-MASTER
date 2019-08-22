@@ -1,5 +1,5 @@
 # MEMORY-MASTER
-Python utility file to forensically investigate memory-dump files via volatility.
+### Python utility file to forensically investigate memory-dump files via volatility.
 
 - [x] Requires volatility (https://github.com/volatilityfoundation/volatility) to be installed.
 - [x] Sample memory dump files (https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples) are available here.
@@ -14,7 +14,7 @@ Python utility file to forensically investigate memory-dump files via volatility
 | bash file | patch.sh         | 7a4231731982e09d9a703f7357170755 |
 
 
-### A python utility file that forensically examines Windows memory-dump files - It can pull usernames and password hashs, extract pcap files, MFT executables and much much more.
+A python utility file that forensically examines Windows memory-dump files - It can pull usernames and password hashs, extract pcap files, MFT executables and much much more.
 
 Recently added a function to display 12 system users at any one time.
 
