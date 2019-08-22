@@ -51,8 +51,18 @@ if extTest != "mem":
     print "This is not a .mem file...\n"
     exit (True)
 
-while len(fileName) < 13:
-  fileName += " "
+# -------------------------------------------------------------------------------------
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub                                                               
+# Version : 4.0
+# Details : Initialise program functions
+# Modified: N/A                                                               
+# -------------------------------------------------------------------------------------
+
+def padding(variable,value):
+   while len(variable) < value:
+      variable += " "
+   return variable
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -62,14 +72,23 @@ while len(fileName) < 13:
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
-PRO = "UNSELECTED"
-PR2 = "UNSELECTED"
-DA1 = "NOT FOUND "
+COL1 = 13
+COL2 = 18
+COL3 = 15
+COL4 = 14
+COL5 = 32
+MAN1 = 0
+MAN2 = 0
+
+PRO = "UNSELECTED   "
+PR2 = "UNSELECTED   "
+DA1 = "NOT FOUND    "
 PI1 = "0            "
 PI2 = "0            "
 OFF = "0            "
 PRM = "UNSELECTED   "
 DIR = "WORKAREA     "
+
 SAM = "0x0000000000000000"
 SEC = "0x0000000000000000"
 COM = "0x0000000000000000"
@@ -79,6 +98,7 @@ NTU = "0x0000000000000000"
 HRD = "0x0000000000000000"
 DEF = "0x0000000000000000"
 BCD = "0x0000000000000000"
+
 HST = "NOT FOUND      "
 PRC = "0              "
 SVP = "0              "
@@ -86,62 +106,61 @@ DA2 = "NOT FOUND      "
 TI2 = "NOT FOUND      "
 HIP = "000.000.000.000"
 POR = "000            "
-ADM = "NOT FOUND"
-GUS = "NOT FOUND"
-U = "              "
+
+X1 = " "*COL4
+X2 = " "*COL5
 US = []
-US = [U,U,U,U,U,U,U]
-PAA = "                                "
-PAG = "                                "
 PA = []
-PA = [PAA,PAA,PAA,PAA,PAA,PAA,PAA]
+US = [X1,X1,X1,X1,X1,X1,X1,X1,X1]
+PA = [X2,X2,X2,X2,X2,X2,X2,X2,X2]
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 4.0                                                                
-# Details : Display my universal header.    
+# Details : Display universal header.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
-def Header():
-   os.system("clear")
-   print "\t\t\t __  __ _____ __  __  ___  ______   __  __  __    _    ____ _____ _____ ____   "
-   print "\t\t\t|  \/  | ____|  \/  |/ _ \|  _ \ \ / / |  \/  |  / \  / ___|_   _| ____|  _ \  "
-   print "\t\t\t| |\/| |  _| | |\/| | | | | |_) \ V /  | |\/| | / _ \ \___ \ | | |  _| | |_) | "
-   print "\t\t\t| |  | | |___| |  | | |_| |  _ < | |   | |  | |/ ___ \ ___) || | | |___|  _ <  "
-   print "\t\t\t|_|  |_|_____|_|  |_|\___/|_| \_\|_|   |_|  |_/_/   \_\____/ |_| |_____|_| \_\ "
-   print "                                                                                     "
-   print "\t\t\t             BY TERENCE BROADBENT BSC CYBER SECURITY (FIRST CLASS)           \n"
+os.system("clear")
+print "\t\t\t __  __ _____ __  __  ___  ______   __  __  __    _    ____ _____ _____ ____   "
+print "\t\t\t|  \/  | ____|  \/  |/ _ \|  _ \ \ / / |  \/  |  / \  / ___|_   _| ____|  _ \  "
+print "\t\t\t| |\/| |  _| | |\/| | | | | |_) \ V /  | |\/| | / _ \ \___ \ | | |  _| | |_) | "
+print "\t\t\t| |  | | |___| |  | | |_| |  _ < | |   | |  | |/ ___ \ ___) || | | |___|  _ <  "
+print "\t\t\t|_|  |_|_____|_|  |_|\___/|_| \_\|_|   |_|  |_/_/   \_\____/ |_| |_____|_| \_\ "
+print "                                                                                     "
+print "\t\t\t             BY TERENCE BROADBENT BSC CYBER SECURITY (FIRST CLASS)           \n"
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
 # Version : 4.0
-# Details : Boot the system with populated program variables.
+# Details : Boot the system and populate program variables.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
-Header()
 print "Booting - Please wait...\n"
-os.mkdir("WORKAREA")
+
+fileName = padding(fileName,COL1)
+if not os.path.exists('WORKAREA'):
+   os.mkdir("WORKAREA")
 
 # -------------------------------------------------------------------------------------
 # Grab image information.
 # -------------------------------------------------------------------------------------
 os.system("volatility imageinfo -f " + fileName + " > image.txt")
 with open("image.txt") as search:
-   for word in search:
-      if "Suggested Profile(s) :" in word:
-         profiles = word
-      if "Number of Processors" in word:
-         PRC = word
-      if "Image Type (Service Pack) :" in word:
-         SVP = word
-      if "Image date and time :" in word:
-         DA1 = word
-      if "Image local date and time :" in word:
-         DA2 = word
+   for line in search:
+      if "Suggested Profile(s) :" in line:
+         profiles = line
+      if "Number of Processors" in line:
+         PRC = line
+      if "Image Type (Service Pack) :" in line:
+         SVP = line
+      if "Image date and time :" in line:
+         DA1 = line
+      if "Image local date and time :" in line:
+         DA2 = line
 os.remove("image.txt")
 
 #-------------------------------------------------------------------------------------
@@ -153,137 +172,89 @@ profiles = profiles.split(",")
 PRO = " --profile " + profiles[0]
 PR2 = profiles[0]
 if (PR2[:1] == "W") or (PR2[:1] == "V"):
-   while len(PR2) < 16:
-      PR2 = PR2 + " "
+   PR2 = padding(PR2,COL1)
 else:
    print "ERROR - Windows profile not found..."
    exit(True)
 
 #-------------------------------------------------------------------------------------
-# Find number of processors, service pack status and creation & local dates and times.
+# Find number of processors, service pack details, creation and local dates and times.
 #-------------------------------------------------------------------------------------
 PRC = PRC.replace("Number of Processors :","")
 PRC = PRC.replace(" ","")
 PRC = PRC.replace("\n","")
-while len(PRC) < 15:
-   PRC = PRC + " "
+PRC = padding(PRC, COL3)
+
 SVP = SVP.replace("Image Type (Service Pack) :","")
 SVP = SVP.replace(" ","")
 SVP = SVP.replace("\n","")
-while len(SVP) < 15:
-   SVP = SVP + " "
+SVP = padding(SVP, COL3)
+
 DA1 = DA1.replace("Image date and time :","")
 DA1 = DA1.lstrip()
 DA1 = DA1.rstrip("\n")
 a,b,c = DA1.split()
 DA1 = str(a)
 DA1 = DA1 + " "
-while len(DA1) < 13:
-   DA1 = DA1 + " "
+DA1 = padding(DA1, COL1)
+
 DA2 = DA2.replace("Image local date and time :","")
 DA2 = DA2.lstrip()
 DA2 = DA2.rstrip("\n")
 a,b,c = DA2.split()
 DA2 = a
 TI2 = b
-while len(DA2) < 15:
-   DA2 = DA2 + " "
-while len(TI2) < 15:
-   TI2 = TI2 + " "
+DA2 = padding(DA2, COL3)
+TI2 = padding(TI2, COL3)
 
 #-------------------------------------------------------------------------------------
 # Grab hive information if available.
 #-------------------------------------------------------------------------------------
 os.system("volatility -f " + fileName + PRO + " hivelist > hivelist.txt")
-with open("hivelist.txt") as fp:
-   line = fp.readline()
-   while line:
-      line = fp.readline()
+with open("hivelist.txt") as search:
+   for line in search:
       if "\SAM" in line:
          SAM = line.split(None, 1)[0]
-         while len(SAM) < 18:
-            SAM = SAM + " "
+         SAM = padding(SAM, COL2)
       if "\SECURITY" in line:
          SEC = line.split(None, 1)[0]
-         while len(SEC) < 18:
-            SEC = SEC + " "
+         SEC = padding(SEC, COL2)
       if "\SOFTWARE" in line:
          SOF = line.split(None, 1)[0]
-         while len(SOF) < 18:
-            SOF = SOF + " "
+         SOF = padding(SOF, COL2)
       if "\SYSTEM" in line:
          SYS = line.split(None, 1)[0]
-         while len(SYS) < 18:
-            SYS = SYS + " "
+         SYS = padding(SYS, COL2)
       if "\COMPONENTS" in line:
          COM = line.split(None, 1)[0]
-         while len(COM) < 18:
-            COM = COM + " "
+         COM = padding(SYS, COL2)
       if "\Administrator\NTUSER.DAT" in line: # \Administrator\NTUSER.DAT as multiple NTUSERS files. 
          NTU = line.split(None, 1)[0]
-         while len(NTU) < 18:
-            NTU = NTU + " "
+         NTU = padding(SYS, COL2)
       if "\HARDWARE" in line:
          HRD = line.split(None,1)[0]
-         while len(HRD) < 18:
-            HRD = HRD + " "
+         HRD = padding(HRD, COL2)
       if "\DEFAULT" in line:
          DEF = line.split(None,1)[0]
-         while len(DEF) < 18:
-            DEF = DEF + " "
+         DEF = padding(DEF, COL2)
       if "\BCD" in line:
          BCD = line.split(None,1)[0]
-         while len(BCD) < 18:
-            BCD = BCD + " "
+         BCD = padding(BCD, COL2)
 os.remove("hivelist.txt")
 
 #-------------------------------------------------------------------------------------
 # Grab host name if avialable.
 #-------------------------------------------------------------------------------------
 os.system("volatility -f " + fileName + PRO + " printkey -o " + SYS + " -K 'ControlSet001\Control\ComputerName\ComputerName' > host.txt")
-with open("host.txt") as fp:
-   wordlist = (list(fp)[-1])
-os.remove('host.txt')
+with open("host.txt") as search:
+   wordlist = (list(search)[-1])
 wordlist = wordlist.split()
-HST = wordlist[-1].upper()
+HST = wordlist[-1]
 if HST == "SEARCHED":
    HST = "NOT FOUND"
-while len(HST) < 15:
-   HST = HST + " "
-
-#-------------------------------------------------------------------------------------
-# Grab user information if available.
-#-------------------------------------------------------------------------------------
-os.system("echo 'HASH FILE' > hash.txt")
-os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM + " >> hash.txt")
-usercount = 0
-with open("hash.txt") as fp:
-   count = 0
-   line = fp.readline() # Header!!
-   while line:
-      line = fp.readline()
-      if "Administrator" in line:
-         catch = line.replace(":"," ")
-         catch2 = catch.split()
-         catch3 = catch2[3]
-         PAA = catch3
-      if "Guest" in line :
-         catch = line.replace(":"," ")
-         catch2 = catch.split()
-         catch3 = catch2[3]
-         PAG = catch3
-      elif ("Guest") and ("Administrator") not in line:
-         if line !="":
-           catch = line.replace(":"," ")
-           catch2 = catch.split()
-           catch3 = catch2[3]
-           PA[count] = catch3
-           US[count] = catch2[0][:13].upper()
-           temp = US[count]
-           while len(US[count]) < 14:
-              US[count] = US[count] + " "
-           count = count + 1
-os.remove("hash.txt")
+else:
+   HST = padding(HST, COL3)
+os.remove('host.txt')
 
 #-------------------------------------------------------------------------------------
 # Grab local IP if alvailable.
@@ -301,13 +272,28 @@ if getip != "":
    getip = getip[0].replace(':',' ')  
    HIP = getip.rsplit(' ', 1)[0]
    POR = getip.rsplit(' ', 1)[1]
-   HIP = HIP.rstrip('\n')
-   while len(HIP) < 15:
-      HIP = HIP + " "
-   while len(POR) < 15:
-      POR = POR + " "
+   HIP = padding(HIP, COL3)
+   POR = padding(POR, COL3)
 os.remove('connscan.txt')
 os.remove('conn1.txt')
+
+#-------------------------------------------------------------------------------------
+# Grab user information if available.
+#-------------------------------------------------------------------------------------
+os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM + " >> hash.txt")
+with open("hash.txt") as search:
+   count = 0
+   for line in search:
+      if line !="":
+         catch = line.replace(":"," ")
+         catch2 = catch.split()
+         catch3 = catch2[3]
+         PA[count] = catch3
+         US[count] = catch2[0][:COL4-1]
+         temp = US[count]
+         US[count] = padding(US[count], COL4)
+         count = count + 1
+os.remove("hash.txt")
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -332,7 +318,7 @@ def Display():
 
 # -------------------------------------------------------------------------------------
    print "FILENAME [",
-   print colored(fileName[:13],'blue'),
+   print colored(fileName[:COL1],'blue'),
    print "] SAM      [",
    if (SAM == "0x0000000000000000"):
       print colored(SAM,'red'),
@@ -340,39 +326,39 @@ def Display():
       print colored(SAM,'blue'),
    print "] HOST [",
    if HST == "NOT FOUND      ":
-      print colored(HST[:15],'red'),
+      print colored(HST[:COL2],'red'),
    else:
-       print colored(HST[:15],'blue'),
-   print "] ADMINISTRATOR [",
-   print colored(PAA,'blue'),
+       print colored(HST[:COL2],'blue'),
+   print "]",
+   print US[0] + "[",
+   print colored(PA[0],'blue'),
    print "]"
-
 # -------------------------------------------------------------------------------------
    print "PROFILE  [",
    if PR2 == "UNSELECTED              ":
-      print colored(PR2[:13],'red'),
+      print colored(PR2,'red'),
    else:
-      print colored(PR2[:13],'blue'),
+      print colored(PR2,'blue'),
    print "] SECURITY [",
    if SEC == "0x0000000000000000":
       print colored(SEC,'red'),
    else:
       print colored(SEC,'blue'),
    print "] PROC [",
-   if PRC == 0:
+   if PRC == "0              ":
       print colored(HST,'red'),
    else:
        print colored(PRC,'blue'),
-   print "] GUEST         [",
-   print colored(PAG,'blue'),
+   print "]",
+   print US[1] + "[",
+   print colored(PA[1],'blue'),
    print "]"
-
 # -------------------------------------------------------------------------------------
    print "CREATED  [",
    if DA1 == "NOT FOUND            ":
-      print colored(DA1[:13],'red'),
+      print colored(DA1,'red'),
    else:
-      print colored(DA1[:13],'blue'),
+      print colored(DA1,'blue'),
    print "] COMPONEN [",
    if COM == "0x0000000000000000":
       print colored(COM,'red'),
@@ -384,8 +370,8 @@ def Display():
    else:
       print colored(SVP,'blue'),
    print "]",
-   print US[0] + "[",
-   print colored(PA[0],'blue'),
+   print US[2] + "[",
+   print colored(PA[2],'blue'),
    print "]"
 
 # -------------------------------------------------------------------------------------
@@ -401,14 +387,14 @@ def Display():
    else:
       print colored(DA2,'blue'),
    print "]",
-   print US[1] + "[",
-   print colored(PA[1],'blue'),
+   print US[3] + "[",
+   print colored(PA[3],'blue'),
    print "]"
 
 # -------------------------------------------------------------------------------------
    print "PID      [",
    if PI1 == "0            ":
-      print colored(PI1,'red'),
+      print colored(PI1,'yellow'),
    else:
       print colored(PI1,'blue'),
    print "] SYSTEM   [",
@@ -422,14 +408,14 @@ def Display():
    else:
       print colored(TI2,'blue'),
    print "]",
-   print US[2] + "[",
-   print colored(PA[2],'blue'),
+   print US[4] + "[",
+   print colored(PA[4],'blue'),
    print "]"
 
 # -------------------------------------------------------------------------------------
    print "PPID     [",
-   if PI2[:1] == "0":
-      print colored(PI2,'red'),
+   if PI2 == "0            ":
+      print colored(PI2,'yellow'),
    else:
       print colored(PI2,'blue'),
    print "] NTUSER   [",					
@@ -441,18 +427,21 @@ def Display():
    if HIP == "000.000.000.000":
       print colored(HIP,'red'),
    else:
-      print colored(HIP,'blue'),
+      if MAN1 == 0:
+         print colored(HIP,'yellow'),
+      else:
+         print colored(HIP,'blue'),
    print "]",
-   print US[3] + "[",
-   print colored(PA[3],'blue'),
+   print US[5] + "[",
+   print colored(PA[5],'blue'),
    print "]"
 
 # -------------------------------------------------------------------------------------
    print "OFFSET   [",
    if OFF == "0            ":
-      print colored(OFF[:13],'red'),
+      print colored(OFF,'yellow'),
    else:
-      print colored(OFF[:13],'blue'),
+      print colored(OFF,'blue'),
    print "] HARDWARE [",					
    if HRD == "0x0000000000000000":
       print colored(HRD,'red'),
@@ -462,42 +451,45 @@ def Display():
    if POR == "000            ":
       print colored(POR,'red'),
    else:
-      print colored(POR,'blue'),
+     if MAN2 == 0:
+        print colored(POR,'yellow'),
+     else:
+        print colored(POR,'blue'),
    print "]",
-   print US[4] + "[",
-   print colored(PA[4],'blue'),
+   print US[6] + "[",
+   print colored(PA[6],'blue'),
    print "]"
 
 # -------------------------------------------------------------------------------------
-   print "PARAM    [",
+   print "FILE     [",
    if PRM == "UNSELECTED   ":
-      print colored(PRM[:13],'red'),
+      print colored(PRM,'yellow'),
    else:
-      print colored(PRM[:13],'blue'),
+      print colored(PRM,'blue'),
    print "] DEFAULT  [",					
    if DEF == "0x0000000000000000":
       print colored(DEF,'red'),
    else:
       print colored(DEF,'blue'),
    print "]      [                 ]",
-   print US[5] + "[",
-   print colored(PA[5],'blue'),
+   print US[7] + "[",
+   print colored(PA[7],'blue'),
    print "]"
 
 # -------------------------------------------------------------------------------------
    print "DIR      [",
    if DIR == "WORKAREA     ":
-      print colored(DIR[:13],'red'),
+      print colored(DIR,'yellow'),
    else:
-      print colored(DIR[:13],'blue'),
+      print colored(DIR,'blue'),
    print "] BOOT BCD [",					
    if BCD == "0x0000000000000000":
       print colored(BCD,'red'),
    else:
       print colored(BCD,'blue'),
    print "]      [                 ]",
-   print US[6] + "[",
-   print colored(PA[6],'blue'),
+   print US[8] + "[",
+   print colored(PA[8],'blue'),
    print "]"
 
 # -------------------------------------------------------------------------------------
@@ -533,12 +525,12 @@ menu = {}
 menu['(0)']="Re/Set PROFILE  (10) Users/Passwords    (20) Hivelist   (30) PrintKey  (40) Connection Scan   (50) Desktop    (60) Timeline"
 menu['(1)']="Re/Set PID      (11) Default Password   (21) SAM        (31) Re/Set    (41) Network Scan      (51) Clipboard  (61) Screenshots"
 menu['(2)']="Re/Set PPID     (12) Running Processes  (22) SECURITY   (32) Re/Set    (42) Socket Scan       (52) Notepad    (62) MFT Table"
-menu['(3)']="Re/Set OFFSET   (13) Hidden Processes   (23) COMPONENT  (33) Re/Set    (43) Mutant Scan       (53)            (63) PARAM OFFSET" 
-menu['(4)']="Re/Set PARAM    (14) Running Services   (24) SOFTWARE   (34) Re/Set    (44) Malfind PID DIR   (54)            (64)"
-menu['(5)']="Re/Set DIR      (15) Command History    (25) SYSTEM     (35) Re/Set    (45) Search PARAM      (55)            (65)"
-menu['(6)']="                (16) Console History    (26) NTUSER     (36) Re/Set    (46) VadDump PID DIR   (56)            (66)"
-menu['(7)']="                (17) Cmdline Arguments  (27) HARDWARE   (37) Re/Set    (47) ProcDump PID DIR  (57)            (67)"
-menu['(8)']="                (18) User Assist Keys   (28) DEFAULT    (38) Re/Set    (48) MemDump PID DIR   (58)            (68)"
+menu['(3)']="Re/Set OFFSET   (13) Hidden Processes   (23) COMPONENT  (33) Re/Set    (43) Mutant Scan       (53)            (63) FILE OFFSET" 
+menu['(4)']="Re/Set FILE     (14) Running Services   (24) SOFTWARE   (34) Re/Set    (44) Malfind PID DIR   (54)            (64)"
+menu['(5)']="Re/Set DIR      (15) Command History    (25) SYSTEM     (35) Re/Set    (45) Search FILE       (55)            (65)"
+menu['(6)']="Re/Set IP       (16) Console History    (26) NTUSER     (36) Re/Set    (46) VadDump PID DIR   (56)            (66)"
+menu['(7)']="Re/Set PORT     (17) Cmdline Arguments  (27) HARDWARE   (37) Re/Set    (47) ProcDump PID DIR  (57)            (67)"
+menu['(8)']="Exit            (18) User Assist Keys   (28) DEFAULT    (38) Re/Set    (48) MemDump PID DIR   (58)            (68)"
 menu['(9)']="Clean/Exit      (19)                    (29) BOOT BCD   (39) Re/Set    (49)                   (59)            (69) Bulk Extracter"
 
 
@@ -573,8 +565,8 @@ while True:
       PRO = raw_input("Please enter profile: ")
       if PRO == "":
          PRO = BAK      
-      with open("profiles.txt") as fp:
-         line = fp.readline()
+      with open("profiles.txt") as search:
+         line = search.readline()
          while line:
             line = fp.readline()
             if PRO in line:
@@ -584,9 +576,7 @@ while True:
       else:
          PRO = " --profile " + PRO
          PR2 = PRO.replace(" --profile ","")
-         while len(PR2) < 13:
-            PR2 += " "
-      fp.close()        
+         PR2 = padding(PR2, COL1)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -597,11 +587,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '1':
-      temp = raw_input("Please enter PPID value: ")
+      temp = raw_input("Please enter PID value: ")
       if temp != '':
-         PI1 = temp
-      while len(PI1) < 13:
-         PI1 += " "
+         PI1 = padding(temp, COL1)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                           
@@ -612,11 +600,10 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '2':
-      temp = raw_input("Please enter PID value: ")
+      temp = raw_input("Please enter PPID value: ")
       if temp != '':
-         PI2 = temp
-      while len(PI2) < 13:
-         PI2 += " "
+         PI2 = padding(temp, COL1)
+
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
@@ -628,9 +615,7 @@ while True:
    if selection == '3':
       temp = raw_input("Please enter OFFSET value: ")
       if temp != '':
-         OFF = temp
-      while len(OFF) < 13:
-         OFF += " "
+         OFF = padding(temp, COL1)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -643,9 +628,7 @@ while True:
    if selection == '4':
       temp = raw_input("Please enter parameter value: ")
       if temp != '':
-         PRM = temp.upper()
-      while len(PRM) < 13:
-         PRM += " "
+         PRM = padding(temp,COL1)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -660,13 +643,51 @@ while True:
       if os.path.exists(directory):
          print "Directory already Exists...."
       else:
-         if len(DIR) > 0:
-            DIR = directory.upper()
+         if len(directory) > 0:
             os.mkdir(directory)
-            while len(DIR) < 13:
-               DIR += " "
+            DIR = directory
+            DIR = padding(DIR, COL1)
             print "Working directory changed..."
       raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                           
+# CONTRACT: GitHub
+# Version : 4.0
+# Details : Menu option selected - Set host IP Value.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '6':
+      temp = raw_input("Please enter IP value: ")
+      if temp != '':
+         HIP = padding(temp, COL3)
+         MAN1 = 1
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                           
+# CONTRACT: GitHub
+# Version : 4.0
+# Details : Menu option selected - Set host PORT Value.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '7':
+      temp = raw_input("Please enter PORT value: ")
+      if temp != '':
+         POR = padding(temp, COL3)
+         MAN2 = 1
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 4.0
+# Details : Menu option selected - Exit the program, leaving files undeleted.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '8':
+      exit(1)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -683,19 +704,7 @@ while True:
          os.remove('timeline.txt')
       if os.path.exists('mfttable.txt'):
          os.remove('mfttable.txt')
-      if os.path.exists('screenShots'):
-         shutil.rmtree('screenShots') 
-      if os.path.exists('bulkOut'):
-         shutil.rmtree('bulkOut') 
-      if os.path.exists('PIData'):
-         shutil.rmtree('PIData')
-      if os.path.exists('malFind'):
-         shutil.rmtree('malFind')   
-      if os.path.exists('mutantFiles'):
-         shutil.rmtree('mutantFiles') 
-      if os.path.exists('vadDump'):
-         shutil.rmtree('vadDump')
-      exit(False)
+      exit(1)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -716,7 +725,7 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 4.0
-# Details : Menu option selected - PR2pays any LSA secrets
+# Details : Menu option selected - Display any LSA secrets
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
@@ -741,10 +750,9 @@ while True:
          for line in read1:
             for word in line.split('|'):
                 output = subprocess.check_output("echo " + word + " >> F3.txt", shell=True)
-      read1.close()
       os.system("tail -n +2 F3.txt > F4.txt")
       os.system("wc -l F2.txt > NUM.txt")
-      NUMLINES = open("NUM.txt").readline().replace(' F2.txt','')
+      NUMLINES = open("NUM.txt").readline().replace(' F2.txt','') 
       COUNT = int(NUMLINES)
       print "\n[1]. There were",COUNT,"processes running at the time of the memory dump.\n"
       read2 = open('PID.txt','w')
@@ -761,8 +769,8 @@ while True:
             G = read4.readline()
             H = read4.readline() # blank
             COUNT = (COUNT-1)
-      read2.close()
-      read3.close()
+      read2.close() # required
+      read3.close() # required
       os.remove('F1.txt')
       os.remove('F2.txt')
       os.remove('F3.txt')
@@ -775,7 +783,6 @@ while True:
             if line != "0":
                print "     Parent process PPID",line,"does not have a process spawn! and should be investigated further..."
             line = read5.readline().strip('\n')
-      read5.close()
       os.remove('PID.txt')
       os.remove('PPID.txt')
       os.remove('NUM.txt')
@@ -1011,9 +1018,10 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='30':
-      KEY = raw_input("Please enter the key value in quotes: ")
-      os.system("volatility -f " + fileName + PRO + " printkey -K " + KEY)
-      raw_input("\nPress ENTER to continue...") 
+      temp = raw_input("Please enter the key value in quotes: ")
+      if temp != "":
+         os.system("volatility -f " + fileName + PRO + " printkey -K " + KEY)
+         raw_input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1024,9 +1032,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '31':
-      SAM = raw_input("Please enter SAM value: ")
-      while len(SAM) < 18:
-         SAM += " "
+      temp = raw_input("Please enter SAM value: ")
+      if temp != "":
+         SAM = padding(temp, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1037,9 +1045,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '32':
-      SEC = raw_input("Please enter SECURITY value: ")
-      while len(SEC) < 18:
-         SEC += " "
+      temp = raw_input("Please enter SECURITY value: ")
+      if temp != "":
+         SEC = padding(temp, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1050,9 +1058,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '33':
-      COM = raw_input("Please enter COMPENENTS value: ")
-      while len(COM) < 18:
-         COM += " "
+      temp = raw_input("Please enter COMPENENTS value: ")
+      if temp != "":
+         COM = padding(temp, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1063,9 +1071,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '34':
-      SOF = raw_input("Please enter SOFTWARE value: ")
-      while len(SOF) < 18:
-         SOF += " "
+      temp = raw_input("Please enter SOFTWARE value: ")
+      if temp != "":
+         SOF = padding(temp, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1076,9 +1084,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '35':
-      SYS = raw_input("Please enter SYSTEM value: ")
-      while len(SYS) < 18:
-         SYS += " "
+      temp = raw_input("Please enter SYSTEM value: ")
+      if temp != "":
+         SYS = padding(temp, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1089,9 +1097,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '36':
-      NTU = raw_input("Please enter NTUSER value: ")
-      while len(NTU) < 18:
-         NTU += " "
+      temp = raw_input("Please enter NTUSER value: ")
+      if temp != "":
+         NTU = padding(temp, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1102,9 +1110,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '37':
-      HRD = raw_input("Please enter HARDWARE value: ")
-      while len(HRD) < 18:
-         HRD += " "
+      temp = raw_input("Please enter HARDWARE value: ")
+      if temp != "":
+         HRD = padding(temp, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1115,9 +1123,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '38':
-      DEF = raw_input("Please enter DEFUALT value: ")
-      while len(DEF) < 18:
-         DEF += " "
+      temp = raw_input("Please enter DEFUALT value: ")
+      if temp != "":
+         DEF = padding(temp, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1128,15 +1136,15 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '39':
-      BCD = raw_input("Please enter BOOT BCD value: ")
-      while len(BCD) < 18:
-         BCD += " "
+      temp = raw_input("Please enter BOOT BCD value: ")
+      if temp != "":
+         BCD = padding(temp, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 4.0
-# Details : Menu option selected - Analyse the NETWORK.
+# Details : Menu option selected - Analyse the NETWORK connections.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
@@ -1148,7 +1156,7 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 4.0
-# Details : Menu option selected - Analyse the NETWORK.
+# Details : Menu option selected - Analyse the NETWORK traffic.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
@@ -1160,7 +1168,7 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 4.0
-# Details : Menu option selected - Analyse the NETWORK.
+# Details : Menu option selected - Analyse the NETWORK sockets.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
@@ -1172,7 +1180,7 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 4.0
-# Details : Menu option selected - Finds Mutants!
+# Details : Menu option selected - Finds Mutants.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
@@ -1184,7 +1192,7 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 4.0
-# Details : Menu option selected - Finds Malware!
+# Details : Menu option selected - Finds Malware.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
@@ -1196,7 +1204,7 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 4.0
-# Details : Menu option selected - Allows the user to Search the PARAM string.
+# Details : Menu option selected - Search image for occurences of string.
 # Modified: N/A
 # ------------------------------------------------------------------------------------- 
    
@@ -1209,7 +1217,7 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 4.0
-# Details : Menu option selected -  Vaddump!
+# Details : Menu option selected -  Vad dump PID.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
@@ -1282,19 +1290,20 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 4.0
-# Details : Menu option selected - Build timeline.
+# Details : Menu option selected - Extract timeline.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='60':
       os.system("volatility -f " + fileName + PRO + " timeliner --output-file timeline.txt")
+      print "A timeline has sucessfully been exported to timeline.txt..."
       raw_input("\nPress ENTER to continue...")
 
 #------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 4.0
-# Details : Menu option selected - Download windows screenshots.
+# Details : Menu option selected - Extract windows screenshots.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
@@ -1306,16 +1315,16 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 4.0
-# Details : Menu option selected - Extracts the MFT table and it contents.
+# Details : Menu option selected - Extract the MFT table and it contents.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='62':
-      os.system("volatility -f " + fileName + PRO + " mftparser >> mfttable.txt")
-      print "The MFT has been sucessfully exported to mfttable.txt..."
+      os.system("volatility -f " + fileName + PRO + " mftparser --output-file mfttable.txt")
+      print "The MFT has sucessfully been exported to mfttable.txt..."
       os.system("strings mfttable.txt | grep '0000000000:' > count.txt")
       fileNum = sum(1 for line in open('count.txt'))
-      print "The table contains " + str(fileNum) + " extractable files < 1024 bytes in length."
+      print "The table contains " + str(fileNum) + " local files < 1024 bytes in length."
       os.remove("count.txt")
       raw_input("\nPress ENTER to continue...")
 
@@ -1323,7 +1332,7 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 4.0
-# Details : Menu option selected - Extracts the file based on physical OFFSET
+# Details : Menu option selected - Extract a single file based on physical OFFSET.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
@@ -1335,13 +1344,12 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 4.0
-# Details : Menu option selected - Bulk Extract files.
+# Details : Menu option selected - Bulk Extract all known files.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='69':
-      os.system("bulk_extractor -o bulkOut " + fileName)
-      print "\nBulk extraction is now available in directory bulkOut...\n"
+      os.system("bulk_extractor -o " + DIR + " " + fileName)
       raw_input("\nPress ENTER to continue...")
 
 #Eof...
