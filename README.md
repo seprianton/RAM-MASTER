@@ -5,7 +5,7 @@ Python utility file to forensically investigate memory-dump files via volatility
 - [x] Sample memory dump files (https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples) are available here.
 - [ ] The 3 custom hives (X) have not been implemented as yet, as the program is still under review! However, what is there is working but not fully tested against all versions of windows operating systems. 
 
-
+</br>
 | LANGUAGE  | FILENAME         | MD5 Hash                         |
 |------     |------            | -------                          |
 | python    | memory_master.py | ad19fd6e1f3ce3e0364526cfdd2317a1 |
