@@ -3,7 +3,8 @@ Python utility file to forensically investigate memory-dump files via volatility
 
 - [x] Requires volatility (https://github.com/volatilityfoundation/volatility) to be installed.
 - [x] Sample memory dump files (https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples) are available here.
-- [ ] Still under review!, what is there is working but not fully tested.
+
+- [ ] HIVE X not implemented as yet, as the program is still under review! However, what is there is working but not fully tested. 
 
 | LANGUAGE  | FILENAME         | MD5 Hash                         |
 |------     |------            | -------                          |
