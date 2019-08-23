@@ -16,7 +16,7 @@
 
 A python utility file that can forensically examine Microsoft Windows memory-dump files - It can pull usernames and password hashs, extract pcap files, MFT executables and much much more.
 
-Recently added the facility to display up to 1o system users at any one time and a custom hive.
+Recently added the facility to display up to 10 system users at any one time and a custom hive.
 
 ## CONSOLE DISPLAY
 ![Screenshot](picture1.png)
