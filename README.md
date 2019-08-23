@@ -9,7 +9,7 @@
 
 | LANGUAGE  | FILENAME         | MD5 Hash                         |
 |------     |------            | -------                          |
-| python    | memory_master.py | 1d484b3691db5e1f2ca3ceacc29e091c |
+| python    | memory_master.py | 9f6b4428fc3ff21ca2875fda6845d6c8 |
 | text file | profiles.txt     | 90a98544725dc945df30c20fabeb3e80 |
 | bash file | patch.sh         | 7a4231731982e09d9a703f7357170755 |
 

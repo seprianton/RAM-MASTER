@@ -260,7 +260,7 @@ os.system("volatility -f " + fileName + PRO + " printkey -o " + SYS + " -K 'Cont
 with open("host.txt") as search:
    wordlist = (list(search)[-1])
 wordlist = wordlist.split()
-HST = wordlist[-1]
+HST = str(wordlist[-1])
 if HST == "searched":
    HST = "Not found"
 HST = padding(HST, COL1)
@@ -350,7 +350,7 @@ def Display():
    if HST == "Not found          ":
       print colored(HST[:COL1],'red'),
    else:
-       print colored(HST[:COL1],'blue'),
+      print colored(HST[:COL1],'blue') + " ",
    print "]",
 
    print "SECURITY [",
@@ -440,9 +440,9 @@ def Display():
 # ------------------------------------------------------------------------------------- 
    print "PID       [",
    if PI1 == "0                  ":
-      print colored(PI1,'red'),
+      print colored(PI1[:COL1],'red'),
    else:
-      print colored(PI1,'blue'),
+      print colored(PI1[:COL1],'blue'),
    print "]",
 
    print "HARDWARE [",
@@ -459,9 +459,9 @@ def Display():
 # ------------------------------------------------------------------------------------- 
    print "OFFSET    [",
    if OFF == "0                  ":
-      print colored(OFF,'red'),
+      print colored(OFF[:COL1],'red'),
    else:
-      print colored(OFF,'blue'),
+      print colored(OFF[:COL1],'blue'),
    print "]",
 
    print "DEFAULT  [",					
@@ -478,9 +478,9 @@ def Display():
 # -------------------------------------------------------------------------------------
    print "PARAMETER [",
    if PRM == "UNSELECTED         ":
-      print colored(PRM,'red'),
+      print colored(PRM[:COL1],'red'),
    else:
-      print colored(PRM,'blue'),
+      print colored(PRM[:COL1],'blue'),
    print "]",
 
    print "BOOT BCD [",					
@@ -497,9 +497,9 @@ def Display():
 # -------------------------------------------------------------------------------------
    print "DIRECTORY [",
    if DIR == "WORKAREA           ":
-      print colored(DIR,'red'),
+      print colored(DIR[:COL1],'red'),
    else:
-      print colored(DIR,'blue'),
+      print colored(DIR[:COL1],'blue'),
    print "]",
 
    print NAM[:8] + " [",					
@@ -537,7 +537,7 @@ def Display():
 # -------------------------------------------------------------------------------------
 
 def Menu():
-   print "(0) Re/Set PROFILE   (10) Users/Passwords   (20) SAM        (30) Re/Set   (40) PrintKeY         (50) Desktop   (60) Timeline"
+   print "(0) Re/Set PROFILE   (10) Users/Passwords   (20) SAM        (30) Re/Set   (40) PrintKey         (50) Desktop   (60) Timeline"
    print "(1) Re/Set PID       (11) Default Password  (21) SECURITY   (31) Re/Set   (41) Connection Scan  (51) Clipboard (61) Screenshots"
    print "(2) Re/Set OFFSET    (12) Running Processes (22) COMPONENT  (32) Re/Set   (42) Network Scan     (52) Notepad   (62) MFT Table"
    print "(3) Re/Set PARAMETER (13) Hidden Processes  (23) SOFTWARE   (33) Re/Set   (43) Socket Scan      (53)           (63) PARAMETER OFFSET" 
