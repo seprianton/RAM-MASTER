@@ -1,22 +1,22 @@
 # MEMORY-MASTER
-### Python utility file to forensically investigate memory-dump files via volatility.
+### A python utility file to forensically investigate Mirosoft Windows memory-dump files via volatility.
 
 - [x] Requires volatility (https://github.com/volatilityfoundation/volatility) to be installed.
 - [x] Sample memory dump files (https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples) are available here and (http://downloads.digitalcorpora.org/corpora/scenarios/2009-m57-patents/ram/) here.
-- [ ] Program still in beta version! However, what is there is working but not fully tested against all versions of windows operating systems. 
+- [x] Beta version! However, what is there is working but not fully tested against all versions of windows operating systems.
 
 </br>
 
 | LANGUAGE  | FILENAME         | MD5 Hash                         |
 |------     |------            | -------                          |
-| python    | memory_master.py | 9f6b4428fc3ff21ca2875fda6845d6c8 |
+| python    | memory_master.py | 9940961c04715c81eb3a580e2de8618a |
 | text file | profiles.txt     | 90a98544725dc945df30c20fabeb3e80 |
 | bash file | patch.sh         | 7a4231731982e09d9a703f7357170755 |
 
 
-A python utility file that can forensically examine Microsoft Windows memory-dump files - It can pull usernames and password hashs, extract pcap files, MFT executables and much much more.
+A python utility file that can forensically examine Microsoft Windows memory-dump files - It can pull usernames and password hashs, extract network .pcap files, MFT executables, screenshots and much much more.
 
-Recently added the facility to display up to 10 system users at any one time and a custom hive.
+Recently added the facility to display up to 10 system users at any one time and a custom hive facility.
 
 ## CONSOLE DISPLAY
 ![Screenshot](picture1.png)

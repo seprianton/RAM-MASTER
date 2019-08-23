@@ -1224,7 +1224,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='44':
-      os.system("volatility -f " + fileName + PRO + " mutantscan")
+      os.system("volatility -f " + fileName + PRO + " mutantscan | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
