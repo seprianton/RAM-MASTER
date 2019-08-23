@@ -396,12 +396,12 @@ def Display():
 # ------------------------------------------------------------------------------------- 
    print "LOCAL IP  [",
    if HIP == "000.000.000.000    ":
-      print colored(HIP,'red'),
+      print colored(HIP[:COL1],'red'),
    else:
      if MAN1 == 0:
-        print colored(HIP,'yellow'),    
+        print colored(HIP[:COL1],'yellow'),    
      else:
-        print colored(HIP,'blue'),
+        print colored(HIP[:COL1],'blue'),
    print "]",
 
    print "SYSTEM   [",
@@ -421,9 +421,9 @@ def Display():
       print colored(POR,'red'),
    else:
       if MAN2 == 0:
-         print colored(POR,'yellow'),
+         print colored(POR[:COL1],'yellow'),
       else:
-         print colored(POR,'blue'),
+         print colored(POR[:COL1],'blue'),
    print "]",
    
    print "NTUSER   [",					
@@ -1188,7 +1188,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='41':
-      os.system("volatility -f " + fileName + PRO + " connscan")
+      os.system("volatility -f " + fileName + PRO + " connscan | more")
       raw_input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
@@ -1200,7 +1200,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='42':
-      os.system("volatility -f " + fileName + PRO + " netscan")
+      os.system("volatility -f " + fileName + PRO + " netscan | more")
       raw_input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
@@ -1212,7 +1212,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='43':
-      os.system("volatility -f " + fileName + PRO + " sockets")
+      os.system("volatility -f " + fileName + PRO + " sockets | more")
       raw_input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 

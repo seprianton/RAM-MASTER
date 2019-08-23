@@ -1,5 +1,5 @@
 # MEMORY-MASTER
-### A python utility file to forensically investigate Mirosoft Windows memory-dump files via volatility.
+### A PYTHON UTILITY FILE TO FORENSICALLY INVESTIGATE MICROSOFT WINDOWS MEMORY-DUMP FILES VIA VOLATILITY.
 
 - [x] Requires volatility (https://github.com/volatilityfoundation/volatility) to be installed.
 - [x] Sample memory dump files (https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples) are available here and (http://downloads.digitalcorpora.org/corpora/scenarios/2009-m57-patents/ram/) here.
@@ -9,7 +9,7 @@
 
 | LANGUAGE  | FILENAME         | MD5 Hash                         |
 |------     |------            | -------                          |
-| python    | memory_master.py | 9940961c04715c81eb3a580e2de8618a |
+| python    | memory_master.py | aa2089d93adb13d961f94b797c7559aa |
 | text file | profiles.txt     | 90a98544725dc945df30c20fabeb3e80 |
 | bash file | patch.sh         | 7a4231731982e09d9a703f7357170755 |
 
