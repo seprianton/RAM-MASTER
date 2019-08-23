@@ -2,7 +2,7 @@
 ### Python utility file to forensically investigate memory-dump files via volatility.
 
 - [x] Requires volatility (https://github.com/volatilityfoundation/volatility) to be installed.
-- [x] Sample memory dump files (https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples) are available here.
+- [x] Sample memory dump files (https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples) are available here and (http://downloads.digitalcorpora.org/corpora/scenarios/2009-m57-patents/ram/) here.
 - [ ] Program still in beta version! However, what is there is working but not fully tested against all versions of windows operating systems. 
 
 </br>
