@@ -67,7 +67,7 @@ def padding(variable,value):
 def rpadding(variable,value):
    while len(variable) < value:
       temp = variable
-      variable = " " + temp
+      variable = "." + temp
    return variable
 
 # -------------------------------------------------------------------------------------
@@ -103,7 +103,9 @@ NTU = "0x0000000000000000"
 HRD = "0x0000000000000000"
 DEF = "0x0000000000000000"
 BCD = "0x0000000000000000"
-BLK = "0x0000000000000000"
+CUS = "0x0000000000000000"
+
+NAM = "CUSTOM  "
 
 HST = "NOT FOUND          "
 PRC = "0                  "
@@ -117,8 +119,8 @@ X1 = " "*COL3
 X2 = " "*COL4
 US = []
 PA = []
-US = [X1,X1,X1,X1,X1,X1,X1,X1,X1,X1,X1,X1]
-PA = [X2,X2,X2,X2,X2,X2,X2,X2,X2,X2,X2,X2]
+US = [X1,X1,X1,X1,X1,X1,X1,X1,X1,X1]
+PA = [X2,X2,X2,X2,X2,X2,X2,X2,X2,X2]
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -311,6 +313,9 @@ os.remove('conn1.txt')
 # -------------------------------------------------------------------------------------
 
 def Display():
+   print colored("\t\t\t MEMORY MASTER BY TERENCE BROADBENT - MSc DIGITAL FORENSICS AND CYBERCRIME ANALYSIS \n",'grey','on_white')
+
+# -------------------------------------------------------------------------------------
    print "="*17,
    print colored("SYSTEM",'white'),
    print "="*22	,
@@ -433,9 +438,14 @@ def Display():
    print "]"
 
 # ------------------------------------------------------------------------------------- 
-   print "-"*31,
+   print "PID       [",
+   if PI1 == "0                  ":
+      print colored(PI1,'red'),
+   else:
+      print colored(PI1,'blue'),
+   print "]",
 
-   print "| HARDWARE [",
+   print "HARDWARE [",
    if HRD == "0x0000000000000000":
       print colored(HRD,'red'),
    else:
@@ -447,11 +457,11 @@ def Display():
    print "]"
 
 # ------------------------------------------------------------------------------------- 
-   print "PID       [",
-   if PI1 == "0                  ":
-      print colored(PI1,'red'),
+   print "OFFSET    [",
+   if OFF == "0                  ":
+      print colored(OFF,'red'),
    else:
-      print colored(PI1,'blue'),
+      print colored(OFF,'blue'),
    print "]",
 
    print "DEFAULT  [",					
@@ -465,12 +475,12 @@ def Display():
    print colored(PA[7],'blue'),
    print "]"
 
-# ------------------------------------------------------------------------------------- 
-   print "PPID      [",
-   if PI2 == "0                  ":
-      print colored(PI2,'red'),
+# -------------------------------------------------------------------------------------
+   print "PARAMETER [",
+   if PRM == "UNSELECTED         ":
+      print colored(PRM,'red'),
    else:
-      print colored(PI2,'blue'),
+      print colored(PRM,'blue'),
    print "]",
 
    print "BOOT BCD [",					
@@ -484,43 +494,6 @@ def Display():
    print colored(PA[8],'blue'),
    print "]"
 
-# ------------------------------------------------------------------------------------- 
-   print "OFFSET    [",
-   if OFF == "0                  ":
-      print colored(OFF,'red'),
-   else:
-      print colored(OFF,'blue'),
-   print "]",
-
-   print "HIVE X   [",					
-   if BLK == "0x0000000000000000":
-      print colored(BLK,'grey'),
-   else:
-      print colored(BLK,'blue'),
-   print "]",
-
-   print US[8] + "[",
-   print colored(PA[9],'blue'),
-   print "]"
-
-# ------------------------------------------------------------------------------------- 
-   print "PARAMETER [",
-   if PRM == "UNSELECTED         ":
-      print colored(PRM,'red'),
-   else:
-      print colored(PRM,'blue'),
-
-   print "] HIVE X   [",					
-   if BLK == "0x0000000000000000":
-      print colored(BLK,'grey'),
-   else:
-      print colored(BLK,'blue'),
-   print "]",
-
-   print US[8] + "[",
-   print colored(PA[10],'blue'),
-   print "]"
-
 # -------------------------------------------------------------------------------------
    print "DIRECTORY [",
    if DIR == "WORKAREA           ":
@@ -528,25 +501,20 @@ def Display():
    else:
       print colored(DIR,'blue'),
    print "]",
-  
-   print "HIVE X   [",
-   if BLK == "0x0000000000000000":
-      print colored(BLK,'grey'),
+
+   print NAM[:8] + " [",					
+   if CUS == "0x0000000000000000":
+      print colored(CUS,'grey'),
    else:
-      print colored(BLK,'blue'),
+      print colored(CUS,'blue'),
    print "]",
 
    print US[8] + "[",
-   print colored(PA[11],'blue'),
+   print colored(PA[9],'blue'),
    print "]"
-# -------------------------------------------------------------------------------------
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub                                                               
-# Version : 4.0
-# Details : Build lower half as a screen display.
-# Modified: N/A                                                               
-# -------------------------------------------------------------------------------------
-	
+
+#-------------------------------------------------------------------------------------
+
    print "="*134
    print " "*7,
    print colored("SETTINGS",'white'),
@@ -558,28 +526,27 @@ def Display():
    print colored("INVESTIGATE",'white'),
    print " "*15,
    print colored("EXTRACT",'white')
-   print "="*134
+   print "="*134	
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
 # Version : 4.0
-# Details : Main menu system.
+# Details : Build lower half of screen display as a function call.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
-menu = {}
-menu['(0)']="Re/Set PROFILE   (10) Users/Passwords   (20) Hivelist (30) PrintKey (40) Connection Scan  (50) Desktop   (60) Timeline"
-menu['(1)']="Re/Set PID       (11) Default Password  (21) SAM      (31) Re/Set   (41) Network Scan     (51) Clipboard (61) Screenshots"
-menu['(2)']="Re/Set PPID      (12) Running Processes (22) SECURITY (32) Re/Set   (42) Socket Scan      (52) Notepad   (62) MFT Table"
-menu['(3)']="Re/Set OFFSET    (13) Hidden Processes  (23) COMPONEN (33) Re/Set   (43) Mutant Scan      (53)           (63) PARAMETER OFFSET" 
-menu['(4)']="Re/Set PARAMETER (14) Running Services  (24) SOFTWARE (34) Re/Set   (44) Malfind PID DIR  (54)           (64)"
-menu['(5)']="Re/Set DIRECTORY (15) Command History   (25) SYSTEM   (35) Re/Set   (45) Search FILE      (55)           (65)"
-menu['(6)']="Re/Set IP        (16) Console History   (26) NTUSER   (36) Re/Set   (46) VadDump PID DIR  (56)           (66)"
-menu['(7)']="Re/Set PORT      (17) Cmdline Arguments (27) HARDWARE (37) Re/Set   (47) ProcDump PID DIR (57)           (67)"
-menu['(8)']="Exit             (18) User Assist Keys  (28) DEFAULT  (38) Re/Set   (48) MemDump PID DIR  (58)           (68)"
-menu['(9)']="Clean/Exit       (19)                   (29) BOOT BCD (39) Re/Set   (49)                  (59)           (69) Bulk Extracter"
-
+def Menu():
+   print "(0) Re/Set PROFILE   (10) Users/Passwords   (20) SAM        (30) Re/Set   (40) PrintKeY         (50) Desktop   (60) Timeline"
+   print "(1) Re/Set PID       (11) Default Password  (21) SECURITY   (31) Re/Set   (41) Connection Scan  (51) Clipboard (61) Screenshots"
+   print "(2) Re/Set OFFSET    (12) Running Processes (22) COMPONENT  (32) Re/Set   (42) Network Scan     (52) Notepad   (62) MFT Table"
+   print "(3) Re/Set PARAMETER (13) Hidden Processes  (23) SOFTWARE   (33) Re/Set   (43) Socket Scan      (53)           (63) PARAMETER OFFSET" 
+   print "(4) Re/Set DIRECTORY (14) Running Services  (24) SYSTEM     (34) Re/Set   (44) Mutant Scan      (54)           (64)"
+   print "(5) Re/Set IP        (15) Command History   (25) NTUSER     (35) Re/Set   (45) Malfind PID DIR  (55)           (65)"
+   print "(6) Re/Set PORT      (16) Console History   (26) HARDWARE   (36) Re/Set   (46) Search PARAMETER (56)           (66)"
+   print "(7) Re/Name " + NAM + " (17) Cmdline Arguments (27) DEFUALT    (37) Re/Set   (47) VadDump PID DIR  (57)           (67)"
+   print "(8) Exit             (18) User Assist Keys  (28) BOOT BCD   (38) Re/Set   (48) ProcDump PID DIR (58)           (68)"
+   print "(9) Clean/Exit       (19) Hivelist          (29) " + NAM + "   (39) Re/Set   (49) MemDump PID DIR  (59)           (69) Bulk Extracter"
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -592,10 +559,7 @@ menu['(9)']="Clean/Exit       (19)                   (29) BOOT BCD (39) Re/Set  
 while True: 
    os.system("clear")
    Display()
-   options=menu.keys()
-   options.sort()
-   for entry in options: 
-      print entry, menu[entry]
+   Menu()
    selection=raw_input("\nPlease Select: ")
 
 # ------------------------------------------------------------------------------------- 
@@ -639,19 +603,6 @@ while True:
          PI1 = padding(temp, COL1)
 
 # ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                           
-# CONTRACT: GitHub
-# Version : 4.0
-# Details : Menu option selected - Allowd the user to set the PID value.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection == '2':
-      temp = raw_input("Please enter PPID value: ")
-      if temp != '':
-         PI2 = padding(temp, COL1)
-
-# ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 4.0
@@ -659,7 +610,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '3':
+   if selection == '2':
       temp = raw_input("Please enter OFFSET value: ")
       if temp != '':
          OFF = padding(temp, COL1)
@@ -672,7 +623,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '4':
+   if selection == '3':
       temp = raw_input("Please enter parameter value: ")
       if temp != '':
          PRM = padding(temp,COL1)
@@ -685,7 +636,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '5':
+   if selection == '4':
       directory = raw_input("Please enter new working directory value: ")
       if os.path.exists(directory):
          print "Directory already Exists...."
@@ -705,7 +656,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '6':
+   if selection == '5':
       temp = raw_input("Please enter IP value: ")
       if temp != '':
          HIP = padding(temp, COL1)
@@ -719,12 +670,25 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '7':
+   if selection == '6':
       temp = raw_input("Please enter PORT value: ")
       if temp != '':
          POR = padding(temp, COL1)
          MAN2 = 1
 
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                           
+# CONTRACT: GitHub
+# Version : 4.0
+# Details : Menu option selected - Rename CUSTOM hive.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '7':
+      temp = raw_input("Please enter HIVE name: ")
+      if temp != '':
+         NAM = padding(temp, 8)
+         
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
@@ -916,7 +880,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '20':
+   if selection == '19':
       os.system("volatility -f " + fileName + PRO + " hivelist")
       raw_input("\nPress ENTER to continue...")
 
@@ -928,7 +892,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '21':
+   if selection == '20':
       if (SAM == "0x0000000000000000"):
          print colored("SAM Hive missing - it is not possible to extract data...",'red')
       else:
@@ -943,7 +907,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='22':
+   if selection =='21':
       if (SEC == "0x0000000000000000"):
          print colored("SECURITY Hive missing - it is not possible to extract data...",'red')
       else:
@@ -958,7 +922,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='23':
+   if selection =='22':
       if (COM == "0x0000000000000000"):
          print colored("COMPONENTS Hive missing - it is not possible to extract data...",'red')
       else:
@@ -973,7 +937,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='24':
+   if selection =='23':
       if (SOF == "0x0000000000000000"):
          print colored("SOFTWARE Hive missing - it is not possible to extract data...",'red')
       else:
@@ -988,7 +952,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='25':
+   if selection =='24':
       if (SYS == "0x0000000000000000"):
          print colored("SYSTEM Hive missing - it is not possible to extract data...",'red')
       else:
@@ -1003,7 +967,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='26':
+   if selection =='25':
       if (NTU == "0x0000000000000000"):
          print colored("NTUSER (Administrator) Hive missing - it is not possible to extract data...",'red')
       else:
@@ -1018,7 +982,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='27':
+   if selection =='26':
       if (HRD == "0x0000000000000000"):
          print colored("HARDWARE Hive missing - it is not possible to extract data...",'red')
       else:
@@ -1033,7 +997,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='28':
+   if selection =='27':
       if (DEF == "0x0000000000000000"):
          print colored("DEFUALT Hive missing - it is not possible to extract data...",'red')
       else:
@@ -1048,7 +1012,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='29':
+   if selection =='28':
       if (BCD == "0x0000000000000000"):
          print colored("BOOT BCD Hive missing - it is not possible to extract data...",'red')
       else:
@@ -1060,15 +1024,16 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 4.0
-# Details : Menu option selected - Print specified key from hive.
+# Details : Menu option selected - Shows CUSTOM hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='30':
-      temp = raw_input("Please enter the key value in quotes: ")
-      if temp != "":
-         os.system("volatility -f " + fileName + PRO + " printkey -K " + KEY)
-         raw_input("\nPress ENTER to continue...") 
+   if selection =='29':
+      if (CUS == "0x0000000000000000"):
+         print colored(NAM + " missing - it is not possible to extract data...",'red')
+      else:
+         os.system("volatility -f " + fileName + PRO + " hivedump -o " + CUS + " | more")
+      raw_input("\nPress ENTER to continue...")  
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1078,7 +1043,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '31':
+   if selection == '30':
       temp = raw_input("Please enter SAM value: ")
       if temp != "":
          SAM = padding(temp, COL2)
@@ -1091,7 +1056,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '32':
+   if selection == '31':
       temp = raw_input("Please enter SECURITY value: ")
       if temp != "":
          SEC = padding(temp, COL2)
@@ -1104,7 +1069,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '33':
+   if selection == '32':
       temp = raw_input("Please enter COMPENENTS value: ")
       if temp != "":
          COM = padding(temp, COL2)
@@ -1117,7 +1082,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '34':
+   if selection == '33':
       temp = raw_input("Please enter SOFTWARE value: ")
       if temp != "":
          SOF = padding(temp, COL2)
@@ -1130,7 +1095,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '35':
+   if selection == '34':
       temp = raw_input("Please enter SYSTEM value: ")
       if temp != "":
          SYS = padding(temp, COL2)
@@ -1143,7 +1108,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '36':
+   if selection == '35':
       temp = raw_input("Please enter NTUSER value: ")
       if temp != "":
          NTU = padding(temp, COL2)
@@ -1156,7 +1121,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '37':
+   if selection == '36':
       temp = raw_input("Please enter HARDWARE value: ")
       if temp != "":
          HRD = padding(temp, COL2)
@@ -1169,7 +1134,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '38':
+   if selection == '37':
       temp = raw_input("Please enter DEFUALT value: ")
       if temp != "":
          DEF = padding(temp, COL2)
@@ -1182,10 +1147,37 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '39':
+   if selection == '38':
       temp = raw_input("Please enter BOOT BCD value: ")
       if temp != "":
          BCD = padding(temp, COL2)
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 4.0
+# Details : Menu option selected - Change BOOT BCD via user choice.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '39':
+      temp = raw_input("Please enter new " + NAM + " name: ")
+      if temp != "":
+         CUS = padding(temp, COL2)
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 4.0
+# Details : Menu option selected - Print specified key from hive.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='40':
+      temp = raw_input("Please enter the key value in quotes: ")
+      if temp != "":
+         os.system("volatility -f " + fileName + PRO + " printkey -K " + KEY)
+         raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1195,7 +1187,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='40':
+   if selection =='41':
       os.system("volatility -f " + fileName + PRO + " connscan")
       raw_input("\nPress ENTER to continue...") 
 
@@ -1207,7 +1199,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='41':
+   if selection =='42':
       os.system("volatility -f " + fileName + PRO + " netscan")
       raw_input("\nPress ENTER to continue...") 
 
@@ -1219,7 +1211,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='42':
+   if selection =='43':
       os.system("volatility -f " + fileName + PRO + " sockets")
       raw_input("\nPress ENTER to continue...") 
 
@@ -1231,7 +1223,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='43':
+   if selection =='44':
       os.system("volatility -f " + fileName + PRO + " mutantscan")
       raw_input("\nPress ENTER to continue...")
 
@@ -1243,7 +1235,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='44':
+   if selection =='45':
       os.system("volatility -f " + fileName + PRO + " malfind -p " + PI1 + " -D " + DIR)
       raw_input("\nPress ENTER to continue...")
 
@@ -1255,7 +1247,7 @@ while True:
 # Modified: N/A
 # ------------------------------------------------------------------------------------- 
    
-   if selection =='45':
+   if selection =='46':
       os.system("volatility -f " + fileName + " " + PRO + " pslist | grep " + PRM)
       os.system("volatility -f " + fileName + " " + PRO + " filescan | grep " + PRM)
       raw_input("\nPress ENTER to continue...")
@@ -1268,7 +1260,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='46':
+   if selection =='47':
       os.system("volatility -f " + fileName + PRO + " vaddump -p " + PI1 + " --dump-dir " + DIR)
       raw_input("\nPress ENTER to continue...")
 
@@ -1280,7 +1272,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='47':
+   if selection =='48':
       os.system("volatility -f " + fileName + PRO + " procdump  -p " + PI1 + " --dump-dir " + DIR)
       raw_input("\nPress ENTER to continue...")
 
@@ -1292,7 +1284,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='48':
+   if selection =='49':
       os.system("volatility -f " + fileName + PRO + " memdump  -p " + PI1 + " --dump-dir " + DIR)
       raw_input("\nPress ENTER to continue...")
 
