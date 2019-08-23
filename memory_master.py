@@ -544,9 +544,9 @@ def Menu():
    print "(4) Re/Set DIRECTORY (14) Running Services  (24) SYSTEM     (34) Re/Set   (44) Mutant Scan      (54)           (64)"
    print "(5) Re/Set IP        (15) Command History   (25) NTUSER     (35) Re/Set   (45) Malfind PID DIR  (55)           (65)"
    print "(6) Re/Set PORT      (16) Console History   (26) HARDWARE   (36) Re/Set   (46) Search PARAMETER (56)           (66)"
-   print "(7) Re/Name " + NAM + " (17) Cmdline Arguments (27) DEFUALT    (37) Re/Set   (47) VadDump PID DIR  (57)           (67)"
+   print "(7) Re/Name " + NAM[:8] + " (17) Cmdline Arguments (27) DEFUALT    (37) Re/Set   (47) VadDump PID DIR  (57)           (67)"
    print "(8) Exit             (18) User Assist Keys  (28) BOOT BCD   (38) Re/Set   (48) ProcDump PID DIR (58)           (68)"
-   print "(9) Clean/Exit       (19) Hivelist          (29) " + NAM + "   (39) Re/Set   (49) MemDump PID DIR  (59)           (69) Bulk Extracter"
+   print "(9) Clean/Exit       (19) Hivelist          (29) " + NAM[:8] + "   (39) Re/Set   (49) MemDump PID DIR  (59)           (69) Bulk Extracter"
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -1161,7 +1161,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '39':
-      temp = raw_input("Please enter new " + NAM + " name: ")
+      temp = raw_input("Please enter " + NAM.rstrip() + " value: ")
       if temp != "":
          CUS = padding(temp, COL2)
 
