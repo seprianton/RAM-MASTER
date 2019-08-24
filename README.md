@@ -4,7 +4,7 @@
 - [x] Requires volatility (https://github.com/volatilityfoundation/volatility) to be installed.
 - [x] Sample memory-dump files are available here:-</br>
 
-      https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples</br>
+      https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples
       http://downloads.digitalcorpora.org/corpora/scenarios/2009-m57-patents/ram/
 
 </br>
