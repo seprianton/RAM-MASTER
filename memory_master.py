@@ -239,7 +239,7 @@ with open("hivelist.txt") as search:
       if "\components" in line.lower():
          COM = line.split(None, 1)[0]
          COM = padding(SYS, COL2)
-      if "\\administrator\\ntuser.txt" in line.lower(): # \Administrator\NTUSER.DAT as multiple NTUSERS files. 
+      if "\\administrator\\ntuser.dat" in line.lower(): # \Administrator\NTUSER.DAT as multiple NTUSERS files. 
          NTU = line.split(None, 1)[0]
          NTU = padding(SYS, COL2)
       if "\hardware" in line.lower():
