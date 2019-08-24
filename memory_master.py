@@ -224,31 +224,31 @@ DA2 = padding(DA2, COL1)
 os.system("volatility -f " + fileName + PRO + " hivelist > hivelist.txt")
 with open("hivelist.txt") as search:
    for line in search:
-      if "\SAM" in line:
+      if "\sam" in line.lower():
          SAM = line.split(None, 1)[0]
          SAM = padding(SAM, COL2)
-      if "\SECURITY" in line:
+      if "\security" in line.lower():
          SEC = line.split(None, 1)[0]
          SEC = padding(SEC, COL2)
-      if "\SOFTWARE" in line:
+      if "\software" in line.lower():
          SOF = line.split(None, 1)[0]
          SOF = padding(SOF, COL2)
-      if "\SYSTEM" in line:
+      if "\system" in line.lower():
          SYS = line.split(None, 1)[0]
          SYS = padding(SYS, COL2)
-      if "\COMPONENTS" in line:
+      if "\components" in line.lower():
          COM = line.split(None, 1)[0]
          COM = padding(SYS, COL2)
-      if "\Administrator\NTUSER.DAT" in line: # \Administrator\NTUSER.DAT as multiple NTUSERS files. 
+      if "\\administrator\\ntuser.txt" in line.lower(): # \Administrator\NTUSER.DAT as multiple NTUSERS files. 
          NTU = line.split(None, 1)[0]
          NTU = padding(SYS, COL2)
-      if "\HARDWARE" in line:
+      if "\hardware" in line.lower():
          HRD = line.split(None,1)[0]
          HRD = padding(HRD, COL2)
-      if "\DEFAULT" in line:
+      if "\default" in line.lower():
          DEF = line.split(None,1)[0]
          DEF = padding(DEF, COL2)
-      if "\BCD" in line:
+      if "\\bcd" in line.lower():
          BCD = line.split(None,1)[0]
          BCD = padding(BCD, COL2)
 os.remove("hivelist.txt")
@@ -537,16 +537,16 @@ def Display():
 # -------------------------------------------------------------------------------------
 
 def Menu():
-   print "(0) Re/Set PROFILE   (10) Users/Passwords   (20) SAM        (30) Re/Set   (40) PrintKey         (50) Desktop   (60) Timeline"
-   print "(1) Re/Set PID       (11) Default Password  (21) SECURITY   (31) Re/Set   (41) Connection Scan  (51) Clipboard (61) Screenshots"
-   print "(2) Re/Set OFFSET    (12) Running Processes (22) COMPONENT  (32) Re/Set   (42) Network Scan     (52) Notepad   (62) MFT Table"
-   print "(3) Re/Set PARAMETER (13) Hidden Processes  (23) SOFTWARE   (33) Re/Set   (43) Socket Scan      (53)           (63) PARAMETER OFFSET" 
-   print "(4) Re/Set DIRECTORY (14) Running Services  (24) SYSTEM     (34) Re/Set   (44) Mutant Scan      (54)           (64)"
-   print "(5) Re/Set IP        (15) Command History   (25) NTUSER     (35) Re/Set   (45) Malfind PID DIR  (55)           (65)"
-   print "(6) Re/Set PORT      (16) Console History   (26) HARDWARE   (36) Re/Set   (46) Search PARAMETER (56)           (66)"
-   print "(7) Re/Name " + NAM[:8] + " (17) Cmdline Arguments (27) DEFUALT    (37) Re/Set   (47) VadDump PID DIR  (57)           (67)"
-   print "(8) Exit             (18) User Assist Keys  (28) BOOT BCD   (38) Re/Set   (48) ProcDump PID DIR (58)           (68)"
-   print "(9) Clean/Exit       (19) Hivelist          (29) " + NAM[:8] + "   (39) Re/Set   (49) MemDump PID DIR  (59)           (69) Bulk Extracter"
+   print "(0) Re/Set PROFILE   (10) Users/Passwords   (20) SAM        (30) Re/Set   (40) PrintKey         (50) Desktop   (60) Malfind PID DIR"
+   print "(1) Re/Set PID       (11) Default Password  (21) SECURITY   (31) Re/Set   (41) ShellBags        (51) Clipboard (61) Vaddump PID DIR"
+   print "(2) Re/Set OFFSET    (12) Running Processes (22) COMPONENT  (32) Re/Set   (42) SlimCache Data   (52) Notepad   (62) Prodump PID DIR"
+   print "(3) Re/Set PARAMETER (13) Hidden Processes  (23) SOFTWARE   (33) Re/Set   (43) Connections Scan (53) Explorer  (63) Memdump PID DIR" 
+   print "(4) Re/Set DIRECTORY (14) Running Services  (24) SYSTEM     (34) Re/Set   (44) Network Scan     (54) Files     (64) PARAMETER OFFSET"
+   print "(5) Re/Set IP        (15) Command History   (25) NTUSER     (35) Re/Set   (45) Socket Scan      (55) SymLinks  (65) Timelines"
+   print "(6) Re/Set PORT      (16) Console History   (26) HARDWARE   (36) Re/Set   (46) Mutant Scan      (56) Drivers   (66) Screen Shots"
+   print "(7) Re/Name " + NAM[:8] + " (17) Cmdline Arguments (27) DEFUALT    (37) Re/Set   (47) DLL List         (57) SIDs      (67) MFT Table"
+   print "(8) Exit             (18) User Assist Keys  (28) BOOT BCD   (38) Re/Set   (48) Sessions         (58) EnvVars   (68) PCAP File"
+   print "(9) Clean/Exit       (19) Hive List         (29) " + NAM[:8] + "   (39) Re/Set   (49) PARAMETER Search (59) TrueCrypt (69) Bulk Extract"
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -713,6 +713,8 @@ while True:
          shutil.rmtree('WORKAREA')
       if os.path.exists('timeline.txt'):
          os.remove('timeline.txt')
+      if os.path.exists('time.txt'):
+         os.remove('time.txt')
       if os.path.exists('mfttable.txt'):
          os.remove('mfttable.txt')
       exit(1)
@@ -1174,10 +1176,34 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='40':
-      temp = raw_input("Please enter the key value in quotes: ")
-      if temp != "":
+      KEY = raw_input("Please enter the key value in quotes: ")
+      if KEY != "":
          os.system("volatility -f " + fileName + PRO + " printkey -K " + KEY)
          raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 5.0
+# Details : Menu option selected - Shellbags.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='41':
+      os.system("volatility -f " + fileName + PRO + " shellbags | more")
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 5.0
+# Details : Menu option selected - Shellbags.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='42':
+      os.system("volatility -f " + fileName + PRO + " shimcache | more")
+      raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1187,7 +1213,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='41':
+   if selection =='43':
       os.system("volatility -f " + fileName + PRO + " connscan | more")
       raw_input("\nPress ENTER to continue...") 
 
@@ -1199,7 +1225,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='42':
+   if selection =='44':
       os.system("volatility -f " + fileName + PRO + " netscan | more")
       raw_input("\nPress ENTER to continue...") 
 
@@ -1211,7 +1237,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='43':
+   if selection =='45':
       os.system("volatility -f " + fileName + PRO + " sockets | more")
       raw_input("\nPress ENTER to continue...") 
 
@@ -1223,7 +1249,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='44':
+   if selection =='46':
       os.system("volatility -f " + fileName + PRO + " mutantscan | more")
       raw_input("\nPress ENTER to continue...")
 
@@ -1231,12 +1257,24 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 5.0
-# Details : Menu option selected - Finds Malware.
+# Details : Menu option selected - List dll's.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='45':
-      os.system("volatility -f " + fileName + PRO + " malfind -p " + PI1 + " -D " + DIR)
+   if selection =='47':
+      os.system("volatility -f " + fileName + PRO + " dlllist | more")
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 5.0
+# Details : Menu option selected - Shows sessions history.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='48':
+      os.system("volatility -f " + fileName + PRO + " sessions | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1247,45 +1285,9 @@ while True:
 # Modified: N/A
 # ------------------------------------------------------------------------------------- 
    
-   if selection =='46':
+   if selection =='49':
       os.system("volatility -f " + fileName + " " + PRO + " pslist | grep " + PRM)
       os.system("volatility -f " + fileName + " " + PRO + " filescan | grep " + PRM)
-      raw_input("\nPress ENTER to continue...")
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 5.0
-# Details : Menu option selected -  Vad dump PID.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='47':
-      os.system("volatility -f " + fileName + PRO + " vaddump -p " + PI1 + " --dump-dir " + DIR)
-      raw_input("\nPress ENTER to continue...")
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 5.0
-# Details : Menu option selected - Proc dump PID.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='48':
-      os.system("volatility -f " + fileName + PRO + " procdump  -p " + PI1 + " --dump-dir " + DIR)
-      raw_input("\nPress ENTER to continue...")
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : 5.0
-# Details : Menu option selected - Memory dump PID.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection =='49':
-      os.system("volatility -f " + fileName + PRO + " memdump  -p " + PI1 + " --dump-dir " + DIR)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1297,7 +1299,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='50':
-      os.system("volatility -f " + fileName + PRO + " deskscan")
+      os.system("volatility -f " + fileName + PRO + " deskscan | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1309,9 +1311,8 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='51':
-      os.system("volatility -f " + fileName + PRO + " clipboard")
+      os.system("volatility -f " + fileName + PRO + " clipboard | more")
       raw_input("\nPress ENTER to continue...")
-
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1322,7 +1323,154 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='52':
-      os.system("volatility -f " + fileName + PRO + " notepad")
+      os.system("volatility -f " + fileName + PRO + " notepad | more")
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 5.0
+# Details : Menu option selected - Shows IE history.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='53':
+      os.system("volatility -f " + fileName + PRO + " iehistory | more")
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 5.0
+# Details : Menu option selected - Shows files.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='54':
+      os.system("volatility -f " + fileName + PRO + " filescan | more")
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 5.0
+# Details : Menu option selected - Shows symlinks.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='55':
+      os.system("volatility -f " + fileName + PRO + " symlinkscan | more")
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 5.0
+# Details : Menu option selected - Shows drivers.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='56':
+      os.system("volatility -f " + fileName + PRO + " devicetree | more")
+      os.system("volatility -f " + fileName + PRO + " driverscan | more")
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 5.0
+# Details : Menu option selected - Display all SID's.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='57':
+      os.system("volatility -f " + fileName + PRO + " getsids | more")
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 5.0
+# Details : Menu option selected - Display environmental variables.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='58':
+      os.system("volatility -f " + fileName + PRO + " envars | more")
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 5.0
+# Details : Menu option selected - TrueCrypt info
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='59':
+      os.system("volatility -f " + fileName + PRO + " truecryptsummary | more")
+      os.system("volatility -f " + fileName + PRO + " truecryptmaster | more")
+      os.system("volatility -f " + fileName + PRO + " truecryptpassphrase | more")
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 5.0
+# Details : Menu option selected - Finds Malware.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='60':
+      os.system("volatility -f " + fileName + PRO + " malfind -p " + PI1 + " -D " + DIR)
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 5.0
+# Details : Menu option selected -  Vad dump PID.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='61':
+      os.system("volatility -f " + fileName + PRO + " vaddump -p " + PI1 + " --dump-dir " + DIR)
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 5.0
+# Details : Menu option selected - Proc dump PID.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='62':
+      os.system("volatility -f " + fileName + PRO + " procdump  -p " + PI1 + " --dump-dir " + DIR)
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 5.0
+# Details : Menu option selected - Memory dump PID.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='63':
+      os.system("volatility -f " + fileName + PRO + " memdump  -p " + PI1 + " --dump-dir " + DIR)
+      raw_input("\nPress ENTER to continue...")
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : 5.0
+# Details : Menu option selected - Extract a single file based on physical OFFSET.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='64':
+      os.system("volatility -f " + fileName + PRO + " dumpfiles -Q " + OFF + " -D " + DIR + " -u -n")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1333,9 +1481,10 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='60':
+   if selection =='65':
       os.system("volatility -f " + fileName + PRO + " timeliner --output-file timeline.txt")
-      print "A timeline has sucessfully been exported to timeline.txt..."
+      os.system("volatility -f " + fileName + PRO + " shellbags --output-file time.txt")
+      print "A timeline has sucessfully been exported..."
       raw_input("\nPress ENTER to continue...")
 
 #------------------------------------------------------------------------------------- 
@@ -1346,7 +1495,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='61':
+   if selection =='66':
       os.system("volatility -f " + fileName + PRO + " -D " + DIR + " screenshot")
       raw_input("\nPress ENTER to continue...")
 
@@ -1358,7 +1507,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='62':
+   if selection =='67':
       os.system("volatility -f " + fileName + PRO + " mftparser --output-file mfttable.txt")
       print "The MFT has sucessfully been exported to mfttable.txt..."
       os.system("strings mfttable.txt | grep '0000000000:' > count.txt")
@@ -1371,12 +1520,12 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : 5.0
-# Details : Menu option selected - Extract a single file based on physical OFFSET.
+# Details : Menu option selected - Bulk Extract all known files.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='63':
-      os.system("volatility -f " + fileName + PRO + " dumpfiles -Q " + OFF + " -D " + DIR + " -u -n")
+   if selection =='68':
+      os.system("bulk_extractor -x all -e net -o " + DIR + " " + fileName)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
