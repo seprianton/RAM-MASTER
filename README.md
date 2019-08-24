@@ -2,8 +2,8 @@
 ### A PYTHON SCRIPT FILE TO FORENSICALLY INVESTIGATE AND ANALYSE MICROSOFT WINDOWS MEMORY-DUMP FILES VIA VOLATILITY.
 
 - [x] Requires volatility (https://github.com/volatilityfoundation/volatility) to be installed.
-- [x] Sample memory-dump files are available here:-
-      (1). https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples
+- [x] Sample memory-dump files are available here:-</br>
+      (1). https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples</br>
       (2). http://downloads.digitalcorpora.org/corpora/scenarios/2009-m57-patents/ram/
 
 </br>
