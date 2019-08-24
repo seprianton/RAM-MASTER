@@ -5,7 +5,7 @@
 - [x] Sample memory-dump files are available here:-</br>
 
       https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples
-      http://downloads.digitalcorpora.org/corpora/scenarios/2009-m57-patents/ram/
+      https://downloads.digitalcorpora.org/corpora/scenarios/2009-m57-patents/ram/
 
 </br>
 
