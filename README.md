@@ -20,5 +20,5 @@ A python script file to forensically examine Microsoft Windows memory-dump files
 
 
 ## CONSOLE DISPLAY
-![Screenshot](picture0.png)
 ![Screenshot](picture1.png)
+![Screenshot](picture2.png)
