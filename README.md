@@ -1,5 +1,5 @@
 # MEMORY-MASTER
-### A PYTHON UTILITY FILE TO FORENSICALLY INVESTIGATE MICROSOFT WINDOWS MEMORY-DUMP FILES VIA VOLATILITY.
+### A PYTHON UTILITY FILE TO FORENSICALLY INVESTIGATE AND ANALYSE MICROSOFT WINDOWS MEMORY-DUMP FILES VIA VOLATILITY.
 
 - [x] Requires volatility (https://github.com/volatilityfoundation/volatility) to be installed.
 - [x] Sample memory dump files (https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples) are available here and (http://downloads.digitalcorpora.org/corpora/scenarios/2009-m57-patents/ram/) here.
