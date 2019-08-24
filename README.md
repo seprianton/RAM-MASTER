@@ -14,7 +14,7 @@
 | bash file | patch.sh         | 7a4231731982e09d9a703f7357170755 |
 
 
-A python utility file that can forensically examine Microsoft Windows memory-dump files - It can pull usernames, password hash's, extract network .pcap files, MFT executables, screenshots and much much more.
+A python script file that can forensically examine Microsoft Windows memory-dump files - It can pull usernames, password hash's, extract network .pcap files, MFT executables, screenshots and much much more.
 
 Recently added the facility to display up to 10 system users at any one time and a custom hive facility.
 
