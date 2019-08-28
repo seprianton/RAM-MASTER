@@ -1,5 +1,5 @@
 # RAM MASTER
-## A PYTHON SCRIPT FILE TO FORENSICALLY INVESTIGATE AND ANALYSE MICROSOFT WINDOWS MEMORY DUMP FILES VIA VOLATILITY.
+### A PYTHON SCRIPT FILE TO FORENSICALLY INVESTIGATE AND ANALYSE MICROSOFT WINDOWS MEMORY DUMP FILES VIA VOLATILITY.
 
 - [x] Requires volatility (https://github.com/volatilityfoundation/volatility) to be installed.
 - [x] Sample memory-dump files are available here:-</br>
@@ -19,5 +19,5 @@
 A python script file to forensically examine Microsoft Windows memory-dump files - It can pull usernames, password hashes, extract .pcap files, system executables, MFT tables, console keystroke, screenshots and much much more.
 
 
-### CONSOLE DISPLAY
+## CONSOLE DISPLAY
 ![Screenshot](picture1.png)
