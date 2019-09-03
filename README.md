@@ -1,6 +1,8 @@
 # RAM MASTER
 ## A PYTHON SCRIPT FILE TO FORENSICALLY INVESTIGATE AND ANALYSE MICROSOFT WINDOWS MEMORY DUMP FILES VIA VOLATILITY.
 
+Usage: python RamMaster dumpfile.mem
+
 | LANGUAGE  | FILENAME         | MD5 Hash                         |
 |------     |------            | -------                          |
 | python    | RamMaster.py     | 7beb09748d5ef899600b96ba0e9a5832 |
