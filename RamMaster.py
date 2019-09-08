@@ -125,13 +125,13 @@ PA = [X2,X2,X2,X2,X2,X2,X2,X2,X2,X2]
 # -------------------------------------------------------------------------------------
 
 os.system("clear")
-print " ____      _    __  __    __  __    _    ____ _____ _____ ____   "
-print "|  _ \    / \  |  \/  |  |  \/  |  / \  / ___|_   _| ____|  _ \  "
-print "| |_) |  / _ \ | |\/| |  | |\/| | / _ \ \___ \ | | |  _| | |_) | "
-print "|  _ <  / ___ \| |  | |  | |  | |/ ___ \ ___) || | | |___|  _ <  "
-print "|_| \_\/_/   \_\_|  |_|  |_|  |_/_/   \_\____/ |_| |_____|_| \_\ "
-print "                                                                 "
-print "BY TERENCE BROADBENT MSc DIGITAL FORENSICS & CYBERCRIME ANALYSIS "
+print " ____      _    __  __    __  __    _    ____ _____ _____ ____    "
+print "|  _ \    / \  |  \/  |  |  \/  |  / \  / ___|_   _| ____|  _ \   "
+print "| |_) |  / _ \ | |\/| |  | |\/| | / _ \ \___ \ | | |  _| | |_) |  "
+print "|  _ <  / ___ \| |  | |  | |  | |/ ___ \ ___) || | | |___|  _ <   "
+print "|_| \_\/_/   \_\_|  |_|  |_|  |_/_/   \_\____/ |_| |_____|_| \_\  "
+print "                                                                  "
+print "BY TERENCE BROADBENT MSc DIGITAL FORENSICS & CYBERCRIME ANALYSIS\n"
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -141,9 +141,9 @@ print "BY TERENCE BROADBENT MSc DIGITAL FORENSICS & CYBERCRIME ANALYSIS "
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
-print "\n\nBooting - Please wait...\n"
+print "Booting - Please wait..."
 
-os.system("md5sum " + fileName + " > md5.txt")
+os.system("md5sum '" + fileName.rstrip() + "' > md5.txt")
 MD5 = linecache.getline('md5.txt', 1)
 MD5 = MD5.replace(fileName,"")
 MD5 = MD5.rstrip()
@@ -157,7 +157,8 @@ if not os.path.exists('WORKAREA'):
 # -------------------------------------------------------------------------------------
 # Grab image information.
 # -------------------------------------------------------------------------------------
-os.system("volatility imageinfo -f " + fileName + " > image.txt")
+
+os.system("volatility imageinfo -f '" + fileName.rstrip() + "' > image.txt")
 with open("image.txt") as search:
    for line in search:
       if "Suggested Profile(s) :" in line:
@@ -175,6 +176,7 @@ os.remove("image.txt")
 #-------------------------------------------------------------------------------------
 # Find appropriate profile.
 #-------------------------------------------------------------------------------------
+
 profiles = profiles.replace("Suggested Profile(s) :","")
 profiles = profiles.replace(" ","")
 profiles = profiles.split(",")
@@ -215,7 +217,8 @@ DA2 = padding(DA2, COL1)
 #-------------------------------------------------------------------------------------
 # Grab hive information if available.
 #-------------------------------------------------------------------------------------
-os.system("volatility -f " + fileName + PRO + " hivelist > hivelist.txt")
+
+os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivelist > hivelist.txt")
 with open("hivelist.txt") as search:
    for line in search:
       if "\sam" in line.lower():
@@ -250,7 +253,7 @@ os.remove("hivelist.txt")
 #-------------------------------------------------------------------------------------
 # Grab host name if avialable.
 #-------------------------------------------------------------------------------------
-os.system("volatility -f " + fileName + PRO + " printkey -o " + SYS + " -K 'ControlSet001\Control\ComputerName\ComputerName' > host.txt")
+os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " printkey -o " + SYS + " -K 'ControlSet001\Control\ComputerName\ComputerName' > host.txt")
 with open("host.txt") as search:
    wordlist = (list(search)[-1])
 wordlist = wordlist.split()
@@ -263,7 +266,7 @@ os.remove('host.txt')
 #-------------------------------------------------------------------------------------
 # Grab user information if available.
 #-------------------------------------------------------------------------------------
-os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM + " >> hash.txt")
+os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hashdump -y " + SYS + " -s " + SAM + " >> hash.txt")
 with open("hash.txt") as search:
    count = 0
    for line in search:
@@ -280,7 +283,7 @@ os.remove("hash.txt")
 #-------------------------------------------------------------------------------------
 # Grab local IP if alvailable.
 #-------------------------------------------------------------------------------------
-os.system("volatility -f " + fileName + PRO + " connscan > connscan.txt")
+os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " connscan > connscan.txt")
 os.system("sed '1d' connscan.txt > conn1.txt")
 os.system("sed '1d' conn1.txt > connscan.txt")
 os.remove("conn1.txt")
@@ -725,7 +728,7 @@ while True:
       if SAM == "0x0000000000000000":
          print colored("SAM HIVE missing - its not possible to extract the hashes...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hashdump -y " + SYS + " -s " + SAM)
+         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hashdump -y " + SYS + " -s " + SAM)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -737,7 +740,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '11':
-      os.system("volatility -f " + fileName + PRO + " lsadump")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " lsadump")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -749,8 +752,8 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '12':
-      os.system("volatility -f " + fileName + PRO + " psscan | more")
-      os.system("volatility -f " + fileName + PRO + " psscan --output greptext > F1.txt")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " psscan | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " psscan --output greptext > F1.txt")
       os.system("tail -n +2 F1.txt > F2.txt")
       os.system("sed -i 's/>//g' F2.txt")
       with open("F2.txt") as read1:
@@ -805,7 +808,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '13':
-      os.system("volatility -f " + fileName + PRO + " psxview | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " psxview | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -817,7 +820,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '14':
-      os.system("volatility -f " + fileName + PRO + " svcscan | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " svcscan | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -829,7 +832,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '15':
-      os.system("volatility -f " + fileName + PRO + " cmdscan")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " cmdscan")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -841,7 +844,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '16':
-      os.system("volatility -f " + fileName + PRO + " consoles")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " consoles")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -853,7 +856,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '17':
-      os.system("volatility -f " + fileName + PRO + " cmdline")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " cmdline")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -865,7 +868,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '18':
-      os.system("volatility -f " + fileName + PRO + " userassist")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " userassist")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -877,7 +880,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '19':
-      os.system("volatility -f " + fileName + PRO + " hivelist")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivelist")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -892,7 +895,7 @@ while True:
       if (SAM == "0x0000000000000000"):
          print colored("SAM Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + SAM + " | more")
+         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + SAM + " | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -922,7 +925,7 @@ while True:
       if (COM == "0x0000000000000000"):
          print colored("COMPONENTS Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + COM + " | more")
+         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + COM + " | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -937,7 +940,7 @@ while True:
       if (SOF == "0x0000000000000000"):
          print colored("SOFTWARE Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + SOF + " | more")
+         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + SOF + " | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -952,7 +955,7 @@ while True:
       if (SYS == "0x0000000000000000"):
          print colored("SYSTEM Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + SYS + " | more")
+         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + SYS + " | more")
       raw_input("\nPress ENTER to continue...")    
 
 # ------------------------------------------------------------------------------------- 
@@ -967,7 +970,7 @@ while True:
       if (NTU == "0x0000000000000000"):
          print colored("NTUSER (Administrator) Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + NTU + " | more")
+         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + NTU + " | more")
       raw_input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
@@ -982,7 +985,7 @@ while True:
       if (HRD == "0x0000000000000000"):
          print colored("HARDWARE Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + HRD + " | more")
+         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + HRD + " | more")
       raw_input("\nPress ENTER to continue...")     
 
 # ------------------------------------------------------------------------------------- 
@@ -997,7 +1000,7 @@ while True:
       if (DEF == "0x0000000000000000"):
          print colored("DEFUALT Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + DEF + " | more")
+         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + DEF + " | more")
       raw_input("\nPress ENTER to continue...")   
 
 # ------------------------------------------------------------------------------------- 
@@ -1012,7 +1015,7 @@ while True:
       if (BCD == "0x0000000000000000"):
          print colored("BOOT BCD Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + BCD + " | more")
+         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + BCD + " | more")
       raw_input("\nPress ENTER to continue...")   
 
 
@@ -1028,7 +1031,7 @@ while True:
       if (CUS == "0x0000000000000000"):
          print colored(NAM + " missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f " + fileName + PRO + " hivedump -o " + CUS + " | more")
+         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + CUS + " | more")
       raw_input("\nPress ENTER to continue...")  
 
 # ------------------------------------------------------------------------------------- 
@@ -1172,7 +1175,7 @@ while True:
    if selection =='40':
       KEY = raw_input("Please enter the key value in quotes: ")
       if KEY != "":
-         os.system("volatility -f " + fileName + PRO + " printkey -K " + KEY)
+         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " printkey -K " + KEY)
          raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1184,7 +1187,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='41':
-      os.system("volatility -f " + fileName + PRO + " shellbags | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " shellbags | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1196,7 +1199,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='42':
-      os.system("volatility -f " + fileName + PRO + " shimcache | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " shimcache | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1208,7 +1211,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='43':
-      os.system("volatility -f " + fileName + PRO + " connscan | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " connscan | more")
       raw_input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
@@ -1220,7 +1223,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='44':
-      os.system("volatility -f " + fileName + PRO + " netscan | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " netscan | more")
       raw_input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
@@ -1232,7 +1235,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='45':
-      os.system("volatility -f " + fileName + PRO + " sockets | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " sockets | more")
       raw_input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
@@ -1244,7 +1247,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='46':
-      os.system("volatility -f " + fileName + PRO + " mutantscan | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " mutantscan | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1256,7 +1259,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='47':
-      os.system("volatility -f " + fileName + PRO + " dlllist | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " dlllist | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1268,7 +1271,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='48':
-      os.system("volatility -f " + fileName + PRO + " sessions | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " sessions | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1280,8 +1283,8 @@ while True:
 # ------------------------------------------------------------------------------------- 
    
    if selection =='49':
-      os.system("volatility -f " + fileName + " " + PRO + " pslist | grep " + PRM)
-      os.system("volatility -f " + fileName + " " + PRO + " filescan | grep " + PRM)
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " pslist | grep " + PRM)
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " filescan | grep " + PRM)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1293,7 +1296,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='50':
-      os.system("volatility -f " + fileName + PRO + " deskscan | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " deskscan | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1305,7 +1308,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='51':
-      os.system("volatility -f " + fileName + PRO + " clipboard | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " clipboard | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1317,7 +1320,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='52':
-      os.system("volatility -f " + fileName + PRO + " notepad | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " notepad | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1329,7 +1332,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='53':
-      os.system("volatility -f " + fileName + PRO + " iehistory | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " iehistory | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1341,7 +1344,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='54':
-      os.system("volatility -f " + fileName + PRO + " filescan | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " filescan | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1353,7 +1356,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='55':
-      os.system("volatility -f " + fileName + PRO + " symlinkscan | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " symlinkscan | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1365,8 +1368,8 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='56':
-      os.system("volatility -f " + fileName + PRO + " devicetree | more")
-      os.system("volatility -f " + fileName + PRO + " driverscan | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " devicetree | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " driverscan | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1378,7 +1381,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='57':
-      os.system("volatility -f " + fileName + PRO + " getsids | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " getsids | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1390,7 +1393,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='58':
-      os.system("volatility -f " + fileName + PRO + " envars | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " envars | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1402,9 +1405,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='59':
-      os.system("volatility -f " + fileName + PRO + " truecryptsummary | more")
-      os.system("volatility -f " + fileName + PRO + " truecryptmaster | more")
-      os.system("volatility -f " + fileName + PRO + " truecryptpassphrase | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " truecryptsummary | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " truecryptmaster | more")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " truecryptpassphrase | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1416,7 +1419,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='60':
-      os.system("volatility -f " + fileName + PRO + " malfind -p " + PI1 + " -D " + DIR)
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " malfind -p " + PI1 + " -D " + DIR)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1428,7 +1431,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='61':
-      os.system("volatility -f " + fileName + PRO + " vaddump -p " + PI1 + " --dump-dir " + DIR)
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " vaddump -p " + PI1 + " --dump-dir " + DIR)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1440,7 +1443,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='62':
-      os.system("volatility -f " + fileName + PRO + " procdump  -p " + PI1 + " --dump-dir " + DIR)
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " procdump  -p " + PI1 + " --dump-dir " + DIR)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1452,7 +1455,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='63':
-      os.system("volatility -f " + fileName + PRO + " memdump  -p " + PI1 + " --dump-dir " + DIR)
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " memdump  -p " + PI1 + " --dump-dir " + DIR)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1464,7 +1467,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='64':
-      os.system("volatility -f " + fileName + PRO + " dumpfiles -Q " + OFF + " -D " + DIR + " -u -n")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " dumpfiles -Q " + OFF + " -D " + DIR + " -u -n")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1476,8 +1479,8 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='65':
-      os.system("volatility -f " + fileName + PRO + " timeliner --output-file timeline.txt")
-      os.system("volatility -f " + fileName + PRO + " shellbags --output-file time.txt")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " timeliner --output-file timeline.txt")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " shellbags --output-file time.txt")
       print "A timeline has sucessfully been exported..."
       raw_input("\nPress ENTER to continue...")
 
@@ -1490,7 +1493,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='66':
-      os.system("volatility -f " + fileName + PRO + " -D " + DIR + " screenshot")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " -D " + DIR + " screenshot")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1502,7 +1505,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='67':
-      os.system("volatility -f " + fileName + PRO + " mftparser --output-file mfttable.txt")
+      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " mftparser --output-file mfttable.txt")
       print "The MFT has sucessfully been exported to mfttable.txt..."
       os.system("strings mfttable.txt | grep '0000000000:' > count.txt")
       fileNum = sum(1 for line in open('count.txt'))
@@ -1519,7 +1522,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='68':
-      os.system("bulk_extractor -x all -e net -o " + DIR + " " + fileName)
+      os.system("bulk_extractor -x all -e net -o " + DIR + " '" + fileName.rstrip() + "'")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
@@ -1531,7 +1534,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='69':
-      os.system("bulk_extractor -o " + DIR + " " + fileName)
+      os.system("bulk_extractor -o " + DIR + " '" + fileName.rstrip() + "'")
       raw_input("\nPress ENTER to continue...")
 
 #Eof...
