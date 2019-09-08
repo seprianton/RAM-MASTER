@@ -300,8 +300,6 @@ os.remove('conn1.txt')
 # -------------------------------------------------------------------------------------
 
 def Display():
-   print colored("\t\t\t MEMORY MASTER BY TERENCE BROADBENT - MSc DIGITAL FORENSICS AND CYBERCRIME ANALYSIS \n",'grey','on_white')
-
 # -------------------------------------------------------------------------------------
 
    print "="*17,
