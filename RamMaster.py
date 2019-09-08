@@ -9,24 +9,24 @@
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0                                                                
+# Version : 1.0                                                                
 # Details : Load required imports.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
 import os
 import sys
-import subprocess
+import shutil
 import os.path
 import fileinput
-import shutil
 import linecache
+import subprocess
 from termcolor import colored					# pip install termcolor
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 6.0                                                                
+# Version : 1.0                                                                
 # Details : Conduct simple and routine tests on user supplied arguements.   
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
@@ -48,8 +48,8 @@ if os.path.exists(fileName) == 0:
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 6.0
-# Details : Initialise program functions
+# Version : 1.0
+# Details : Create function calls from main.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
@@ -67,7 +67,7 @@ def rpadding(variable,value):
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 6.0
+# Version : 1.0
 # Details : Initialise program variables.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
@@ -78,16 +78,14 @@ COL3 = 32
 COL4 = 32
 MAN1 = 0
 MAN2 = 0
-
-PRO = "UNSELECTED         "
-PR2 = "UNSELECTED         "
-DA1 = "NOT FOUND          "
-PI1 = "0                  "
-PI2 = "0                  "
-OFF = "0                  "
-PRM = "UNSELECTED         "
-DIR = "WORKAREA           "
-
+PRO  = "UNSELECTED         "
+PR2  = "UNSELECTED         "
+DA1  = "NOT FOUND          "
+PI1  = "0                  "
+PI2  = "0                  "
+OFF  = "0                  "
+PRM  = "UNSELECTED         "
+DIR  = "WORKAREA           "
 SAM = "0x0000000000000000"
 SEC = "0x0000000000000000"
 COM = "0x0000000000000000"
@@ -98,17 +96,13 @@ HRD = "0x0000000000000000"
 DEF = "0x0000000000000000"
 BCD = "0x0000000000000000"
 CUS = "0x0000000000000000"
-
 NAM = "CUSTOM  "
-
 HST = "NOT FOUND          "
 PRC = "0                  "
 SVP = "0                  "
 DA2 = "NOT FOUND          "
-
 HIP = "000.000.000.000    "
 POR = "000                "
-
 X1 = " "*COL3
 X2 = " "*COL4
 US = []
@@ -119,7 +113,7 @@ PA = [X2,X2,X2,X2,X2,X2,X2,X2,X2,X2]
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0                                                                
+# Version : 1.0                                                                
 # Details : Display universal header.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
@@ -136,20 +130,12 @@ print "BY TERENCE BROADBENT MSc DIGITAL FORENSICS & CYBERCRIME ANALYSIS\n"
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 6.0
+# Version : 1.0
 # Details : Boot the system and populate program variables.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
-print "Booting - Please wait..."
-
-os.system("md5sum '" + fileName.rstrip() + "' > md5.txt")
-MD5 = linecache.getline('md5.txt', 1)
-MD5 = MD5.replace(fileName,"")
-MD5 = MD5.rstrip()
-os.remove("md5.txt")
-
-fileName = padding(fileName,COL1)
+print "Booting - Please wait...\n"
 
 if not os.path.exists('WORKAREA'):
    os.mkdir("WORKAREA")
@@ -158,7 +144,7 @@ if not os.path.exists('WORKAREA'):
 # Grab image information.
 # -------------------------------------------------------------------------------------
 
-os.system("volatility imageinfo -f '" + fileName.rstrip() + "' > image.txt")
+os.system("volatility imageinfo -f '" + fileName + "' > image.txt")
 with open("image.txt") as search:
    for line in search:
       if "Suggested Profile(s) :" in line:
@@ -191,6 +177,7 @@ else:
 #-------------------------------------------------------------------------------------
 # Find number of processors, service pack details, creation and local dates and times.
 #-------------------------------------------------------------------------------------
+
 PRC = PRC.replace("Number of Processors :","")
 PRC = PRC.replace(" ","")
 PRC = PRC.replace("\n","")
@@ -218,7 +205,7 @@ DA2 = padding(DA2, COL1)
 # Grab hive information if available.
 #-------------------------------------------------------------------------------------
 
-os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivelist > hivelist.txt")
+os.system("volatility -f '" + fileName + "'" + PRO + " hivelist > hivelist.txt")
 with open("hivelist.txt") as search:
    for line in search:
       if "\sam" in line.lower():
@@ -253,7 +240,8 @@ os.remove("hivelist.txt")
 #-------------------------------------------------------------------------------------
 # Grab host name if avialable.
 #-------------------------------------------------------------------------------------
-os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " printkey -o " + SYS + " -K 'ControlSet001\Control\ComputerName\ComputerName' > host.txt")
+
+os.system("volatility -f '" + fileName + "'" + PRO + " printkey -o " + SYS + " -K 'ControlSet001\Control\ComputerName\ComputerName' > host.txt")
 with open("host.txt") as search:
    wordlist = (list(search)[-1])
 wordlist = wordlist.split()
@@ -266,7 +254,8 @@ os.remove('host.txt')
 #-------------------------------------------------------------------------------------
 # Grab user information if available.
 #-------------------------------------------------------------------------------------
-os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hashdump -y " + SYS + " -s " + SAM + " >> hash.txt")
+
+os.system("volatility -f '" + fileName + "'" + PRO + " hashdump -y " + SYS + " -s " + SAM + " >> hash.txt")
 with open("hash.txt") as search:
    count = 0
    for line in search:
@@ -283,7 +272,8 @@ os.remove("hash.txt")
 #-------------------------------------------------------------------------------------
 # Grab local IP if alvailable.
 #-------------------------------------------------------------------------------------
-os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " connscan > connscan.txt")
+
+os.system("volatility -f '" + fileName + "'" + PRO + " connscan > connscan.txt")
 os.system("sed '1d' connscan.txt > conn1.txt")
 os.system("sed '1d' conn1.txt > connscan.txt")
 os.remove("conn1.txt")
@@ -304,15 +294,16 @@ os.remove('conn1.txt')
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 6.0
+# Version : 1.0
 # Details : Build the top half of the screen display as a function call.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
 def Display():
-#   print colored("\t\t\t MEMORY MASTER BY TERENCE BROADBENT - MSc DIGITAL FORENSICS AND CYBERCRIME ANALYSIS \n",'grey','on_white')
+   print colored("\t\t\t MEMORY MASTER BY TERENCE BROADBENT - MSc DIGITAL FORENSICS AND CYBERCRIME ANALYSIS \n",'grey','on_white')
 
 # -------------------------------------------------------------------------------------
+
    print "="*17,
    print colored("SYSTEM",'white'),
    print "="*22	,
@@ -324,6 +315,7 @@ def Display():
    print "="*11
 
 # -------------------------------------------------------------------------------------
+
    print "PROFILE   [",
    if PR2 == "UNSELECTED              ":
       print colored(PR2,'red'),
@@ -343,6 +335,7 @@ def Display():
    print "]"
 
 # -------------------------------------------------------------------------------------
+
    print "HOST NAME [",
    if HST == "Not found          ":
       print colored(HST[:COL1],'red'),
@@ -361,6 +354,7 @@ def Display():
    print "]"
 
 # -------------------------------------------------------------------------------------
+
    print "SERV PACK [",
    if SVP == "0                  ":
       print colored(SVP,'red'),
@@ -378,6 +372,7 @@ def Display():
    print "]"
 
 # -------------------------------------------------------------------------------------
+
    print "TIMESTAMP [",
    print colored(DA2,'blue'),
    print "] SOFTWARE [",
@@ -391,6 +386,7 @@ def Display():
    print "]"
 
 # ------------------------------------------------------------------------------------- 
+
    print "LOCAL IP  [",
    if HIP == "000.000.000.000    ":
       print colored(HIP[:COL1],'red'),
@@ -413,6 +409,7 @@ def Display():
    print "]"
 
 # -------------------------------------------------------------------------------------
+
    print "LOCAL PORT[",
    if POR == "000                ":
       print colored(POR,'red'),
@@ -435,6 +432,7 @@ def Display():
    print "]"
 
 # ------------------------------------------------------------------------------------- 
+
    print "PID       [",
    if PI1 == "0                  ":
       print colored(PI1[:COL1],'red'),
@@ -454,6 +452,7 @@ def Display():
    print "]"
 
 # ------------------------------------------------------------------------------------- 
+
    print "OFFSET    [",
    if OFF == "0                  ":
       print colored(OFF[:COL1],'red'),
@@ -473,6 +472,7 @@ def Display():
    print "]"
 
 # -------------------------------------------------------------------------------------
+
    print "PARAMETER [",
    if PRM == "UNSELECTED         ":
       print colored(PRM[:COL1],'red'),
@@ -492,6 +492,7 @@ def Display():
    print "]"
 
 # -------------------------------------------------------------------------------------
+
    print "DIRECTORY [",
    if DIR == "WORKAREA           ":
       print colored(DIR[:COL1],'red'),
@@ -528,7 +529,7 @@ def Display():
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 6.0
+# Version : 1.0
 # Details : Build lower half of screen display as a function call.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
@@ -548,7 +549,7 @@ def Menu():
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : 6.0
+# Version : 1.0
 # Details : Start the main menu controller.
 # Modified: N/A                                                               	
 # -------------------------------------------------------------------------------------
@@ -562,7 +563,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Lets the user select a new Windows profile.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -589,7 +590,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Allowd the user to set the PID value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -602,7 +603,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Allows the user to set the OFFSET value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -615,7 +616,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Allows the user to set the Parameter string.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -628,7 +629,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Allows the user to set the Parameter string.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -648,7 +649,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                           
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Set host IP Value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -662,7 +663,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                           
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Set host PORT Value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -676,7 +677,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                           
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Rename CUSTOM hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -689,7 +690,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Exit the program, leaving files undeleted.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -700,7 +701,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Clean up system files and exit the program.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -719,7 +720,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Dumps the SAM file hashes for export to hashcat.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -728,32 +729,32 @@ while True:
       if SAM == "0x0000000000000000":
          print colored("SAM HIVE missing - its not possible to extract the hashes...",'red')
       else:
-         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hashdump -y " + SYS + " -s " + SAM)
+         os.system("volatility -f '" + fileName + "'" + PRO + " hashdump -y " + SYS + " -s " + SAM)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Display any LSA secrets
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '11':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " lsadump")
+      os.system("volatility -f '" + fileName + "'" + PRO + " lsadump | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows running processes and provides a brief analyse.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '12':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " psscan | more")
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " psscan --output greptext > F1.txt")
+      os.system("volatility -f '" + fileName + "'" + PRO + " psscan | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " psscan --output greptext > F1.txt")
       os.system("tail -n +2 F1.txt > F2.txt")
       os.system("sed -i 's/>//g' F2.txt")
       with open("F2.txt") as read1:
@@ -802,91 +803,91 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows hidden processes.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '13':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " psxview | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " psxview | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows running services.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '14':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " svcscan | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " svcscan | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Last commands run.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '15':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " cmdscan")
+      os.system("volatility -f '" + fileName + "'" + PRO + " cmdscan")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Last commands run.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '16':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " consoles")
+      os.system("volatility -f '" + fileName + "'" + PRO + " consoles")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Last commands run.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '17':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " cmdline")
+      os.system("volatility -f '" + fileName + "'" + PRO + " cmdline")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Show userassist key values.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '18':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " userassist")
+      os.system("volatility -f '" + fileName + "'" + PRO + " userassist")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Hivelist all
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '19':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivelist")
+      os.system("volatility -f '" + fileName + "'" + PRO + " hivelist")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows SAM hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -895,13 +896,13 @@ while True:
       if (SAM == "0x0000000000000000"):
          print colored("SAM Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + SAM + " | more")
+         os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + SAM + " | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows SECURITY hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -916,7 +917,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows COMPONENTS hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -925,13 +926,13 @@ while True:
       if (COM == "0x0000000000000000"):
          print colored("COMPONENTS Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + COM + " | more")
+         os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + COM + " | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows SOFTWARE hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -940,13 +941,13 @@ while True:
       if (SOF == "0x0000000000000000"):
          print colored("SOFTWARE Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + SOF + " | more")
+         os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + SOF + " | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows SYSTEM hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -955,13 +956,13 @@ while True:
       if (SYS == "0x0000000000000000"):
          print colored("SYSTEM Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + SYS + " | more")
+         os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + SYS + " | more")
       raw_input("\nPress ENTER to continue...")    
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows NTUSER hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -970,13 +971,13 @@ while True:
       if (NTU == "0x0000000000000000"):
          print colored("NTUSER (Administrator) Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + NTU + " | more")
+         os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + NTU + " | more")
       raw_input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows HARDWARE hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -985,13 +986,13 @@ while True:
       if (HRD == "0x0000000000000000"):
          print colored("HARDWARE Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + HRD + " | more")
+         os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + HRD + " | more")
       raw_input("\nPress ENTER to continue...")     
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows DEFUALT hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1000,13 +1001,13 @@ while True:
       if (DEF == "0x0000000000000000"):
          print colored("DEFUALT Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + DEF + " | more")
+         os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + DEF + " | more")
       raw_input("\nPress ENTER to continue...")   
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows BOOT BCD hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1015,14 +1016,13 @@ while True:
       if (BCD == "0x0000000000000000"):
          print colored("BOOT BCD Hive missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + BCD + " | more")
+         os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + BCD + " | more")
       raw_input("\nPress ENTER to continue...")   
-
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows CUSTOM hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1031,13 +1031,13 @@ while True:
       if (CUS == "0x0000000000000000"):
          print colored(NAM + " missing - it is not possible to extract data...",'red')
       else:
-         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " hivedump -o " + CUS + " | more")
+         os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + CUS + " | more")
       raw_input("\nPress ENTER to continue...")  
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Change SAM via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1050,7 +1050,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Change SECURITY via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1063,7 +1063,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Change COMPENENTS via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1076,7 +1076,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Change SOFTWARE via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1089,7 +1089,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Change SYSTEM via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1102,7 +1102,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Change NTUSER via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1115,7 +1115,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Change HARDWARE via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1128,7 +1128,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Change DEFAULT via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1141,7 +1141,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Change BOOT BCD via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1154,7 +1154,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Change BOOT BCD via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1167,7 +1167,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Print specified key from hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1175,337 +1175,337 @@ while True:
    if selection =='40':
       KEY = raw_input("Please enter the key value in quotes: ")
       if KEY != "":
-         os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " printkey -K " + KEY)
+         os.system("volatility -f '" + fileName + "'" + PRO + " printkey -K " + KEY)
          raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shellbags.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='41':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " shellbags | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " shellbags | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shellbags.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='42':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " shimcache | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " shimcache | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Analyse the NETWORK connections.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='43':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " connscan | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " connscan | more")
       raw_input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Analyse the NETWORK traffic.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='44':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " netscan | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " netscan | more")
       raw_input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Analyse the NETWORK sockets.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='45':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " sockets | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " sockets | more")
       raw_input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Finds Mutants.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='46':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " mutantscan | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " mutantscan | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - List dll's.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='47':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " dlllist | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " dlllist | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows sessions history.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='48':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " sessions | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " sessions | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Search image for occurences of string.
 # Modified: N/A
 # ------------------------------------------------------------------------------------- 
    
    if selection =='49':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " pslist | grep " + PRM)
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " filescan | grep " + PRM)
+      os.system("volatility -f '" + fileName + "'" + PRO + " pslist | grep " + PRM)
+      os.system("volatility -f '" + fileName + "'" + PRO + " filescan | grep " + PRM)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows desktop information.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='50':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " deskscan | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " deskscan | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows clipboard information.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='51':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " clipboard | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " clipboard | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows notepad information.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='52':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " notepad | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " notepad | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows IE history.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='53':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " iehistory | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " iehistory | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows files.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='54':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " filescan | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " filescan | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows symlinks.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='55':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " symlinkscan | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " symlinkscan | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Shows drivers.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='56':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " devicetree | more")
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " driverscan | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " devicetree | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " driverscan | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Display all SID's.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='57':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " getsids | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " getsids | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Display environmental variables.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='58':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " envars | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " envars | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - TrueCrypt info
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='59':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " truecryptsummary | more")
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " truecryptmaster | more")
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " truecryptpassphrase | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " truecryptsummary | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " truecryptmaster | more")
+      os.system("volatility -f '" + fileName + "'" + PRO + " truecryptpassphrase | more")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Finds Malware.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='60':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " malfind -p " + PI1 + " -D " + DIR)
+      os.system("volatility -f '" + fileName + "'" + PRO + " malfind -p " + PI1 + " -D " + DIR)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected -  Vad dump PID.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='61':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " vaddump -p " + PI1 + " --dump-dir " + DIR)
+      os.system("volatility -f '" + fileName + "'" + PRO + " vaddump -p " + PI1 + " --dump-dir " + DIR)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Proc dump PID.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='62':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " procdump  -p " + PI1 + " --dump-dir " + DIR)
+      os.system("volatility -f '" + fileName + "'" + PRO + " procdump  -p " + PI1 + " --dump-dir " + DIR)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Memory dump PID.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='63':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " memdump  -p " + PI1 + " --dump-dir " + DIR)
+      os.system("volatility -f '" + fileName + "'" + PRO + " memdump  -p " + PI1 + " --dump-dir " + DIR)
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Extract a single file based on physical OFFSET.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='64':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " dumpfiles -Q " + OFF + " -D " + DIR + " -u -n")
+      os.system("volatility -f '" + fileName + "'" + PRO + " dumpfiles -Q " + OFF + " -D " + DIR + " -u -n")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Extract timeline.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='65':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " timeliner --output-file timeline.txt")
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " shellbags --output-file time.txt")
+      os.system("volatility -f '" + fileName + "'" + PRO + " timeliner --output-file timeline.txt")
+      os.system("volatility -f '" + fileName + "'" + PRO + " shellbags --output-file time.txt")
       print "A timeline has sucessfully been exported..."
       raw_input("\nPress ENTER to continue...")
 
 #------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Extract windows screenshots.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='66':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " -D " + DIR + " screenshot")
+      os.system("volatility -f '" + fileName + "'" + PRO + " -D " + DIR + " screenshot")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Extract the MFT table and it contents.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='67':
-      os.system("volatility -f '" + fileName.rstrip() + "'" + PRO + " mftparser --output-file mfttable.txt")
+      os.system("volatility -f '" + fileName + "'" + PRO + " mftparser --output-file mfttable.txt")
       print "The MFT has sucessfully been exported to mfttable.txt..."
       os.system("strings mfttable.txt | grep '0000000000:' > count.txt")
       fileNum = sum(1 for line in open('count.txt'))
@@ -1516,25 +1516,25 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Bulk Extract all known files.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='68':
-      os.system("bulk_extractor -x all -e net -o " + DIR + " '" + fileName.rstrip() + "'")
+      os.system("bulk_extractor -x all -e net -o " + DIR + " '" + fileName + "'")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : 6.0
+# Version : 1.0
 # Details : Menu option selected - Bulk Extract all known files.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection =='69':
-      os.system("bulk_extractor -o " + DIR + " '" + fileName.rstrip() + "'")
+      os.system("bulk_extractor -o " + DIR + " '" + fileName + "'")
       raw_input("\nPress ENTER to continue...")
 
 #Eof...
