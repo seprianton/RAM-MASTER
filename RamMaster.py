@@ -302,15 +302,17 @@ os.remove('conn1.txt')
 def Display():
 # -------------------------------------------------------------------------------------
 
-   print "="*17,
+   print "="*134
+   print " "*17,
    print colored("SYSTEM",'white'),
-   print "="*22	,
+   print " "*22	,
    print colored("SYSTEM HIVES",'white'),
-   print "="*14,
+   print " "*14,
    print colored("USER INFO",'white'),
-   print "="*25,
+   print " "*25,
    print colored("PASSWORDS",'white'),
-   print "="*11
+   print " "*11
+   print "="*134	
 
 # -------------------------------------------------------------------------------------
 
@@ -575,7 +577,7 @@ while True:
       with open("profiles.txt") as search:
          line = search.readline()
          while line:
-            line = fp.readline()
+            line = search.readline()
             if PRO in line:
                MATCH = 1  
       if MATCH == 0:
