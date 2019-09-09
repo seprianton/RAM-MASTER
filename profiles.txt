@@ -55,6 +55,3 @@ WinXPSP1x64
 WinXPSP2x64
 WinXPSP2x86
 WinXPSP3x86
-LinuxDebian2632_zipx86
-LinuxDebian2632x86
-LinuxUbuntu1204x64

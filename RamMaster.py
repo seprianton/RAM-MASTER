@@ -144,8 +144,10 @@ if not os.path.exists('WORKAREA'):
 # Grab image information.
 # -------------------------------------------------------------------------------------
 
-os.system("volatility imageinfo -f '" + fileName + "' > image.txt")
-with open("image.txt") as search:
+profiles = "NOT FOUND"
+
+os.system("volatility imageinfo -f '" + fileName + "' > image.log")
+with open("image.log") as search:
    for line in search:
       if "Suggested Profile(s) :" in line:
          profiles = line
@@ -157,10 +159,13 @@ with open("image.txt") as search:
          DA1 = line
       if "Image local date and time :" in line:
          DA2 = line
-os.remove("image.txt")
+
+if profiles == "NOT FOUND":
+   print "ERROR #001 - A windows profile was not found, see 'image.log' for further information."
+   exit(True)
 
 #-------------------------------------------------------------------------------------
-# Find appropriate profile.
+# Now search for appropriate profile.
 #-------------------------------------------------------------------------------------
 
 profiles = profiles.replace("Suggested Profile(s) :","")
@@ -170,8 +175,9 @@ PRO = " --profile " + profiles[0]
 PR2 = profiles[0]
 if (PR2[:1] == "W") or (PR2[:1] == "V"):
    PR2 = padding(PR2,COL1)
+   os.remove("image.log")
 else:
-   print "ERROR - Windows profile not found..."
+   print "ERROR #002- A windows profile was not found, see 'image.log' for further information."
    exit(True)
 
 #-------------------------------------------------------------------------------------
@@ -302,17 +308,15 @@ os.remove('conn1.txt')
 def Display():
 # -------------------------------------------------------------------------------------
 
-   print "="*134
-   print " "*17,
+   print "="*17,
    print colored("SYSTEM",'white'),
-   print " "*22	,
+   print "="*22	,
    print colored("SYSTEM HIVES",'white'),
-   print " "*14,
+   print "="*15,
    print colored("USER INFO",'white'),
-   print " "*25,
+   print "="*24,
    print colored("PASSWORDS",'white'),
-   print " "*11
-   print "="*134	
+   print "="*12
 
 # -------------------------------------------------------------------------------------
 
