@@ -5,7 +5,7 @@ Usage: python RamMaster dumpfile.mem
 
 | LANGUAGE  | FILENAME         | MD5 Hash                         |
 |------     |------            | -------                          |
-| python    | RamMaster.py     | a72b0227d913d90e39c13232a3fa82d8 |
+| python    | RamMaster.py     | 316261cf1682bc44d87304cafab6f329 |
 | text file | profiles.txt     | ba638a0a6f9d322100809bd6e67427d6 |
 | bash file | patch.sh         | 7a4231731982e09d9a703f7357170755 |
 

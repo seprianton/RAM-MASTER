@@ -308,7 +308,7 @@ os.remove('conn1.txt')
 def Display():
 # -------------------------------------------------------------------------------------
    
-   print colored("\t\t\t\t TERENCE BROADBENT MSc DIGITAL FORENSICS & CYBERCRIME ANALYSIS \n", 'grey', 'on_white')
+   #print colored("\t\t\t\t TERENCE BROADBENT MSc DIGITAL FORENSICS & CYBERCRIME ANALYSIS \n", 'grey', 'on_white')
    print "="*17,
    print colored("SYSTEM",'white'),
    print "="*22	,
@@ -331,11 +331,11 @@ def Display():
       print colored(SAM,'red'),
    else:
       print colored(SAM,'blue'),
-   print "][",
+   print "]|",
 
    print US[0] + "",
    print colored(PA[0],'blue'),
-   print "]"
+   print "|"
 
 # -------------------------------------------------------------------------------------
 
@@ -351,10 +351,10 @@ def Display():
       print colored(SEC,'red'),
    else:
       print colored(SEC,'blue'),
-   print "][",
+   print "]|",
    print US[1] + "",
    print colored(PA[1],'blue'),
-   print "]"
+   print "|"
 
 # -------------------------------------------------------------------------------------
 
@@ -368,11 +368,11 @@ def Display():
       print colored(COM,'red'),
    else:
       print colored(COM,'blue'),
-   print "][",
+   print "]|",
 
    print US[2] + "",
    print colored(PA[2],'blue'),
-   print "]"
+   print "|"
 
 # -------------------------------------------------------------------------------------
 
@@ -383,10 +383,10 @@ def Display():
       print colored(SOF,'red'),
    else:
       print colored(SOF,'blue'),
-   print "][",
+   print "]|",
    print US[3] + "",
    print colored(PA[3],'blue'),
-   print "]"
+   print "|"
 
 # ------------------------------------------------------------------------------------- 
 
@@ -406,10 +406,10 @@ def Display():
    else:
       print colored(SYS,'blue'),
    
-   print "][",
+   print "]|",
    print US[4] + "",
    print colored(PA[4],'blue'),
-   print "]"
+   print "|"
 
 # -------------------------------------------------------------------------------------
 
@@ -428,11 +428,11 @@ def Display():
       print colored(NTU,'red'),
    else:
       print colored(NTU,'blue'),
-   print "][",
+   print "]|",
 
    print US[5] + "",
    print colored(PA[5],'blue'),
-   print "]"
+   print "|"
 
 # ------------------------------------------------------------------------------------- 
 
@@ -448,11 +448,11 @@ def Display():
       print colored(HRD,'red'),
    else:
       print colored(HRD,'blue'),
-   print "][",
+   print "]|",
 
    print US[6] + "",
    print colored(PA[6],'blue'),
-   print "]"
+   print "|"
 
 # ------------------------------------------------------------------------------------- 
 
@@ -468,11 +468,11 @@ def Display():
       print colored(DEF,'red'),
    else:
       print colored(DEF,'blue'),
-   print "][",
+   print "]|",
 
    print US[7] + "",
    print colored(PA[7],'blue'),
-   print "]"
+   print "|"
 
 # -------------------------------------------------------------------------------------
 
@@ -488,11 +488,11 @@ def Display():
       print colored(BCD,'red'),
    else:
       print colored(BCD,'blue'),
-   print "][",
+   print "]|",
 
    print US[8] + "",
    print colored(PA[8],'blue'),
-   print "]"
+   print "|"
 
 # -------------------------------------------------------------------------------------
 
@@ -508,11 +508,11 @@ def Display():
       print colored(CUS,'grey'),
    else:
       print colored(CUS,'blue'),
-   print "][",
+   print "]|",
 
    print US[9] + "",
    print colored(PA[9],'blue'),
-   print "]"
+   print "|"
 
 #-------------------------------------------------------------------------------------
 
