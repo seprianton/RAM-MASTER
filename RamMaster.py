@@ -74,7 +74,7 @@ def rpadding(variable,value):
 
 COL1 = 19
 COL2 = 18
-COL3 = 32
+COL3 = 29
 COL4 = 32
 MAN1 = 0
 MAN2 = 0
@@ -97,7 +97,7 @@ DEF = "0x0000000000000000"
 BCD = "0x0000000000000000"
 CUS = "0x0000000000000000"
 NAM = "CUSTOM  "
-HST = "NOT FOUND          "
+HST = "BLANK              "
 PRC = "0                  "
 SVP = "0                  "
 DA2 = "NOT FOUND          "
@@ -253,8 +253,10 @@ with open("host.txt") as search:
 wordlist = wordlist.split()
 HST = str(wordlist[-1])
 if HST == "searched":
-   HST = "Not found"
-HST = padding(HST, COL1)
+   HST = "NOT FOUND          "
+else:
+   HST = HST.decode('utf-8', 'ignore')
+   HST = padding(HST, 20)
 os.remove('host.txt')
 
 #-------------------------------------------------------------------------------------
@@ -270,8 +272,8 @@ with open("hash.txt") as search:
          catch2 = catch.split()
          catch3 = catch2[3]
          PA[count] = catch3
-         US[count] = catch2[0][:COL4-1] + " "
-         US[count] = rpadding(US[count], COL4)
+         US[count] = catch2[0][:COL3-1] + " "
+         US[count] = rpadding(US[count], COL3)
          count = count + 1
 os.remove("hash.txt")
 
@@ -306,248 +308,161 @@ os.remove('conn1.txt')
 # -------------------------------------------------------------------------------------
 
 def Display():
-# -------------------------------------------------------------------------------------
-   
-   #print colored("\t\t\t\t TERENCE BROADBENT MSc DIGITAL FORENSICS & CYBERCRIME ANALYSIS \n", 'grey', 'on_white')
-   print "="*17,
-   print colored("SYSTEM",'white'),
-   print "="*22	,
-   print colored("SYSTEM HIVES",'white'),
-   print "="*30,
-   print colored("USER INFORMATION",'white'),
-   print "="*24,
-
-# -------------------------------------------------------------------------------------
-
-   print "PROFILE   [",
-   if PR2 == "UNSELECTED              ":
+   print u'\u2554' + (u'\u2550')*35 + u'\u2566' + (u'\u2550')*31 + u'\u2566' + (u'\u2550')*64 + u'\u2557'
+   print u'\u2551' + (" ")*15 + colored("SYSTEM",'yellow') +  (" ")*14 + u'\u2551' + (" ")*9 + colored("SYSTEM HIVES",'yellow') + (" ")*10 + u'\u2551' + (" ")*26 +  colored("USER INFORMATION",'yellow') + (" ")*22 + u'\u2551' 
+   print u'\u2560' + (u'\u2550')*35 + u'\u256C' + (u'\u2550')*31 + u'\u256C' + (u'\u2550')*64 + u'\u2563'
+   print u'\u2551' + " PROFILE     ",
+   if PR2 == "UNSELECTED         ":
       print colored(PR2,'red'),
    else:
-      print colored(PR2,'blue'),   
-   print "]",
-
-   print "SAM      [",
-   if (SAM == "0x0000000000000000"):
+      print colored(PR2,'blue'),
+   print " " + u'\u2551' + " SAM       ",
+   if SAM == "0x0000000000000000":
       print colored(SAM,'red'),
    else:
       print colored(SAM,'blue'),
-   print "]|",
-
-   print US[0] + "",
-   print colored(PA[0],'blue'),
-   print "|"
-
-# -------------------------------------------------------------------------------------
-
-   print "HOST NAME [",
-   if HST == "Not found          ":
-      print colored(HST[:COL1],'red'),
+   print u'\u2551' + " " + US[0] + " " + colored(PA[0],'blue'),
+   print u'\u2551'
+   print u'\u2551' + " HOST NAME   ",
+   if HST == "NOT FOUND          ":
+      print colored(HST[:20],'red'),
    else:
-      print colored(HST[:COL1],'blue') + " ",
-   print "]",
-
-   print "SECURITY [",
+      print colored(HST[:20],'blue'),
+   print " " + u'\u2551' + " SECURITY  ",
    if SEC == "0x0000000000000000":
       print colored(SEC,'red'),
    else:
       print colored(SEC,'blue'),
-   print "]|",
-   print US[1] + "",
-   print colored(PA[1],'blue'),
-   print "|"
-
-# -------------------------------------------------------------------------------------
-
-   print "SERV PACK [",
+   print u'\u2551' + " " + US[1] + " " + colored(PA[1],'blue'),
+   print u'\u2551'
+   print u'\u2551' + " SERVICE PACK",
    if SVP == "0                  ":
       print colored(SVP,'red'),
    else:
       print colored(SVP,'blue'),
-   print "] COMPONEN [",
+   print " " + u'\u2551' + " COMPONENTS",
    if COM == "0x0000000000000000":
       print colored(COM,'red'),
    else:
       print colored(COM,'blue'),
-   print "]|",
-
-   print US[2] + "",
-   print colored(PA[2],'blue'),
-   print "|"
-
-# -------------------------------------------------------------------------------------
-
-   print "TIMESTAMP [",
-   print colored(DA2,'blue'),
-   print "] SOFTWARE [",
+   print u'\u2551' + " " + US[2] + " " + colored(PA[2],'blue'),
+   print u'\u2551'
+   print u'\u2551' + " TIME STAMP  ",
+   if DA2 == "NOT FOUND          ":
+      print colored(DA2,'red'),
+   else:
+      print colored(DA2,'blue'),
+   print " " + u'\u2551' + " SOFTWARE  ",
    if SOF == "0x0000000000000000":
       print colored(SOF,'red'),
    else:
       print colored(SOF,'blue'),
-   print "]|",
-   print US[3] + "",
-   print colored(PA[3],'blue'),
-   print "|"
-
-# ------------------------------------------------------------------------------------- 
-
-   print "LOCAL IP  [",
+   print u'\u2551' + " " + US[3] + " " + colored(PA[3],'blue'),
+   print u'\u2551'
+   print u'\u2551' + " LOCAL IP    ",
    if HIP == "000.000.000.000    ":
       print colored(HIP[:COL1],'red'),
    else:
-     if MAN1 == 0:
-        print colored(HIP[:COL1],'yellow'),    
-     else:
-        print colored(HIP[:COL1],'blue'),
-   print "]",
-
-   print "SYSTEM   [",
+      print colored(HIP[:COL1],'blue'),
+   print " " + u'\u2551' + " SYSTEM    ",
    if SYS == "0x0000000000000000":
       print colored(SYS,'red'),
    else:
       print colored(SYS,'blue'),
-   
-   print "]|",
-   print US[4] + "",
-   print colored(PA[4],'blue'),
-   print "|"
-
-# -------------------------------------------------------------------------------------
-
-   print "LOCAL PORT[",
+   print u'\u2551' + " " + US[4] + " " + colored(PA[4],'blue'),
+   print u'\u2551'
+   print u'\u2551' + " LOCAL PORT  ",
    if POR == "000                ":
-      print colored(POR,'red'),
+      print colored(POR[:COL1],'red'),
    else:
-      if MAN2 == 0:
-         print colored(POR[:COL1],'yellow'),
-      else:
-         print colored(POR[:COL1],'blue'),
-   print "]",
-   
-   print "NTUSER   [",					
+      print colored(POR[:COL1],'blue'),
+   print " " + u'\u2551' + " NTUSER    ",
    if NTU == "0x0000000000000000":
       print colored(NTU,'red'),
    else:
       print colored(NTU,'blue'),
-   print "]|",
-
-   print US[5] + "",
-   print colored(PA[5],'blue'),
-   print "|"
-
-# ------------------------------------------------------------------------------------- 
-
-   print "PID       [",
+   print u'\u2551' + " " + US[5] + " " + colored(PA[5],'blue'),
+   print u'\u2551'
+   print u'\u2551' + " PID VALUE   ",
    if PI1 == "0                  ":
       print colored(PI1[:COL1],'red'),
    else:
       print colored(PI1[:COL1],'blue'),
-   print "]",
-
-   print "HARDWARE [",
+   print " " + u'\u2551' + " HARDWARE  ",
    if HRD == "0x0000000000000000":
       print colored(HRD,'red'),
    else:
       print colored(HRD,'blue'),
-   print "]|",
-
-   print US[6] + "",
-   print colored(PA[6],'blue'),
-   print "|"
-
-# ------------------------------------------------------------------------------------- 
-
-   print "OFFSET    [",
+   print u'\u2551' + " " + US[6] + " " + colored(PA[6],'blue'),
+   print u'\u2551'
+   print u'\u2551' + " OFFSET VALUE",
    if OFF == "0                  ":
       print colored(OFF[:COL1],'red'),
    else:
       print colored(OFF[:COL1],'blue'),
-   print "]",
-
-   print "DEFAULT  [",					
+   print " " + u'\u2551' + " DEFUALT   ",
    if DEF == "0x0000000000000000":
       print colored(DEF,'red'),
    else:
       print colored(DEF,'blue'),
-   print "]|",
-
-   print US[7] + "",
-   print colored(PA[7],'blue'),
-   print "|"
-
-# -------------------------------------------------------------------------------------
-
-   print "PARAMETER [",
+   print u'\u2551' + " " + US[7] + " " + colored(PA[7],'blue'),
+   print u'\u2551'
+   print u'\u2551' + " PARAMETER   ",
    if PRM == "UNSELECTED         ":
       print colored(PRM[:COL1],'red'),
    else:
       print colored(PRM[:COL1],'blue'),
-   print "]",
-
-   print "BOOT BCD [",					
+   print " " + u'\u2551' + " BOOT BCD  ",
    if BCD == "0x0000000000000000":
       print colored(BCD,'red'),
    else:
       print colored(BCD,'blue'),
-   print "]|",
-
-   print US[8] + "",
-   print colored(PA[8],'blue'),
-   print "|"
-
-# -------------------------------------------------------------------------------------
-
-   print "DIRECTORY [",
+   print u'\u2551' + " " + US[8] + " " + colored(PA[8],'blue'),
+   print u'\u2551'
+   print u'\u2551' + " DIRECTORY   ",
    if DIR == "WORKAREA           ":
       print colored(DIR[:COL1],'red'),
    else:
       print colored(DIR[:COL1],'blue'),
-   print "]",
-
-   print NAM[:8] + " [",					
+   print " " + u'\u2551' + " CUSTOM    ",
    if CUS == "0x0000000000000000":
-      print colored(CUS,'grey'),
+      print colored(CUS,'red'),
    else:
       print colored(CUS,'blue'),
-   print "]|",
+   print u'\u2551' + " " + US[9] + " " + colored(PA[9],'blue'),
+   print u'\u2551'
+   print u'\u2560' + (u'\u2550')*35 + u'\u2569' + (u'\u2550')*31 + u'\u2569' + (u'\u2550')*64 + u'\u2563'
 
-   print US[9] + "",
-   print colored(PA[9],'blue'),
-   print "|"
+# ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-#-------------------------------------------------------------------------------------
-
-   print "="*134
+   print u'\u2551',
    print " "*7,
-   print colored("SETTINGS",'white'),
+   print colored("SETTINGS",'yellow'),
    print " "*12,
-   print colored("IDENTIFY",'white'),
+   print colored("IDENTIFY",'yellow'),
    print " "*17,
-   print colored("ANALYSE",'white'),
+   print colored("ANALYSE",'yellow'),
    print " "*24,
-   print colored("INVESTIGATE",'white'),
-   print " "*15,
-   print colored("EXTRACT",'white')
-   print "="*134	
+   print colored("INVESTIGATE",'yellow'),
+   print " "*16,
+   print colored("EXTRACT",'yellow'),
+   print " "*3,
+   print u'\u2551'
 
-# -------------------------------------------------------------------------------------
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub                                                               
-# Version : 2.0
-# Details : Build lower half of screen display as a function call.
-# Modified: N/A                                                               
-# -------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-def Menu():
-   print "(0) Re/Set PROFILE   (10) Users/Passwords   (20) SAM        (30) Re/Set   (40) PrintKey         (50) Desktop   (60) Malfind PID DIR"
-   print "(1) Re/Set PID       (11) Default Password  (21) SECURITY   (31) Re/Set   (41) ShellBags        (51) Clipboard (61) Vaddump PID DIR"
-   print "(2) Re/Set OFFSET    (12) Running Processes (22) COMPONENT  (32) Re/Set   (42) SlimCache Data   (52) Notepad   (62) Prodump PID DIR"
-   print "(3) Re/Set PARAMETER (13) Hidden Processes  (23) SOFTWARE   (33) Re/Set   (43) Connections Scan (53) Explorer  (63) Memdump PID DIR" 
-   print "(4) Re/Set DIRECTORY (14) Running Services  (24) SYSTEM     (34) Re/Set   (44) Network Scan     (54) Files     (64) PARAMETER OFFSET"
-   print "(5) Re/Set IP        (15) Command History   (25) NTUSER     (35) Re/Set   (45) Socket Scan      (55) SymLinks  (65) Timelines"
-   print "(6) Re/Set PORT      (16) Console History   (26) HARDWARE   (36) Re/Set   (46) Mutant Scan      (56) Drivers   (66) Screen Shots"
-   print "(7) Re/Name " + NAM[:8] + " (17) Cmdline Arguments (27) DEFUALT    (37) Re/Set   (47) DLL List         (57) SIDs      (67) MFT Table"
-   print "(8) Exit             (18) User Assist Keys  (28) BOOT BCD   (38) Re/Set   (48) Sessions         (58) EnvVars   (68) PCAP File"
-   print "(9) Clean/Exit       (19) Hive List         (29) " + NAM[:8] + "   (39) Re/Set   (49) PARAMETER Search (59) TrueCrypt (69) Bulk Extract"
+   print u'\u2560' + (u'\u2550'*132) + u'\u2563'
+   print u'\u2551' + "(0) Re/Set PROFILE   (10) Users/Passwords   (20) SAM        (30) Re/Set   (40) PrintKey         (50) Desktop   (60) Malfind PID DIR " + u'\u2551'
+   print u'\u2551' + "(1) Re/Set PID       (11) Default Password  (21) SECURITY   (31) Re/Set   (41) ShellBags        (51) Clipboard (61) Vaddump PID DIR " + u'\u2551'
+   print u'\u2551' + "(2) Re/Set OFFSET    (12) Running Processes (22) COMPONENTS (32) Re/Set   (42) SlimCache Data   (52) Notepad   (62) Prodump PID DIR " + u'\u2551'
+   print u'\u2551' + "(3) Re/Set PARAMETER (13) Hidden Processes  (23) SOFTWARE   (33) Re/Set   (43) Connections Scan (53) Explorer  (63) Memdump PID DIR " + u'\u2551'
+   print u'\u2551' + "(4) Re/Set DIRECTORY (14) Running Services  (24) SYSTEM     (34) Re/Set   (44) Network Scan     (54) Files     (64) PARAMETER OFFSET" + u'\u2551'
+   print u'\u2551' + "(5) Re/Set IP        (15) Command History   (25) NTUSER     (35) Re/Set   (45) Socket Scan      (55) SymLinks  (65) Timelines       " + u'\u2551'
+   print u'\u2551' + "(6) Re/Set PORT      (16) Console History   (26) HARDWARE   (36) Re/Set   (46) Mutant Scan      (56) Drivers   (66) Screen Shots    " + u'\u2551'
+   print u'\u2551' + "(7) Re/Name " + NAM[:8] + " (17) Cmdline Arguments (27) DEFUALT    (37) Re/Set   (47) DLL List         (57) SIDs      (67) MFT Table       " + u'\u2551'
+   print u'\u2551' + "(8) Exit             (18) User Assist Keys  (28) BOOT BCD   (38) Re/Set   (48) Sessions         (58) EnvVars   (68) PCAP File       " + u'\u2551'
+   print u'\u2551' + "(9) Clean/Exit       (19) Hive List         (29) " + NAM[:8] + "   (39) Re/Set   (49) PARAMETER Search (59) TrueCrypt (69) Bulk Extract    " + u'\u2551'
+   print u'\u255A' + (u'\u2550')*132 + u'\u255D'
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -560,8 +475,7 @@ def Menu():
 while True: 
    os.system("clear")
    Display()
-   Menu()
-   selection=raw_input("\nPlease Select: ")
+   selection=raw_input("Please Select: ")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
