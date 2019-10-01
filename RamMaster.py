@@ -96,7 +96,7 @@ HRD = "0x0000000000000000"
 DEF = "0x0000000000000000"
 BCD = "0x0000000000000000"
 CUS = "0x0000000000000000"
-NAM = "CUSTOM  "
+NAM = "CUSTOM   "
 HST = "BLANK              "
 PRC = "0                  "
 SVP = "0                  "
@@ -452,7 +452,7 @@ def Display():
       print colored(DIR[:COL1],'red'),
    else:
       print colored(DIR[:COL1],'blue'),
-   print " " + u'\u2551' + " CUSTOM    ",
+   print " " + u'\u2551' + " " + NAM[:9] + " ",
    if CUS == "0x0000000000000000":
       print colored(CUS,'red'),
    else:
@@ -490,9 +490,9 @@ def Display():
    print u'\u2551' + "(4) Re/Set DIRECTORY (14) Running Services  (24) SYSTEM     (34) Re/Set   (44) Network Scan     (54) Files     (64) PARAMETER OFFSET" + u'\u2551'
    print u'\u2551' + "(5) Re/Set IP        (15) Command History   (25) NTUSER     (35) Re/Set   (45) Socket Scan      (55) SymLinks  (65) Timelines       " + u'\u2551'
    print u'\u2551' + "(6) Re/Set PORT      (16) Console History   (26) HARDWARE   (36) Re/Set   (46) Mutant Scan      (56) Drivers   (66) Screen Shots    " + u'\u2551'
-   print u'\u2551' + "(7) Re/Name " + NAM[:8] + " (17) Cmdline Arguments (27) DEFUALT    (37) Re/Set   (47) DLL List         (57) SIDs      (67) MFT Table       " + u'\u2551'
+   print u'\u2551' + "(7) Re/Set " + NAM[:9] + " (17) Cmdline Arguments (27) DEFUALT    (37) Re/Set   (47) DLL List         (57) SIDs      (67) MFT Table       " + u'\u2551'
    print u'\u2551' + "(8) Exit             (18) User Assist Keys  (28) BOOT BCD   (38) Re/Set   (48) Sessions         (58) EnvVars   (68) PCAP File       " + u'\u2551'
-   print u'\u2551' + "(9) Clean/Exit       (19) Hive List         (29) " + NAM[:8] + "   (39) Re/Set   (49) PARAMETER Search (59) TrueCrypt (69) Bulk Extract    " + u'\u2551'
+   print u'\u2551' + "(9) Clean/Exit       (19) Hive List         (29) " + NAM[:9] + "  (39) Re/Set   (49) PARAMETER Search (59) TrueCrypt (69) Bulk Extract    " + u'\u2551'
    print u'\u255A' + (u'\u2550')*132 + u'\u255D'
 
 # -------------------------------------------------------------------------------------
@@ -633,7 +633,7 @@ while True:
    if selection == '7':
       temp = raw_input("Please enter HIVE name: ")
       if temp != '':
-         NAM = padding(temp, 8)
+         NAM = padding(temp, 9)
          
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
