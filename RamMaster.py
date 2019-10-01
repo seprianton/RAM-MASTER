@@ -309,7 +309,7 @@ os.remove('conn1.txt')
 
 def Display():
    print u'\u2554' + (u'\u2550')*35 + u'\u2566' + (u'\u2550')*31 + u'\u2566' + (u'\u2550')*64 + u'\u2557'
-   print u'\u2551' + (" ")*15 + colored("SYSTEM",'yellow') +  (" ")*14 + u'\u2551' + (" ")*9 + colored("SYSTEM HIVES",'yellow') + (" ")*10 + u'\u2551' + (" ")*26 +  colored("USER INFORMATION",'yellow') + (" ")*22 + u'\u2551' 
+   print u'\u2551' + (" ")*15 + colored("SYSTEM",'white') +  (" ")*14 + u'\u2551' + (" ")*9 + colored("SYSTEM HIVES",'white') + (" ")*10 + u'\u2551' + (" ")*26 +  colored("USER INFORMATION",'white') + (" ")*22 + u'\u2551' 
    print u'\u2560' + (u'\u2550')*35 + u'\u256C' + (u'\u2550')*31 + u'\u256C' + (u'\u2550')*64 + u'\u2563'
    
    print u'\u2551' + " PROFILE     ",
@@ -323,7 +323,7 @@ def Display():
    else:
       print colored(SAM,'blue'),
    print u'\u2551',
-   print colored(US[0].upper(),'white'),
+   print colored(US[0].upper(),'blue'),
    print colored(PA[0],'blue'),
    print u'\u2551'
    
@@ -338,7 +338,7 @@ def Display():
    else:
       print colored(SEC,'blue'),
    print u'\u2551',
-   print colored(US[1].upper(),'white'),
+   print colored(US[1].upper(),'blue'),
    print colored(PA[1],'blue'),
    print u'\u2551'
    
@@ -353,7 +353,7 @@ def Display():
    else:
       print colored(COM,'blue'),
    print u'\u2551',
-   print colored(US[2].upper(),'white'),
+   print colored(US[2].upper(),'blue'),
    print colored(PA[2],'blue'),
    print u'\u2551'
    
@@ -368,7 +368,7 @@ def Display():
    else:
       print colored(SOF,'blue'),
    print u'\u2551',
-   print colored(US[3].upper(),'white'),
+   print colored(US[3].upper(),'blue'),
    print colored(PA[3],'blue'),
    print u'\u2551'
    
@@ -383,7 +383,7 @@ def Display():
    else:
       print colored(SYS,'blue'),
    print u'\u2551',
-   print colored(US[4].upper(),'white'),
+   print colored(US[4].upper(),'blue'),
    print colored(PA[4],'blue'),
    print u'\u2551'
    
@@ -398,7 +398,7 @@ def Display():
    else:
       print colored(NTU,'blue'),
    print u'\u2551',
-   print colored(US[5].upper(),'white'),
+   print colored(US[5].upper(),'blue'),
    print colored(PA[5],'blue'),
    print u'\u2551'
    
@@ -413,7 +413,7 @@ def Display():
    else:
       print colored(HRD,'blue'),
    print u'\u2551',
-   print colored(US[6].upper(),'white'),
+   print colored(US[6].upper(),'blue'),
    print colored(PA[6],'blue'),
    print u'\u2551'
    
@@ -428,7 +428,7 @@ def Display():
    else:
       print colored(DEF,'blue'),
    print u'\u2551',
-   print colored(US[7].upper(),'white'),
+   print colored(US[7].upper(),'blue'),
    print colored(PA[7],'blue'),
    print u'\u2551'
    
@@ -443,7 +443,7 @@ def Display():
    else:
       print colored(BCD,'blue'),
    print u'\u2551',
-   print colored(US[8].upper(),'white'),
+   print colored(US[8].upper(),'blue'),
    print colored(PA[8],'blue'),
    print u'\u2551'
    
@@ -458,7 +458,7 @@ def Display():
    else:
       print colored(CUS,'blue'),
    print u'\u2551',
-   print colored(US[9].upper(),'white'),
+   print colored(US[9].upper(),'blue'),
    print colored(PA[9],'blue'),
    print u'\u2551'
 
@@ -468,15 +468,15 @@ def Display():
 
    print u'\u2551',
    print " "*7,
-   print colored("SETTINGS",'yellow'),
+   print colored("SETTINGS",'white'),
    print " "*12,
-   print colored("IDENTIFY",'yellow'),
+   print colored("IDENTIFY",'white'),
    print " "*17,
-   print colored("ANALYSE",'yellow'),
+   print colored("ANALYSE",'white'),
    print " "*24,
-   print colored("INVESTIGATE",'yellow'),
+   print colored("INVESTIGATE",'white'),
    print " "*16,
-   print colored("EXTRACT",'yellow'),
+   print colored("EXTRACT",'white'),
    print " "*3,
    print u'\u2551'
 
