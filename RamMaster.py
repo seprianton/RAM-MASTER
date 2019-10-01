@@ -255,8 +255,8 @@ HST = str(wordlist[-1])
 if HST == "searched":
    HST = "NOT FOUND          "
 else:
-   HST = HST.decode('utf-8', 'ignore')
-   HST = padding(HST, 20)
+   HST = HST.decode('utf-8', 'ignore')	# Issue with byte sizes of host name characters - this patch does not correct issue.
+   HST = padding(HST, 20)		# Issue with byte sizes of host name characters - should be COL1 rather than 20.
 os.remove('host.txt')
 
 #-------------------------------------------------------------------------------------
@@ -311,6 +311,7 @@ def Display():
    print u'\u2554' + (u'\u2550')*35 + u'\u2566' + (u'\u2550')*31 + u'\u2566' + (u'\u2550')*64 + u'\u2557'
    print u'\u2551' + (" ")*15 + colored("SYSTEM",'yellow') +  (" ")*14 + u'\u2551' + (" ")*9 + colored("SYSTEM HIVES",'yellow') + (" ")*10 + u'\u2551' + (" ")*26 +  colored("USER INFORMATION",'yellow') + (" ")*22 + u'\u2551' 
    print u'\u2560' + (u'\u2550')*35 + u'\u256C' + (u'\u2550')*31 + u'\u256C' + (u'\u2550')*64 + u'\u2563'
+   
    print u'\u2551' + " PROFILE     ",
    if PR2 == "UNSELECTED         ":
       print colored(PR2,'red'),
@@ -321,8 +322,11 @@ def Display():
       print colored(SAM,'red'),
    else:
       print colored(SAM,'blue'),
-   print u'\u2551' + " " + US[0] + " " + colored(PA[0],'blue'),
+   print u'\u2551',
+   print colored(US[0].upper(),'white'),
+   print colored(PA[0],'blue'),
    print u'\u2551'
+   
    print u'\u2551' + " HOST NAME   ",
    if HST == "NOT FOUND          ":
       print colored(HST[:20],'red'),
@@ -333,8 +337,11 @@ def Display():
       print colored(SEC,'red'),
    else:
       print colored(SEC,'blue'),
-   print u'\u2551' + " " + US[1] + " " + colored(PA[1],'blue'),
+   print u'\u2551',
+   print colored(US[1].upper(),'white'),
+   print colored(PA[1],'blue'),
    print u'\u2551'
+   
    print u'\u2551' + " SERVICE PACK",
    if SVP == "0                  ":
       print colored(SVP,'red'),
@@ -345,8 +352,11 @@ def Display():
       print colored(COM,'red'),
    else:
       print colored(COM,'blue'),
-   print u'\u2551' + " " + US[2] + " " + colored(PA[2],'blue'),
+   print u'\u2551',
+   print colored(US[2].upper(),'white'),
+   print colored(PA[2],'blue'),
    print u'\u2551'
+   
    print u'\u2551' + " TIME STAMP  ",
    if DA2 == "NOT FOUND          ":
       print colored(DA2,'red'),
@@ -357,8 +367,11 @@ def Display():
       print colored(SOF,'red'),
    else:
       print colored(SOF,'blue'),
-   print u'\u2551' + " " + US[3] + " " + colored(PA[3],'blue'),
+   print u'\u2551',
+   print colored(US[3].upper(),'white'),
+   print colored(PA[3],'blue'),
    print u'\u2551'
+   
    print u'\u2551' + " LOCAL IP    ",
    if HIP == "000.000.000.000    ":
       print colored(HIP[:COL1],'red'),
@@ -369,8 +382,11 @@ def Display():
       print colored(SYS,'red'),
    else:
       print colored(SYS,'blue'),
-   print u'\u2551' + " " + US[4] + " " + colored(PA[4],'blue'),
+   print u'\u2551',
+   print colored(US[4].upper(),'white'),
+   print colored(PA[4],'blue'),
    print u'\u2551'
+   
    print u'\u2551' + " LOCAL PORT  ",
    if POR == "000                ":
       print colored(POR[:COL1],'red'),
@@ -381,8 +397,11 @@ def Display():
       print colored(NTU,'red'),
    else:
       print colored(NTU,'blue'),
-   print u'\u2551' + " " + US[5] + " " + colored(PA[5],'blue'),
+   print u'\u2551',
+   print colored(US[5].upper(),'white'),
+   print colored(PA[5],'blue'),
    print u'\u2551'
+   
    print u'\u2551' + " PID VALUE   ",
    if PI1 == "0                  ":
       print colored(PI1[:COL1],'red'),
@@ -393,8 +412,11 @@ def Display():
       print colored(HRD,'red'),
    else:
       print colored(HRD,'blue'),
-   print u'\u2551' + " " + US[6] + " " + colored(PA[6],'blue'),
+   print u'\u2551',
+   print colored(US[6].upper(),'white'),
+   print colored(PA[6],'blue'),
    print u'\u2551'
+   
    print u'\u2551' + " OFFSET VALUE",
    if OFF == "0                  ":
       print colored(OFF[:COL1],'red'),
@@ -405,8 +427,11 @@ def Display():
       print colored(DEF,'red'),
    else:
       print colored(DEF,'blue'),
-   print u'\u2551' + " " + US[7] + " " + colored(PA[7],'blue'),
+   print u'\u2551',
+   print colored(US[7].upper(),'white'),
+   print colored(PA[7],'blue'),
    print u'\u2551'
+   
    print u'\u2551' + " PARAMETER   ",
    if PRM == "UNSELECTED         ":
       print colored(PRM[:COL1],'red'),
@@ -417,8 +442,11 @@ def Display():
       print colored(BCD,'red'),
    else:
       print colored(BCD,'blue'),
-   print u'\u2551' + " " + US[8] + " " + colored(PA[8],'blue'),
+   print u'\u2551',
+   print colored(US[8].upper(),'white'),
+   print colored(PA[8],'blue'),
    print u'\u2551'
+   
    print u'\u2551' + " DIRECTORY   ",
    if DIR == "WORKAREA           ":
       print colored(DIR[:COL1],'red'),
@@ -429,8 +457,11 @@ def Display():
       print colored(CUS,'red'),
    else:
       print colored(CUS,'blue'),
-   print u'\u2551' + " " + US[9] + " " + colored(PA[9],'blue'),
+   print u'\u2551',
+   print colored(US[9].upper(),'white'),
+   print colored(PA[9],'blue'),
    print u'\u2551'
+
    print u'\u2560' + (u'\u2550')*35 + u'\u2569' + (u'\u2550')*31 + u'\u2569' + (u'\u2550')*64 + u'\u2563'
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
