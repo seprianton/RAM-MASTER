@@ -406,7 +406,7 @@ def Display():
    if PI1 == "0                  ":
       print colored(PI1[:COL1],'red'),
    else:
-      print colored(PI1[:COL1],'blue'),
+      print colored(PI1[:COL1],'yellow'),
    print " " + u'\u2551' + " HARDWARE  ",
    if HRD == "0x0000000000000000":
       print colored(HRD,'red'),
@@ -421,7 +421,7 @@ def Display():
    if OFF == "0                  ":
       print colored(OFF[:COL1],'red'),
    else:
-      print colored(OFF[:COL1],'blue'),
+      print colored(OFF[:COL1],'yellow'),
    print " " + u'\u2551' + " DEFUALT   ",
    if DEF == "0x0000000000000000":
       print colored(DEF,'red'),
@@ -436,7 +436,7 @@ def Display():
    if PRM == "UNSELECTED         ":
       print colored(PRM[:COL1],'red'),
    else:
-      print colored(PRM[:COL1],'blue'),
+      print colored(PRM[:COL1],'yellow'),
    print " " + u'\u2551' + " BOOT BCD  ",
    if BCD == "0x0000000000000000":
       print colored(BCD,'red'),
@@ -451,7 +451,7 @@ def Display():
    if DIR == "WORKAREA           ":
       print colored(DIR[:COL1],'red'),
    else:
-      print colored(DIR[:COL1],'blue'),
+      print colored(DIR[:COL1],'yellow'),
    print " " + u'\u2551' + " " + NAM[:9] + " ",
    if CUS == "0x0000000000000000":
       print colored(CUS,'red'),
