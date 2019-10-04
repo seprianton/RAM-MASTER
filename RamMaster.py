@@ -74,7 +74,7 @@ def rpadding(variable,value):
 
 COL1 = 19
 COL2 = 18
-COL3 = 29
+COL3 = 26
 COL4 = 32
 MAN1 = 0
 MAN2 = 0
@@ -308,16 +308,16 @@ os.remove('conn1.txt')
 # -------------------------------------------------------------------------------------
 
 def Display():
-   print u'\u2554' + (u'\u2550')*35 + u'\u2566' + (u'\u2550')*31 + u'\u2566' + (u'\u2550')*64 + u'\u2557'
-   print u'\u2551' + (" ")*15 + colored("SYSTEM",'white') +  (" ")*14 + u'\u2551' + (" ")*9 + colored("SYSTEM HIVES",'white') + (" ")*10 + u'\u2551' + (" ")*26 +  colored("USER INFORMATION",'white') + (" ")*22 + u'\u2551' 
-   print u'\u2560' + (u'\u2550')*35 + u'\u256C' + (u'\u2550')*31 + u'\u256C' + (u'\u2550')*64 + u'\u2563'
+   print u'\u2554' + (u'\u2550')*36 + u'\u2566' + (u'\u2550')*33 + u'\u2566' + (u'\u2550')*61 + u'\u2557'
+   print u'\u2551' + (" ")*15 + colored("SYSTEM",'white') +  (" ")*15 + u'\u2551' + (" ")*10 + colored("SYSTEM HIVES",'white') + (" ")*11 + u'\u2551' + (" ")*24 +  colored("USER INFORMATION",'white') + (" ")*21 + u'\u2551' 
+   print u'\u2560' + (u'\u2550')*14 + u'\u2564' + (u'\u2550')*21 + u'\u256C' + (u'\u2550')*12 + u'\u2564' + (u'\u2550')*20 + u'\u256C' + (u'\u2550')*61 + u'\u2563'
    
-   print u'\u2551' + " PROFILE     ",
+   print u'\u2551' + " PROFILE      " + u'\u2502',
    if PR2 == "UNSELECTED         ":
       print colored(PR2,'red'),
    else:
       print colored(PR2,'blue'),
-   print " " + u'\u2551' + " SAM       ",
+   print u'\u2551' + " SAM        " + u'\u2502',
    if SAM == "0x0000000000000000":
       print colored(SAM,'red'),
    else:
@@ -327,12 +327,12 @@ def Display():
    print colored(PA[0],'blue'),
    print u'\u2551'
    
-   print u'\u2551' + " HOST NAME   ",
+   print u'\u2551' + " HOST NAME    " + u'\u2502',
    if HST == "NOT FOUND          ":
       print colored(HST[:20],'red'),
    else:
       print colored(HST[:20],'blue'),
-   print " " + u'\u2551' + " SECURITY  ",
+   print u'\u2551' + " SECURITY   " + u'\u2502',
    if SEC == "0x0000000000000000":
       print colored(SEC,'red'),
    else:
@@ -342,12 +342,12 @@ def Display():
    print colored(PA[1],'blue'),
    print u'\u2551'
    
-   print u'\u2551' + " SERVICE PACK",
+   print u'\u2551' + " SERVICE PACK " + u'\u2502',
    if SVP == "0                  ":
       print colored(SVP,'red'),
    else:
       print colored(SVP,'blue'),
-   print " " + u'\u2551' + " COMPONENTS",
+   print u'\u2551' + " COMPONENTS " + u'\u2502',
    if COM == "0x0000000000000000":
       print colored(COM,'red'),
    else:
@@ -357,12 +357,12 @@ def Display():
    print colored(PA[2],'blue'),
    print u'\u2551'
    
-   print u'\u2551' + " TIME STAMP  ",
+   print u'\u2551' + " TIME STAMP   " + u'\u2502',
    if DA2 == "NOT FOUND          ":
       print colored(DA2,'red'),
    else:
       print colored(DA2,'blue'),
-   print " " + u'\u2551' + " SOFTWARE  ",
+   print u'\u2551' + " SOFTWARE   " + u'\u2502',
    if SOF == "0x0000000000000000":
       print colored(SOF,'red'),
    else:
@@ -372,12 +372,12 @@ def Display():
    print colored(PA[3],'blue'),
    print u'\u2551'
    
-   print u'\u2551' + " LOCAL IP    ",
+   print u'\u2551' + " LOCAL IP     " + u'\u2502',
    if HIP == "000.000.000.000    ":
       print colored(HIP[:COL1],'red'),
    else:
       print colored(HIP[:COL1],'blue'),
-   print " " + u'\u2551' + " SYSTEM    ",
+   print u'\u2551' + " SYSTEM     " + u'\u2502',
    if SYS == "0x0000000000000000":
       print colored(SYS,'red'),
    else:
@@ -387,12 +387,12 @@ def Display():
    print colored(PA[4],'blue'),
    print u'\u2551'
    
-   print u'\u2551' + " LOCAL PORT  ",
+   print u'\u2551' + " LOCAL PORT   " + u'\u2502',
    if POR == "000                ":
       print colored(POR[:COL1],'red'),
    else:
       print colored(POR[:COL1],'blue'),
-   print " " + u'\u2551' + " NTUSER    ",
+   print u'\u2551' + " NTUSER     " + u'\u2502',
    if NTU == "0x0000000000000000":
       print colored(NTU,'red'),
    else:
@@ -402,12 +402,12 @@ def Display():
    print colored(PA[5],'blue'),
    print u'\u2551'
    
-   print u'\u2551' + " PID VALUE   ",
+   print u'\u2551' + " PID VALUE    " + u'\u2502',
    if PI1 == "0                  ":
       print colored(PI1[:COL1],'red'),
    else:
       print colored(PI1[:COL1],'yellow'),
-   print " " + u'\u2551' + " HARDWARE  ",
+   print u'\u2551' + " HARDWARE   " + u'\u2502',
    if HRD == "0x0000000000000000":
       print colored(HRD,'red'),
    else:
@@ -417,12 +417,12 @@ def Display():
    print colored(PA[6],'blue'),
    print u'\u2551'
    
-   print u'\u2551' + " OFFSET VALUE",
+   print u'\u2551' + " OFFSET VALUE " + u'\u2502',
    if OFF == "0                  ":
       print colored(OFF[:COL1],'red'),
    else:
       print colored(OFF[:COL1],'yellow'),
-   print " " + u'\u2551' + " DEFUALT   ",
+   print u'\u2551' + " DEFUALT    " + u'\u2502',
    if DEF == "0x0000000000000000":
       print colored(DEF,'red'),
    else:
@@ -432,12 +432,12 @@ def Display():
    print colored(PA[7],'blue'),
    print u'\u2551'
    
-   print u'\u2551' + " PARAMETER   ",
+   print u'\u2551' + " PARAMETER    " + u'\u2502',
    if PRM == "UNSELECTED         ":
       print colored(PRM[:COL1],'red'),
    else:
       print colored(PRM[:COL1],'yellow'),
-   print " " + u'\u2551' + " BOOT BCD  ",
+   print u'\u2551' + " BOOT BCD   " + u'\u2502',
    if BCD == "0x0000000000000000":
       print colored(BCD,'red'),
    else:
@@ -447,12 +447,12 @@ def Display():
    print colored(PA[8],'blue'),
    print u'\u2551'
    
-   print u'\u2551' + " DIRECTORY   ",
+   print u'\u2551' + " DIRECTORY    " + u'\u2502',
    if DIR == "WORKAREA           ":
       print colored(DIR[:COL1],'red'),
    else:
       print colored(DIR[:COL1],'yellow'),
-   print " " + u'\u2551' + " " + NAM[:9] + " ",
+   print u'\u2551' + " " + NAM[:9] + "  " + u'\u2502',
    if CUS == "0x0000000000000000":
       print colored(CUS,'red'),
    else:
@@ -462,7 +462,7 @@ def Display():
    print colored(PA[9],'blue'),
    print u'\u2551'
 
-   print u'\u2560' + (u'\u2550')*35 + u'\u2569' + (u'\u2550')*31 + u'\u2569' + (u'\u2550')*64 + u'\u2563'
+   print u'\u2560' + (u'\u2550')*14 + u'\u2567'+ (u'\u2550')*21  + u'\u2569' + (u'\u2550')*12 + u'\u2567' + (u'\u2550')*20 + u'\u2569' + (u'\u2550')*61 + u'\u2563'
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 
