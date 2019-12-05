@@ -19,3 +19,7 @@ A python script file to forensically examine Microsoft Windows memory-dump files
 
 ### CONSOLE DISPLAY
 ![Screenshot](picture1.png)
+
+### PAYPAL
+Found this project useful, or would like it amended in some way - make a donation.
+paypal.me/TerenceBroadbent
