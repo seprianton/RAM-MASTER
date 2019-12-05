@@ -22,4 +22,5 @@ A python script file to forensically examine Microsoft Windows memory-dump files
 
 ### PAYPAL
 Found this project useful, or would like it amended in some way - make a donation.
-paypal.me/TerenceBroadbent
+
+https://paypal.me/TerenceBroadbent?locale.x=en_GB
