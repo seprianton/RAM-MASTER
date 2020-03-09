@@ -17,7 +17,8 @@ Usage: python RamMaster.py dumpfile.mem
 
 A python script file to forensically examine Microsoft Windows memory-dump files - It can pull usernames, password hashes, extract .pcap files, system executables, MFT tables, console keystrokes, screenshots and much much more.
 
-[![Watch the video](https://youtu.be/ppYX1oOoixI/maxresdefault.jpg)](https://youtu.be/ppYX1oOoixI)
+[![Watch the video](picture2.jpg)](https://youtu.be/ppYX1oOoixI)
+
 ### CONSOLE DISPLAY
 ![Screenshot](picture2.png)
 
