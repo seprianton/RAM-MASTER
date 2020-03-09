@@ -105,10 +105,11 @@ HIP = "000.000.000.000    "
 POR = "000                "
 X1 = " "*COL3
 X2 = " "*COL4
-US = []
-PA = []
-US = [X1,X1,X1,X1,X1,X1,X1,X1,X1,X1]
-PA = [X2,X2,X2,X2,X2,X2,X2,X2,X2,X2]
+US = [X1]*10
+PA = [X2]*10
+
+colour1 = 'yellow'
+colour2 = 'green'
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -314,152 +315,152 @@ def Display():
    
    print u'\u2551' + " PROFILE      " + u'\u2502',
    if PR2 == "UNSELECTED         ":
-      print colored(PR2,'red'),
+      print colored(PR2,colour2),
    else:
-      print colored(PR2,'blue'),
+      print colored(PR2,colour1),
    print u'\u2551' + " SAM        " + u'\u2502',
    if SAM == "0x0000000000000000":
-      print colored(SAM,'red'),
+      print colored(SAM,colour2),
    else:
-      print colored(SAM,'blue'),
+      print colored(SAM,colour1),
    print u'\u2551',
-   print colored(US[0].upper(),'blue'),
-   print colored(PA[0],'blue'),
+   print colored(US[0].upper(),colour1),
+   print colored(PA[0],colour1),
    print u'\u2551'
    
    print u'\u2551' + " HOST NAME    " + u'\u2502',
    if HST == "NOT FOUND          ":
-      print colored(HST[:20],'red'),
+      print colored(HST[:20],colour2),
    else:
-      print colored(HST[:20],'blue'),
+      print colored(HST[:20],colour1),
    print u'\u2551' + " SECURITY   " + u'\u2502',
    if SEC == "0x0000000000000000":
-      print colored(SEC,'red'),
+      print colored(SEC,colour2),
    else:
-      print colored(SEC,'blue'),
+      print colored(SEC,colour1),
    print u'\u2551',
-   print colored(US[1].upper(),'blue'),
-   print colored(PA[1],'blue'),
+   print colored(US[1].upper(),colour1),
+   print colored(PA[1],colour1),
    print u'\u2551'
    
    print u'\u2551' + " SERVICE PACK " + u'\u2502',
    if SVP == "0                  ":
-      print colored(SVP,'red'),
+      print colored(SVP,colour2),
    else:
-      print colored(SVP,'blue'),
+      print colored(SVP,colour1),
    print u'\u2551' + " COMPONENTS " + u'\u2502',
    if COM == "0x0000000000000000":
-      print colored(COM,'red'),
+      print colored(COM,colour2),
    else:
-      print colored(COM,'blue'),
+      print colored(COM,colour1),
    print u'\u2551',
-   print colored(US[2].upper(),'blue'),
-   print colored(PA[2],'blue'),
+   print colored(US[2].upper(),colour1),
+   print colored(PA[2],colour1),
    print u'\u2551'
    
    print u'\u2551' + " TIME STAMP   " + u'\u2502',
    if DA2 == "NOT FOUND          ":
-      print colored(DA2,'red'),
+      print colored(DA2,colour2),
    else:
-      print colored(DA2,'blue'),
+      print colored(DA2,colour1),
    print u'\u2551' + " SOFTWARE   " + u'\u2502',
    if SOF == "0x0000000000000000":
-      print colored(SOF,'red'),
+      print colored(SOF,colour2),
    else:
-      print colored(SOF,'blue'),
+      print colored(SOF,colour1),
    print u'\u2551',
-   print colored(US[3].upper(),'blue'),
-   print colored(PA[3],'blue'),
+   print colored(US[3].upper(),colour1),
+   print colored(PA[3],colour1),
    print u'\u2551'
    
    print u'\u2551' + " LOCAL IP     " + u'\u2502',
    if HIP == "000.000.000.000    ":
-      print colored(HIP[:COL1],'red'),
+      print colored(HIP[:COL1],colour2),
    else:
-      print colored(HIP[:COL1],'blue'),
+      print colored(HIP[:COL1],colour1),
    print u'\u2551' + " SYSTEM     " + u'\u2502',
    if SYS == "0x0000000000000000":
-      print colored(SYS,'red'),
+      print colored(SYS,colour2),
    else:
-      print colored(SYS,'blue'),
+      print colored(SYS,colour1),
    print u'\u2551',
-   print colored(US[4].upper(),'blue'),
-   print colored(PA[4],'blue'),
+   print colored(US[4].upper(),colour1),
+   print colored(PA[4],colour1),
    print u'\u2551'
    
    print u'\u2551' + " LOCAL PORT   " + u'\u2502',
    if POR == "000                ":
-      print colored(POR[:COL1],'red'),
+      print colored(POR[:COL1],colour2),
    else:
-      print colored(POR[:COL1],'blue'),
+      print colored(POR[:COL1],colour1),
    print u'\u2551' + " NTUSER     " + u'\u2502',
    if NTU == "0x0000000000000000":
-      print colored(NTU,'red'),
+      print colored(NTU,colour2),
    else:
-      print colored(NTU,'blue'),
+      print colored(NTU,colour1),
    print u'\u2551',
-   print colored(US[5].upper(),'blue'),
-   print colored(PA[5],'blue'),
+   print colored(US[5].upper(),colour1),
+   print colored(PA[5],colour1),
    print u'\u2551'
    
    print u'\u2551' + " PID VALUE    " + u'\u2502',
    if PI1 == "0                  ":
-      print colored(PI1[:COL1],'red'),
+      print colored(PI1[:COL1],colour2),
    else:
       print colored(PI1[:COL1],'yellow'),
    print u'\u2551' + " HARDWARE   " + u'\u2502',
    if HRD == "0x0000000000000000":
-      print colored(HRD,'red'),
+      print colored(HRD,colour2),
    else:
-      print colored(HRD,'blue'),
+      print colored(HRD,colour1),
    print u'\u2551',
-   print colored(US[6].upper(),'blue'),
-   print colored(PA[6],'blue'),
+   print colored(US[6].upper(),colour1),
+   print colored(PA[6],colour1),
    print u'\u2551'
    
    print u'\u2551' + " OFFSET VALUE " + u'\u2502',
    if OFF == "0                  ":
-      print colored(OFF[:COL1],'red'),
+      print colored(OFF[:COL1],colour2),
    else:
       print colored(OFF[:COL1],'yellow'),
    print u'\u2551' + " DEFUALT    " + u'\u2502',
    if DEF == "0x0000000000000000":
-      print colored(DEF,'red'),
+      print colored(DEF,colour2),
    else:
-      print colored(DEF,'blue'),
+      print colored(DEF,colour1),
    print u'\u2551',
-   print colored(US[7].upper(),'blue'),
-   print colored(PA[7],'blue'),
+   print colored(US[7].upper(),colour1),
+   print colored(PA[7],colour1),
    print u'\u2551'
    
    print u'\u2551' + " PARAMETER    " + u'\u2502',
    if PRM == "UNSELECTED         ":
-      print colored(PRM[:COL1],'red'),
+      print colored(PRM[:COL1],colour2),
    else:
       print colored(PRM[:COL1],'yellow'),
    print u'\u2551' + " BOOT BCD   " + u'\u2502',
    if BCD == "0x0000000000000000":
-      print colored(BCD,'red'),
+      print colored(BCD,colour2),
    else:
-      print colored(BCD,'blue'),
+      print colored(BCD,colour1),
    print u'\u2551',
-   print colored(US[8].upper(),'blue'),
-   print colored(PA[8],'blue'),
+   print colored(US[8].upper(),colour1),
+   print colored(PA[8],colour1),
    print u'\u2551'
    
    print u'\u2551' + " DIRECTORY    " + u'\u2502',
    if DIR == "WORKAREA           ":
-      print colored(DIR[:COL1],'red'),
+      print colored(DIR[:COL1],colour2),
    else:
       print colored(DIR[:COL1],'yellow'),
    print u'\u2551' + " " + NAM[:9] + "  " + u'\u2502',
    if CUS == "0x0000000000000000":
-      print colored(CUS,'red'),
+      print colored(CUS,colour2),
    else:
-      print colored(CUS,'blue'),
+      print colored(CUS,colour1),
    print u'\u2551',
-   print colored(US[9].upper(),'blue'),
-   print colored(PA[9],'blue'),
+   print colored(US[9].upper(),colour1),
+   print colored(PA[9],colour1),
    print u'\u2551'
 
    print u'\u2560' + (u'\u2550')*14 + u'\u2567'+ (u'\u2550')*21  + u'\u2569' + (u'\u2550')*12 + u'\u2567' + (u'\u2550')*20 + u'\u2569' + (u'\u2550')*61 + u'\u2563'
@@ -675,7 +676,7 @@ while True:
 
    if selection == '10':
       if SAM == "0x0000000000000000":
-         print colored("SAM HIVE missing - its not possible to extract the hashes...",'red')
+         print colored("SAM HIVE missing - its not possible to extract the hashes...",colour2)
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hashdump -y " + SYS + " -s " + SAM)
       raw_input("\nPress ENTER to continue...")
@@ -842,7 +843,7 @@ while True:
 
    if selection == '20':
       if (SAM == "0x0000000000000000"):
-         print colored("SAM Hive missing - it is not possible to extract data...",'red')
+         print colored("SAM Hive missing - it is not possible to extract data...",colour2)
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + SAM + " | more")
       raw_input("\nPress ENTER to continue...")
@@ -857,7 +858,7 @@ while True:
 
    if selection =='21':
       if (SEC == "0x0000000000000000"):
-         print colored("SECURITY Hive missing - it is not possible to extract data...",'red')
+         print colored("SECURITY Hive missing - it is not possible to extract data...",colour2)
       else:
          os.system("volatility -f " + fileName + PRO + " hivedump -o " + SEC + " | more")
       raw_input("\nPress ENTER to continue...")
@@ -872,7 +873,7 @@ while True:
 
    if selection =='22':
       if (COM == "0x0000000000000000"):
-         print colored("COMPONENTS Hive missing - it is not possible to extract data...",'red')
+         print colored("COMPONENTS Hive missing - it is not possible to extract data...",colour2)
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + COM + " | more")
       raw_input("\nPress ENTER to continue...")
@@ -887,7 +888,7 @@ while True:
 
    if selection =='23':
       if (SOF == "0x0000000000000000"):
-         print colored("SOFTWARE Hive missing - it is not possible to extract data...",'red')
+         print colored("SOFTWARE Hive missing - it is not possible to extract data...",colour2)
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + SOF + " | more")
       raw_input("\nPress ENTER to continue...")
@@ -902,7 +903,7 @@ while True:
 
    if selection =='24':
       if (SYS == "0x0000000000000000"):
-         print colored("SYSTEM Hive missing - it is not possible to extract data...",'red')
+         print colored("SYSTEM Hive missing - it is not possible to extract data...",colour2)
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + SYS + " | more")
       raw_input("\nPress ENTER to continue...")    
@@ -917,7 +918,7 @@ while True:
 
    if selection =='25':
       if (NTU == "0x0000000000000000"):
-         print colored("NTUSER (Administrator) Hive missing - it is not possible to extract data...",'red')
+         print colored("NTUSER (Administrator) Hive missing - it is not possible to extract data...",colour2)
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + NTU + " | more")
       raw_input("\nPress ENTER to continue...") 
@@ -932,7 +933,7 @@ while True:
 
    if selection =='26':
       if (HRD == "0x0000000000000000"):
-         print colored("HARDWARE Hive missing - it is not possible to extract data...",'red')
+         print colored("HARDWARE Hive missing - it is not possible to extract data...",colour2)
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + HRD + " | more")
       raw_input("\nPress ENTER to continue...")     
@@ -947,7 +948,7 @@ while True:
 
    if selection =='27':
       if (DEF == "0x0000000000000000"):
-         print colored("DEFUALT Hive missing - it is not possible to extract data...",'red')
+         print colored("DEFUALT Hive missing - it is not possible to extract data...",colour2)
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + DEF + " | more")
       raw_input("\nPress ENTER to continue...")   
@@ -962,7 +963,7 @@ while True:
 
    if selection =='28':
       if (BCD == "0x0000000000000000"):
-         print colored("BOOT BCD Hive missing - it is not possible to extract data...",'red')
+         print colored("BOOT BCD Hive missing - it is not possible to extract data...",colour2)
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + BCD + " | more")
       raw_input("\nPress ENTER to continue...")   
@@ -977,7 +978,7 @@ while True:
 
    if selection =='29':
       if (CUS == "0x0000000000000000"):
-         print colored(NAM + " missing - it is not possible to extract data...",'red')
+         print colored(NAM + " missing - it is not possible to extract data...",colour2)
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + CUS + " | more")
       raw_input("\nPress ENTER to continue...")  
