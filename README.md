@@ -19,6 +19,9 @@ A python script file to forensically examine Microsoft Windows memory-dump files
 
 [![Everything Is AWESOME](https://img.youtube.com/vi/StTqXEQ2l-Y/0.jpg)](https://www.youtube.com/watch?v=ppYX1oOoixI-Y "RamMaster")
 
+[![Everything Is AWESOME](http://i.imgur.com/Ot5DWAW.png)](https://youtu.be/StTqXEQ2l-Y?t=35s "Everything Is AWESOME")
+
+
 ### CONSOLE DISPLAY
 ![Screenshot](picture2.png)
 
