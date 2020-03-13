@@ -5,9 +5,8 @@ Usage: python RamMaster.py dumpfile.mem
 
 | LANGUAGE  | FILENAME         | MD5 Hash                         |
 |------     |------            | -------                          |
-| python    | RamMaster.py     | 44117ed99079363b1651aae181f540b2 |
+| python    | RamMaster.py     | 703506d790338fa6e305bab2906d9616 |
 | text file | profiles.txt     | ba638a0a6f9d322100809bd6e67427d6 |
-| bash file | patch.sh         | 7a4231731982e09d9a703f7357170755 |
 
 - [x] Requires volatility (https://github.com/volatilityfoundation/volatility) to be installed.
 - [x] Sample memory-dump files can be found here:-</br>

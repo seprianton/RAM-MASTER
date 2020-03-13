@@ -21,6 +21,7 @@ import os.path
 import fileinput
 import linecache
 import subprocess
+
 from termcolor import colored					# pip install termcolor
 
 # -------------------------------------------------------------------------------------
@@ -110,6 +111,7 @@ PA = [X2]*10
 
 colour1 = 'yellow'
 colour2 = 'green'
+colour3 = 'white'
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -230,7 +232,7 @@ with open("hivelist.txt") as search:
       if "\components" in line.lower():
          COM = line.split(None, 1)[0]
          COM = padding(SYS, COL2)
-      if "\\administrator\\ntuser.dat" in line.lower(): # \Administrator\NTUSER.DAT as multiple NTUSERS files. 
+      if "\\administrator\\ntuser.dat" in line.lower(): # \Administrator\NTUSER.DAT as there are usually multiple NTUSERS files. 
          NTU = line.split(None, 1)[0]
          NTU = padding(SYS, COL2)
       if "\hardware" in line.lower():
@@ -310,7 +312,7 @@ os.remove('conn1.txt')
 
 def Display():
    print u'\u2554' + (u'\u2550')*36 + u'\u2566' + (u'\u2550')*33 + u'\u2566' + (u'\u2550')*61 + u'\u2557'
-   print u'\u2551' + (" ")*15 + colored("SYSTEM",'white') +  (" ")*15 + u'\u2551' + (" ")*10 + colored("SYSTEM HIVES",'white') + (" ")*11 + u'\u2551' + (" ")*24 +  colored("USER INFORMATION",'white') + (" ")*21 + u'\u2551' 
+   print u'\u2551' + (" ")*15 + colored("SYSTEM",colour3) +  (" ")*15 + u'\u2551' + (" ")*10 + colored("SYSTEM HIVES",colour3) + (" ")*11 + u'\u2551' + (" ")*24 +  colored("USER INFORMATION",colour3) + (" ")*21 + u'\u2551' 
    print u'\u2560' + (u'\u2550')*14 + u'\u2564' + (u'\u2550')*21 + u'\u256C' + (u'\u2550')*12 + u'\u2564' + (u'\u2550')*20 + u'\u256C' + (u'\u2550')*61 + u'\u2563'
    
    print u'\u2551' + " PROFILE      " + u'\u2502',
@@ -469,15 +471,15 @@ def Display():
 
    print u'\u2551',
    print " "*7,
-   print colored("SETTINGS",'white'),
+   print colored("SETTINGS",colour3),
    print " "*12,
-   print colored("IDENTIFY",'white'),
+   print colored("IDENTIFY",colour3),
    print " "*17,
-   print colored("ANALYSE",'white'),
+   print colored("ANALYSE",colour3),
    print " "*24,
-   print colored("INVESTIGATE",'white'),
+   print colored("INVESTIGATE",colour3),
    print " "*16,
-   print colored("EXTRACT",'white'),
+   print colored("EXTRACT",colour3),
    print " "*3,
    print u'\u2551'
 
@@ -714,7 +716,7 @@ while True:
       os.system("wc -l F2.txt > NUM.txt")
       NUMLINES = open("NUM.txt").readline().replace(' F2.txt','') 
       COUNT = int(NUMLINES)
-      print "\n[1]. There were",COUNT,"processes running at the time of the memory dump.\n"
+      print "\n[1].\tThere were",COUNT,"processes running at the time of the memory dump.\n"
       read2 = open('PID.txt','w')
       read3 = open('PPID.txt','w')
       with open('F4.txt') as read4:
@@ -735,18 +737,22 @@ while True:
       os.remove('F2.txt')
       os.remove('F3.txt')
       os.remove('F4.txt')
+      os.system("echo 'comm -13 <(sort -u PID.txt) <(sort -u PPID.txt) > SUSPECT.txt' > patch.sh")
       os.system("bash patch.sh")
-      print "[2]. Analyse of these processes reveals that:"
-      with open('SUSPECT.txt') as read5:
+      os.system("sort -n SUSPECT.txt > SUSPECT2.txt")
+      print "[2].\tAnalyse of these processes reveals that:"
+      with open('SUSPECT2.txt') as read5:
          line = read5.readline().rstrip('\n')
          while line != "":
             if line != "0":
-               print "     Parent process PPID",line,"does not have a process spawn! and should be investigated further..."
+               print "\tParent process PPID",line,"does not have a process spawn! and should be investigated further..."
             line = read5.readline().strip('\n')
-      os.remove('PID.txt')
-      os.remove('PPID.txt')
-      os.remove('NUM.txt')
-      os.remove('SUSPECT.txt')
+      os.remove("patch.sh")
+      os.remove("PID.txt")
+      os.remove("PPID.txt")
+      os.remove("NUM.txt")
+      os.remove("SUSPECT.txt")
+      os.remove("SUSPECT2.txt")
       raw_input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
