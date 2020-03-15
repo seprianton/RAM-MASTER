@@ -33,17 +33,17 @@ from termcolor import colored					# pip install termcolor
 # -------------------------------------------------------------------------------------
 
 if os.geteuid() != 0:
-    print "\nPlease run this python script as root..."
+    print("\nPlease run this python script as root...")
     exit(True)
 
 if len(sys.argv) < 2:
-    print "\nUse the command python memory_master.py memorydump.ram\n"
+    print("\nUse the command python memory_master.py memorydump.ram\n")
     exit(True)
 
 fileName = sys.argv[1]
 
 if os.path.exists(fileName) == 0:
-    print "\nFile " + fileName + " was not found, did you spell it correctly?"
+    print("\nFile " + fileName + " was not found, did you spell it correctly?")
     exit(True)
 
 # -------------------------------------------------------------------------------------
@@ -122,13 +122,13 @@ colour3 = 'white'
 # -------------------------------------------------------------------------------------
 
 os.system("clear")
-print " ____      _    __  __    __  __    _    ____ _____ _____ ____    "
-print "|  _ \    / \  |  \/  |  |  \/  |  / \  / ___|_   _| ____|  _ \   "
-print "| |_) |  / _ \ | |\/| |  | |\/| | / _ \ \___ \ | | |  _| | |_) |  "
-print "|  _ <  / ___ \| |  | |  | |  | |/ ___ \ ___) || | | |___|  _ <   "
-print "|_| \_\/_/   \_\_|  |_|  |_|  |_/_/   \_\____/ |_| |_____|_| \_\  "
-print "                                                                  "
-print "BY TERENCE BROADBENT MSc DIGITAL FORENSICS & CYBERCRIME ANALYSIS\n"
+print(" ____      _    __  __    __  __    _    ____ _____ _____ ____    ")
+print("|  _ \    / \  |  \/  |  |  \/  |  / \  / ___|_   _| ____|  _ \   ")
+print("| |_) |  / _ \ | |\/| |  | |\/| | / _ \ \___ \ | | |  _| | |_) |  ")
+print("|  _ <  / ___ \| |  | |  | |  | |/ ___ \ ___) || | | |___|  _ <   ")
+print("|_| \_\/_/   \_\_|  |_|  |_|  |_/_/   \_\____/ |_| |_____|_| \_\  ")
+print("                                                                  ")
+print("BY TERENCE BROADBENT MSc DIGITAL FORENSICS & CYBERCRIME ANALYSIS\n")
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -138,7 +138,7 @@ print "BY TERENCE BROADBENT MSc DIGITAL FORENSICS & CYBERCRIME ANALYSIS\n"
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
-print "Booting - Please wait...\n"
+print("Booting - Please wait...\n")
 
 if not os.path.exists('WORKAREA'):
    os.mkdir("WORKAREA")
@@ -164,7 +164,7 @@ with open("image.log") as search:
          DA2 = line
 
 if profiles == "NOT FOUND":
-   print "ERROR #001 - A windows profile was not found, see 'image.log' for further information."
+   print("ERROR #001 - A windows profile was not found, see 'image.log' for further information.")
    exit(True)
 
 #-------------------------------------------------------------------------------------
@@ -180,7 +180,7 @@ if (PR2[:1] == "W") or (PR2[:1] == "V"):
    PR2 = padding(PR2,COL1)
    os.remove("image.log")
 else:
-   print "ERROR #002- A windows profile was not found, see 'image.log' for further information."
+   print("ERROR #002- A windows profile was not found, see 'image.log' for further information.")
    exit(True)
 
 #-------------------------------------------------------------------------------------
@@ -255,11 +255,14 @@ with open("host.txt") as search:
    wordlist = (list(search)[-1])
 wordlist = wordlist.split()
 HST = str(wordlist[-1])
-if HST == "searched":
-   HST = "NOT FOUND          "
+if HST == "searched":					# Looks like a host name has not been found.
+   HST = "NOT FOUND          "				# So set a defualt value.
 else:
-   HST = HST.decode('utf-8', 'ignore')	# Issue with byte sizes of host name characters - this patch does not correct issue.
-   HST = padding(HST, 20)		# Issue with byte sizes of host name characters - should be COL1 rather than 20.
+   HST = HST.encode(encoding='UTF-8',errors='strict')	# Deal with a encoding issue with hostname.
+   HST = str(HST)
+   HST = HST.replace("b'","")
+   HST = HST.replace("\\x00'","")
+   HST = padding(HST, COL1)
 os.remove('host.txt')
 
 #-------------------------------------------------------------------------------------
@@ -311,192 +314,192 @@ os.remove('conn1.txt')
 # -------------------------------------------------------------------------------------
 
 def Display():
-   print u'\u2554' + (u'\u2550')*36 + u'\u2566' + (u'\u2550')*33 + u'\u2566' + (u'\u2550')*61 + u'\u2557'
-   print u'\u2551' + (" ")*15 + colored("SYSTEM",colour3) +  (" ")*15 + u'\u2551' + (" ")*10 + colored("SYSTEM HIVES",colour3) + (" ")*11 + u'\u2551' + (" ")*24 +  colored("USER INFORMATION",colour3) + (" ")*21 + u'\u2551' 
-   print u'\u2560' + (u'\u2550')*14 + u'\u2564' + (u'\u2550')*21 + u'\u256C' + (u'\u2550')*12 + u'\u2564' + (u'\u2550')*20 + u'\u256C' + (u'\u2550')*61 + u'\u2563'
+   print('\u2554' + ('\u2550')*36 + '\u2566' + ('\u2550')*33 + '\u2566' + ('\u2550')*61 + '\u2557')
+   print('\u2551' + (" ")*15 + colored("SYSTEM",colour3) +  (" ")*15 + '\u2551' + (" ")*10 + colored("SYSTEM HIVES",colour3) + (" ")*11 + '\u2551' + (" ")*24 +  colored("USER INFORMATION",colour3) + (" ")*21 + '\u2551') 
+   print('\u2560' + ('\u2550')*14 + '\u2564' + ('\u2550')*21 + '\u256C' + ('\u2550')*12 + '\u2564' + ('\u2550')*20 + '\u256C' + ('\u2550')*61 + '\u2563')
    
-   print u'\u2551' + " PROFILE      " + u'\u2502',
+   print('\u2551' + " PROFILE      " + '\u2502', end=' ')
    if PR2 == "UNSELECTED         ":
-      print colored(PR2,colour2),
+      print(colored(PR2,colour2), end=' ')
    else:
-      print colored(PR2,colour1),
-   print u'\u2551' + " SAM        " + u'\u2502',
+      print(colored(PR2,colour1), end=' ')
+   print('\u2551' + " SAM        " + '\u2502', end=' ')
    if SAM == "0x0000000000000000":
-      print colored(SAM,colour2),
+      print(colored(SAM,colour2), end=' ')
    else:
-      print colored(SAM,colour1),
-   print u'\u2551',
-   print colored(US[0].upper(),colour1),
-   print colored(PA[0],colour1),
-   print u'\u2551'
+      print(colored(SAM,colour1), end=' ')
+   print('\u2551', end=' ')
+   print(colored(US[0].upper(),colour1), end=' ')
+   print(colored(PA[0],colour1), end=' ')
+   print('\u2551')
    
-   print u'\u2551' + " HOST NAME    " + u'\u2502',
+   print('\u2551' + " HOST NAME    " + '\u2502', end=' ')
    if HST == "NOT FOUND          ":
-      print colored(HST[:20],colour2),
+      print(colored(HST[:20],colour2), end=' ')
    else:
-      print colored(HST[:20],colour1),
-   print u'\u2551' + " SECURITY   " + u'\u2502',
+      print(colored(HST[:20],colour1), end=' ')
+   print('\u2551' + " SECURITY   " + '\u2502', end=' ')
    if SEC == "0x0000000000000000":
-      print colored(SEC,colour2),
+      print(colored(SEC,colour2), end=' ')
    else:
-      print colored(SEC,colour1),
-   print u'\u2551',
-   print colored(US[1].upper(),colour1),
-   print colored(PA[1],colour1),
-   print u'\u2551'
+      print(colored(SEC,colour1), end=' ')
+   print('\u2551', end=' ')
+   print(colored(US[1].upper(),colour1), end=' ')
+   print(colored(PA[1],colour1), end=' ')
+   print('\u2551')
    
-   print u'\u2551' + " SERVICE PACK " + u'\u2502',
+   print('\u2551' + " SERVICE PACK " + '\u2502', end=' ')
    if SVP == "0                  ":
-      print colored(SVP,colour2),
+      print(colored(SVP,colour2), end=' ')
    else:
-      print colored(SVP,colour1),
-   print u'\u2551' + " COMPONENTS " + u'\u2502',
+      print(colored(SVP,colour1), end=' ')
+   print('\u2551' + " COMPONENTS " + '\u2502', end=' ')
    if COM == "0x0000000000000000":
-      print colored(COM,colour2),
+      print(colored(COM,colour2), end=' ')
    else:
-      print colored(COM,colour1),
-   print u'\u2551',
-   print colored(US[2].upper(),colour1),
-   print colored(PA[2],colour1),
-   print u'\u2551'
+      print(colored(COM,colour1), end=' ')
+   print('\u2551', end=' ')
+   print(colored(US[2].upper(),colour1), end=' ')
+   print(colored(PA[2],colour1), end=' ')
+   print('\u2551')
    
-   print u'\u2551' + " TIME STAMP   " + u'\u2502',
+   print('\u2551' + " TIME STAMP   " + '\u2502', end=' ')
    if DA2 == "NOT FOUND          ":
-      print colored(DA2,colour2),
+      print(colored(DA2,colour2), end=' ')
    else:
-      print colored(DA2,colour1),
-   print u'\u2551' + " SOFTWARE   " + u'\u2502',
+      print(colored(DA2,colour1), end=' ')
+   print('\u2551' + " SOFTWARE   " + '\u2502', end=' ')
    if SOF == "0x0000000000000000":
-      print colored(SOF,colour2),
+      print(colored(SOF,colour2), end=' ')
    else:
-      print colored(SOF,colour1),
-   print u'\u2551',
-   print colored(US[3].upper(),colour1),
-   print colored(PA[3],colour1),
-   print u'\u2551'
+      print(colored(SOF,colour1), end=' ')
+   print('\u2551', end=' ')
+   print(colored(US[3].upper(),colour1), end=' ')
+   print(colored(PA[3],colour1), end=' ')
+   print('\u2551')
    
-   print u'\u2551' + " LOCAL IP     " + u'\u2502',
+   print('\u2551' + " LOCAL IP     " + '\u2502', end=' ')
    if HIP == "000.000.000.000    ":
-      print colored(HIP[:COL1],colour2),
+      print(colored(HIP[:COL1],colour2), end=' ')
    else:
-      print colored(HIP[:COL1],colour1),
-   print u'\u2551' + " SYSTEM     " + u'\u2502',
+      print(colored(HIP[:COL1],colour1), end=' ')
+   print('\u2551' + " SYSTEM     " + '\u2502', end=' ')
    if SYS == "0x0000000000000000":
-      print colored(SYS,colour2),
+      print(colored(SYS,colour2), end=' ')
    else:
-      print colored(SYS,colour1),
-   print u'\u2551',
-   print colored(US[4].upper(),colour1),
-   print colored(PA[4],colour1),
-   print u'\u2551'
+      print(colored(SYS,colour1), end=' ')
+   print('\u2551', end=' ')
+   print(colored(US[4].upper(),colour1), end=' ')
+   print(colored(PA[4],colour1), end=' ')
+   print('\u2551')
    
-   print u'\u2551' + " LOCAL PORT   " + u'\u2502',
+   print('\u2551' + " LOCAL PORT   " + '\u2502', end=' ')
    if POR == "000                ":
-      print colored(POR[:COL1],colour2),
+      print(colored(POR[:COL1],colour2), end=' ')
    else:
-      print colored(POR[:COL1],colour1),
-   print u'\u2551' + " NTUSER     " + u'\u2502',
+      print(colored(POR[:COL1],colour1), end=' ')
+   print('\u2551' + " NTUSER     " + '\u2502', end=' ')
    if NTU == "0x0000000000000000":
-      print colored(NTU,colour2),
+      print(colored(NTU,colour2), end=' ')
    else:
-      print colored(NTU,colour1),
-   print u'\u2551',
-   print colored(US[5].upper(),colour1),
-   print colored(PA[5],colour1),
-   print u'\u2551'
+      print(colored(NTU,colour1), end=' ')
+   print('\u2551', end=' ')
+   print(colored(US[5].upper(),colour1), end=' ')
+   print(colored(PA[5],colour1), end=' ')
+   print('\u2551')
    
-   print u'\u2551' + " PID VALUE    " + u'\u2502',
+   print('\u2551' + " PID VALUE    " + '\u2502', end=' ')
    if PI1 == "0                  ":
-      print colored(PI1[:COL1],colour2),
+      print(colored(PI1[:COL1],colour2), end=' ')
    else:
-      print colored(PI1[:COL1],'yellow'),
-   print u'\u2551' + " HARDWARE   " + u'\u2502',
+      print(colored(PI1[:COL1],'yellow'), end=' ')
+   print('\u2551' + " HARDWARE   " + '\u2502', end=' ')
    if HRD == "0x0000000000000000":
-      print colored(HRD,colour2),
+      print(colored(HRD,colour2), end=' ')
    else:
-      print colored(HRD,colour1),
-   print u'\u2551',
-   print colored(US[6].upper(),colour1),
-   print colored(PA[6],colour1),
-   print u'\u2551'
+      print(colored(HRD,colour1), end=' ')
+   print('\u2551', end=' ')
+   print(colored(US[6].upper(),colour1), end=' ')
+   print(colored(PA[6],colour1), end=' ')
+   print('\u2551')
    
-   print u'\u2551' + " OFFSET VALUE " + u'\u2502',
+   print('\u2551' + " OFFSET VALUE " + '\u2502', end=' ')
    if OFF == "0                  ":
-      print colored(OFF[:COL1],colour2),
+      print(colored(OFF[:COL1],colour2), end=' ')
    else:
-      print colored(OFF[:COL1],'yellow'),
-   print u'\u2551' + " DEFUALT    " + u'\u2502',
+      print(colored(OFF[:COL1],'yellow'), end=' ')
+   print('\u2551' + " DEFUALT    " + '\u2502', end=' ')
    if DEF == "0x0000000000000000":
-      print colored(DEF,colour2),
+      print(colored(DEF,colour2), end=' ')
    else:
-      print colored(DEF,colour1),
-   print u'\u2551',
-   print colored(US[7].upper(),colour1),
-   print colored(PA[7],colour1),
-   print u'\u2551'
+      print(colored(DEF,colour1), end=' ')
+   print('\u2551', end=' ')
+   print(colored(US[7].upper(),colour1), end=' ')
+   print(colored(PA[7],colour1), end=' ')
+   print('\u2551')
    
-   print u'\u2551' + " PARAMETER    " + u'\u2502',
+   print('\u2551' + " PARAMETER    " + '\u2502', end=' ')
    if PRM == "UNSELECTED         ":
-      print colored(PRM[:COL1],colour2),
+      print(colored(PRM[:COL1],colour2), end=' ')
    else:
-      print colored(PRM[:COL1],'yellow'),
-   print u'\u2551' + " BOOT BCD   " + u'\u2502',
+      print(colored(PRM[:COL1],'yellow'), end=' ')
+   print('\u2551' + " BOOT BCD   " + '\u2502', end=' ')
    if BCD == "0x0000000000000000":
-      print colored(BCD,colour2),
+      print(colored(BCD,colour2), end=' ')
    else:
-      print colored(BCD,colour1),
-   print u'\u2551',
-   print colored(US[8].upper(),colour1),
-   print colored(PA[8],colour1),
-   print u'\u2551'
+      print(colored(BCD,colour1), end=' ')
+   print('\u2551', end=' ')
+   print(colored(US[8].upper(),colour1), end=' ')
+   print(colored(PA[8],colour1), end=' ')
+   print('\u2551')
    
-   print u'\u2551' + " DIRECTORY    " + u'\u2502',
+   print('\u2551' + " DIRECTORY    " + '\u2502', end=' ')
    if DIR == "WORKAREA           ":
-      print colored(DIR[:COL1],colour2),
+      print(colored(DIR[:COL1],colour2), end=' ')
    else:
-      print colored(DIR[:COL1],'yellow'),
-   print u'\u2551' + " " + NAM[:9] + "  " + u'\u2502',
+      print(colored(DIR[:COL1],'yellow'), end=' ')
+   print('\u2551' + " " + NAM[:9] + "  " + '\u2502', end=' ')
    if CUS == "0x0000000000000000":
-      print colored(CUS,colour2),
+      print(colored(CUS,colour2), end=' ')
    else:
-      print colored(CUS,colour1),
-   print u'\u2551',
-   print colored(US[9].upper(),colour1),
-   print colored(PA[9],colour1),
-   print u'\u2551'
+      print(colored(CUS,colour1), end=' ')
+   print('\u2551', end=' ')
+   print(colored(US[9].upper(),colour1), end=' ')
+   print(colored(PA[9],colour1), end=' ')
+   print('\u2551')
 
-   print u'\u2560' + (u'\u2550')*14 + u'\u2567'+ (u'\u2550')*21  + u'\u2569' + (u'\u2550')*12 + u'\u2567' + (u'\u2550')*20 + u'\u2569' + (u'\u2550')*61 + u'\u2563'
-
-# ----------------------------------------------------------------------------------------------------------------------------------------------------
-
-   print u'\u2551',
-   print " "*7,
-   print colored("SETTINGS",colour3),
-   print " "*12,
-   print colored("IDENTIFY",colour3),
-   print " "*17,
-   print colored("ANALYSE",colour3),
-   print " "*24,
-   print colored("INVESTIGATE",colour3),
-   print " "*16,
-   print colored("EXTRACT",colour3),
-   print " "*3,
-   print u'\u2551'
+   print('\u2560' + ('\u2550')*14 + '\u2567'+ ('\u2550')*21  + '\u2569' + ('\u2550')*12 + '\u2567' + ('\u2550')*20 + '\u2569' + ('\u2550')*61 + '\u2563')
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-   print u'\u2560' + (u'\u2550'*132) + u'\u2563'
-   print u'\u2551' + "(0) Re/Set PROFILE   (10) Users/Passwords   (20) SAM        (30) Re/Set   (40) PrintKey         (50) Desktop   (60) Malfind PID DIR " + u'\u2551'
-   print u'\u2551' + "(1) Re/Set PID       (11) Default Password  (21) SECURITY   (31) Re/Set   (41) ShellBags        (51) Clipboard (61) Vaddump PID DIR " + u'\u2551'
-   print u'\u2551' + "(2) Re/Set OFFSET    (12) Running Processes (22) COMPONENTS (32) Re/Set   (42) SlimCache Data   (52) Notepad   (62) Prodump PID DIR " + u'\u2551'
-   print u'\u2551' + "(3) Re/Set PARAMETER (13) Hidden Processes  (23) SOFTWARE   (33) Re/Set   (43) Connections Scan (53) Explorer  (63) Memdump PID DIR " + u'\u2551'
-   print u'\u2551' + "(4) Re/Set DIRECTORY (14) Running Services  (24) SYSTEM     (34) Re/Set   (44) Network Scan     (54) Files     (64) PARAMETER OFFSET" + u'\u2551'
-   print u'\u2551' + "(5) Re/Set IP        (15) Command History   (25) NTUSER     (35) Re/Set   (45) Socket Scan      (55) SymLinks  (65) Timelines       " + u'\u2551'
-   print u'\u2551' + "(6) Re/Set PORT      (16) Console History   (26) HARDWARE   (36) Re/Set   (46) Mutant Scan      (56) Drivers   (66) Screen Shots    " + u'\u2551'
-   print u'\u2551' + "(7) Re/Set " + NAM[:9] + " (17) Cmdline Arguments (27) DEFUALT    (37) Re/Set   (47) DLL List         (57) SIDs      (67) MFT Table       " + u'\u2551'
-   print u'\u2551' + "(8) Exit             (18) User Assist Keys  (28) BOOT BCD   (38) Re/Set   (48) Sessions         (58) EnvVars   (68) PCAP File       " + u'\u2551'
-   print u'\u2551' + "(9) Clean/Exit       (19) Hive List         (29) " + NAM[:9] + "  (39) Re/Set   (49) PARAMETER Search (59) TrueCrypt (69) Bulk Extract    " + u'\u2551'
-   print u'\u255A' + (u'\u2550')*132 + u'\u255D'
+   print('\u2551', end=' ')
+   print(" "*7, end=' ')
+   print(colored("SETTINGS",colour3), end=' ')
+   print(" "*12, end=' ')
+   print(colored("IDENTIFY",colour3), end=' ')
+   print(" "*17, end=' ')
+   print(colored("ANALYSE",colour3), end=' ')
+   print(" "*24, end=' ')
+   print(colored("INVESTIGATE",colour3), end=' ')
+   print(" "*16, end=' ')
+   print(colored("EXTRACT",colour3), end=' ')
+   print(" "*3, end=' ')
+   print('\u2551')
+
+# ----------------------------------------------------------------------------------------------------------------------------------------------------
+
+   print('\u2560' + ('\u2550'*132) + '\u2563')
+   print('\u2551' + "(0) Re/Set PROFILE   (10) Users/Passwords   (20) SAM        (30) Re/Set   (40) PrintKey         (50) Desktop   (60) Malfind PID DIR " + '\u2551')
+   print('\u2551' + "(1) Re/Set PID       (11) Default Password  (21) SECURITY   (31) Re/Set   (41) ShellBags        (51) Clipboard (61) Vaddump PID DIR " + '\u2551')
+   print('\u2551' + "(2) Re/Set OFFSET    (12) Running Processes (22) COMPONENTS (32) Re/Set   (42) SlimCache Data   (52) Notepad   (62) Prodump PID DIR " + '\u2551')
+   print('\u2551' + "(3) Re/Set PARAMETER (13) Hidden Processes  (23) SOFTWARE   (33) Re/Set   (43) Connections Scan (53) Explorer  (63) Memdump PID DIR " + '\u2551')
+   print('\u2551' + "(4) Re/Set DIRECTORY (14) Running Services  (24) SYSTEM     (34) Re/Set   (44) Network Scan     (54) Files     (64) PARAMETER OFFSET" + '\u2551')
+   print('\u2551' + "(5) Re/Set IP        (15) Command History   (25) NTUSER     (35) Re/Set   (45) Socket Scan      (55) SymLinks  (65) Timelines       " + '\u2551')
+   print('\u2551' + "(6) Re/Set PORT      (16) Console History   (26) HARDWARE   (36) Re/Set   (46) Mutant Scan      (56) Drivers   (66) Screen Shots    " + '\u2551')
+   print('\u2551' + "(7) Re/Set " + NAM[:9] + " (17) Cmdline Arguments (27) DEFUALT    (37) Re/Set   (47) DLL List         (57) SIDs      (67) MFT Table       " + '\u2551')
+   print('\u2551' + "(8) Exit             (18) User Assist Keys  (28) BOOT BCD   (38) Re/Set   (48) Sessions         (58) EnvVars   (68) PCAP File       " + '\u2551')
+   print('\u2551' + "(9) Clean/Exit       (19) Hive List         (29) " + NAM[:9] + "  (39) Re/Set   (49) PARAMETER Search (59) TrueCrypt (69) Bulk Extract    " + '\u2551')
+   print('\u255A' + ('\u2550')*132 + '\u255D')
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -509,7 +512,7 @@ def Display():
 while True: 
    os.system("clear")
    Display()
-   selection=raw_input("Please Select: ")
+   selection=input("Please Select: ")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -522,7 +525,7 @@ while True:
    if selection =='0':
       BAK = PRO
       MATCH = 0
-      PRO = raw_input("Please enter profile: ")
+      PRO = input("Please enter profile: ")
       if PRO == "":
          PRO = BAK      
       with open("profiles.txt") as search:
@@ -547,7 +550,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '1':
-      temp = raw_input("Please enter PID value: ")
+      temp = input("Please enter PID value: ")
       if temp != '':
          PI1 = padding(temp, COL1)
 
@@ -560,7 +563,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '2':
-      temp = raw_input("Please enter OFFSET value: ")
+      temp = input("Please enter OFFSET value: ")
       if temp != '':
          OFF = padding(temp, COL1)
 
@@ -573,7 +576,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '3':
-      temp = raw_input("Please enter parameter value: ")
+      temp = input("Please enter parameter value: ")
       if temp != '':
          PRM = padding(temp,COL1)
 
@@ -586,16 +589,16 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '4':
-      directory = raw_input("Please enter new working directory value: ")
+      directory = input("Please enter new working directory value: ")
       if os.path.exists(directory):
-         print "Directory already Exists...."
+         print("Directory already Exists....")
       else:
          if len(directory) > 0:
             os.mkdir(directory)
             DIR = directory
             DIR = padding(DIR, COL1)
-            print "Working directory changed..."
-      raw_input("\nPress ENTER to continue...")
+            print("Working directory changed...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                           
@@ -606,7 +609,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '5':
-      temp = raw_input("Please enter IP value: ")
+      temp = input("Please enter IP value: ")
       if temp != '':
          HIP = padding(temp, COL1)
          MAN1 = 1
@@ -620,7 +623,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '6':
-      temp = raw_input("Please enter PORT value: ")
+      temp = input("Please enter PORT value: ")
       if temp != '':
          POR = padding(temp, COL1)
          MAN2 = 1
@@ -634,7 +637,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '7':
-      temp = raw_input("Please enter HIVE name: ")
+      temp = input("Please enter HIVE name: ")
       if temp != '':
          NAM = padding(temp, 9)
          
@@ -678,10 +681,10 @@ while True:
 
    if selection == '10':
       if SAM == "0x0000000000000000":
-         print colored("SAM HIVE missing - its not possible to extract the hashes...",colour2)
+         print(colored("SAM HIVE missing - its not possible to extract the hashes...",colour2))
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hashdump -y " + SYS + " -s " + SAM)
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -693,7 +696,7 @@ while True:
 
    if selection == '11':
       os.system("volatility -f '" + fileName + "'" + PRO + " lsadump | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -716,7 +719,7 @@ while True:
       os.system("wc -l F2.txt > NUM.txt")
       NUMLINES = open("NUM.txt").readline().replace(' F2.txt','') 
       COUNT = int(NUMLINES)
-      print "\n[1].\tThere were",COUNT,"processes running at the time of the memory dump.\n"
+      print("\n[1].\tThere were",COUNT,"processes running at the time of the memory dump.\n")
       read2 = open('PID.txt','w')
       read3 = open('PPID.txt','w')
       with open('F4.txt') as read4:
@@ -724,9 +727,9 @@ while True:
             A = read4.readline()
             B = read4.readline() # Executable name
             C = read4.readline().rstrip('\n') # PI1
-            print >>read2,C
+            print(C, file=read2)
             D = read4.readline().rstrip('\n') # OFF             
-            print >>read3,D		
+            print(D, file=read3)		
             E = read4.readline()
             G = read4.readline()
             H = read4.readline() # blank
@@ -740,12 +743,12 @@ while True:
       os.system("echo 'comm -13 <(sort -u PID.txt) <(sort -u PPID.txt) > SUSPECT.txt' > patch.sh")
       os.system("bash patch.sh")
       os.system("sort -n SUSPECT.txt > SUSPECT2.txt")
-      print "[2].\tAnalyse of these processes reveals that:"
+      print("[2].\tAnalyse of these processes reveals that:")
       with open('SUSPECT2.txt') as read5:
          line = read5.readline().rstrip('\n')
          while line != "":
             if line != "0":
-               print "\tParent process PPID",line,"does not have a process spawn! and should be investigated further..."
+               print("\tParent process PPID",line,"does not have a process spawn! and should be investigated further...")
             line = read5.readline().strip('\n')
       os.remove("patch.sh")
       os.remove("PID.txt")
@@ -753,7 +756,7 @@ while True:
       os.remove("NUM.txt")
       os.remove("SUSPECT.txt")
       os.remove("SUSPECT2.txt")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -765,7 +768,7 @@ while True:
 
    if selection == '13':
       os.system("volatility -f '" + fileName + "'" + PRO + " psxview | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -777,7 +780,7 @@ while True:
 
    if selection == '14':
       os.system("volatility -f '" + fileName + "'" + PRO + " svcscan | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -789,7 +792,7 @@ while True:
 
    if selection == '15':
       os.system("volatility -f '" + fileName + "'" + PRO + " cmdscan")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -801,7 +804,7 @@ while True:
 
    if selection == '16':
       os.system("volatility -f '" + fileName + "'" + PRO + " consoles")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -813,7 +816,7 @@ while True:
 
    if selection == '17':
       os.system("volatility -f '" + fileName + "'" + PRO + " cmdline")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -825,7 +828,7 @@ while True:
 
    if selection == '18':
       os.system("volatility -f '" + fileName + "'" + PRO + " userassist")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -837,7 +840,7 @@ while True:
 
    if selection == '19':
       os.system("volatility -f '" + fileName + "'" + PRO + " hivelist")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -849,10 +852,10 @@ while True:
 
    if selection == '20':
       if (SAM == "0x0000000000000000"):
-         print colored("SAM Hive missing - it is not possible to extract data...",colour2)
+         print(colored("SAM Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + SAM + " | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -864,10 +867,10 @@ while True:
 
    if selection =='21':
       if (SEC == "0x0000000000000000"):
-         print colored("SECURITY Hive missing - it is not possible to extract data...",colour2)
+         print(colored("SECURITY Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system("volatility -f " + fileName + PRO + " hivedump -o " + SEC + " | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -879,10 +882,10 @@ while True:
 
    if selection =='22':
       if (COM == "0x0000000000000000"):
-         print colored("COMPONENTS Hive missing - it is not possible to extract data...",colour2)
+         print(colored("COMPONENTS Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + COM + " | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -894,10 +897,10 @@ while True:
 
    if selection =='23':
       if (SOF == "0x0000000000000000"):
-         print colored("SOFTWARE Hive missing - it is not possible to extract data...",colour2)
+         print(colored("SOFTWARE Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + SOF + " | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -909,10 +912,10 @@ while True:
 
    if selection =='24':
       if (SYS == "0x0000000000000000"):
-         print colored("SYSTEM Hive missing - it is not possible to extract data...",colour2)
+         print(colored("SYSTEM Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + SYS + " | more")
-      raw_input("\nPress ENTER to continue...")    
+      input("\nPress ENTER to continue...")    
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -924,10 +927,10 @@ while True:
 
    if selection =='25':
       if (NTU == "0x0000000000000000"):
-         print colored("NTUSER (Administrator) Hive missing - it is not possible to extract data...",colour2)
+         print(colored("NTUSER (Administrator) Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + NTU + " | more")
-      raw_input("\nPress ENTER to continue...") 
+      input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -939,10 +942,10 @@ while True:
 
    if selection =='26':
       if (HRD == "0x0000000000000000"):
-         print colored("HARDWARE Hive missing - it is not possible to extract data...",colour2)
+         print(colored("HARDWARE Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + HRD + " | more")
-      raw_input("\nPress ENTER to continue...")     
+      input("\nPress ENTER to continue...")     
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -954,10 +957,10 @@ while True:
 
    if selection =='27':
       if (DEF == "0x0000000000000000"):
-         print colored("DEFUALT Hive missing - it is not possible to extract data...",colour2)
+         print(colored("DEFUALT Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + DEF + " | more")
-      raw_input("\nPress ENTER to continue...")   
+      input("\nPress ENTER to continue...")   
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -969,10 +972,10 @@ while True:
 
    if selection =='28':
       if (BCD == "0x0000000000000000"):
-         print colored("BOOT BCD Hive missing - it is not possible to extract data...",colour2)
+         print(colored("BOOT BCD Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + BCD + " | more")
-      raw_input("\nPress ENTER to continue...")   
+      input("\nPress ENTER to continue...")   
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -984,10 +987,10 @@ while True:
 
    if selection =='29':
       if (CUS == "0x0000000000000000"):
-         print colored(NAM + " missing - it is not possible to extract data...",colour2)
+         print(colored(NAM + " missing - it is not possible to extract data...",colour2))
       else:
          os.system("volatility -f '" + fileName + "'" + PRO + " hivedump -o " + CUS + " | more")
-      raw_input("\nPress ENTER to continue...")  
+      input("\nPress ENTER to continue...")  
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -998,7 +1001,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '30':
-      temp = raw_input("Please enter SAM value: ")
+      temp = input("Please enter SAM value: ")
       if temp != "":
          SAM = padding(temp, COL2)
 
@@ -1011,7 +1014,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '31':
-      temp = raw_input("Please enter SECURITY value: ")
+      temp = input("Please enter SECURITY value: ")
       if temp != "":
          SEC = padding(temp, COL2)
 
@@ -1024,7 +1027,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '32':
-      temp = raw_input("Please enter COMPENENTS value: ")
+      temp = input("Please enter COMPENENTS value: ")
       if temp != "":
          COM = padding(temp, COL2)
 
@@ -1037,7 +1040,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '33':
-      temp = raw_input("Please enter SOFTWARE value: ")
+      temp = input("Please enter SOFTWARE value: ")
       if temp != "":
          SOF = padding(temp, COL2)
 
@@ -1050,7 +1053,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '34':
-      temp = raw_input("Please enter SYSTEM value: ")
+      temp = input("Please enter SYSTEM value: ")
       if temp != "":
          SYS = padding(temp, COL2)
 
@@ -1063,7 +1066,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '35':
-      temp = raw_input("Please enter NTUSER value: ")
+      temp = input("Please enter NTUSER value: ")
       if temp != "":
          NTU = padding(temp, COL2)
 
@@ -1076,7 +1079,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '36':
-      temp = raw_input("Please enter HARDWARE value: ")
+      temp = input("Please enter HARDWARE value: ")
       if temp != "":
          HRD = padding(temp, COL2)
 
@@ -1089,7 +1092,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '37':
-      temp = raw_input("Please enter DEFUALT value: ")
+      temp = input("Please enter DEFUALT value: ")
       if temp != "":
          DEF = padding(temp, COL2)
 
@@ -1102,7 +1105,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '38':
-      temp = raw_input("Please enter BOOT BCD value: ")
+      temp = input("Please enter BOOT BCD value: ")
       if temp != "":
          BCD = padding(temp, COL2)
 
@@ -1115,7 +1118,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '39':
-      temp = raw_input("Please enter " + NAM.rstrip() + " value: ")
+      temp = input("Please enter " + NAM.rstrip() + " value: ")
       if temp != "":
          CUS = padding(temp, COL2)
 
@@ -1128,10 +1131,10 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='40':
-      KEY = raw_input("Please enter the key value in quotes: ")
+      KEY = input("Please enter the key value in quotes: ")
       if KEY != "":
          os.system("volatility -f '" + fileName + "'" + PRO + " printkey -K " + KEY)
-         raw_input("\nPress ENTER to continue...")
+         input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1143,7 +1146,7 @@ while True:
 
    if selection =='41':
       os.system("volatility -f '" + fileName + "'" + PRO + " shellbags | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1155,7 +1158,7 @@ while True:
 
    if selection =='42':
       os.system("volatility -f '" + fileName + "'" + PRO + " shimcache | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1167,7 +1170,7 @@ while True:
 
    if selection =='43':
       os.system("volatility -f '" + fileName + "'" + PRO + " connscan | more")
-      raw_input("\nPress ENTER to continue...") 
+      input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1179,7 +1182,7 @@ while True:
 
    if selection =='44':
       os.system("volatility -f '" + fileName + "'" + PRO + " netscan | more")
-      raw_input("\nPress ENTER to continue...") 
+      input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1191,7 +1194,7 @@ while True:
 
    if selection =='45':
       os.system("volatility -f '" + fileName + "'" + PRO + " sockets | more")
-      raw_input("\nPress ENTER to continue...") 
+      input("\nPress ENTER to continue...") 
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1203,7 +1206,7 @@ while True:
 
    if selection =='46':
       os.system("volatility -f '" + fileName + "'" + PRO + " mutantscan | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1215,7 +1218,7 @@ while True:
 
    if selection =='47':
       os.system("volatility -f '" + fileName + "'" + PRO + " dlllist | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1227,7 +1230,7 @@ while True:
 
    if selection =='48':
       os.system("volatility -f '" + fileName + "'" + PRO + " sessions | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1240,7 +1243,7 @@ while True:
    if selection =='49':
       os.system("volatility -f '" + fileName + "'" + PRO + " pslist | grep " + PRM)
       os.system("volatility -f '" + fileName + "'" + PRO + " filescan | grep " + PRM)
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1252,7 +1255,7 @@ while True:
 
    if selection =='50':
       os.system("volatility -f '" + fileName + "'" + PRO + " deskscan | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1264,7 +1267,7 @@ while True:
 
    if selection =='51':
       os.system("volatility -f '" + fileName + "'" + PRO + " clipboard | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1276,7 +1279,7 @@ while True:
 
    if selection =='52':
       os.system("volatility -f '" + fileName + "'" + PRO + " notepad | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1288,7 +1291,7 @@ while True:
 
    if selection =='53':
       os.system("volatility -f '" + fileName + "'" + PRO + " iehistory | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1300,7 +1303,7 @@ while True:
 
    if selection =='54':
       os.system("volatility -f '" + fileName + "'" + PRO + " filescan | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1312,7 +1315,7 @@ while True:
 
    if selection =='55':
       os.system("volatility -f '" + fileName + "'" + PRO + " symlinkscan | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1325,7 +1328,7 @@ while True:
    if selection =='56':
       os.system("volatility -f '" + fileName + "'" + PRO + " devicetree | more")
       os.system("volatility -f '" + fileName + "'" + PRO + " driverscan | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1337,7 +1340,7 @@ while True:
 
    if selection =='57':
       os.system("volatility -f '" + fileName + "'" + PRO + " getsids | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1349,7 +1352,7 @@ while True:
 
    if selection =='58':
       os.system("volatility -f '" + fileName + "'" + PRO + " envars | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1363,7 +1366,7 @@ while True:
       os.system("volatility -f '" + fileName + "'" + PRO + " truecryptsummary | more")
       os.system("volatility -f '" + fileName + "'" + PRO + " truecryptmaster | more")
       os.system("volatility -f '" + fileName + "'" + PRO + " truecryptpassphrase | more")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1375,7 +1378,7 @@ while True:
 
    if selection =='60':
       os.system("volatility -f '" + fileName + "'" + PRO + " malfind -p " + PI1 + " -D " + DIR)
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1387,7 +1390,7 @@ while True:
 
    if selection =='61':
       os.system("volatility -f '" + fileName + "'" + PRO + " vaddump -p " + PI1 + " --dump-dir " + DIR)
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1399,7 +1402,7 @@ while True:
 
    if selection =='62':
       os.system("volatility -f '" + fileName + "'" + PRO + " procdump  -p " + PI1 + " --dump-dir " + DIR)
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1411,7 +1414,7 @@ while True:
 
    if selection =='63':
       os.system("volatility -f '" + fileName + "'" + PRO + " memdump  -p " + PI1 + " --dump-dir " + DIR)
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1423,7 +1426,7 @@ while True:
 
    if selection =='64':
       os.system("volatility -f '" + fileName + "'" + PRO + " dumpfiles -Q " + OFF + " -D " + DIR + " -u -n")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1436,8 +1439,8 @@ while True:
    if selection =='65':
       os.system("volatility -f '" + fileName + "'" + PRO + " timeliner --output-file timeline.txt")
       os.system("volatility -f '" + fileName + "'" + PRO + " shellbags --output-file time.txt")
-      print "A timeline has sucessfully been exported..."
-      raw_input("\nPress ENTER to continue...")
+      print("A timeline has sucessfully been exported...")
+      input("\nPress ENTER to continue...")
 
 #------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1449,7 +1452,7 @@ while True:
 
    if selection =='66':
       os.system("volatility -f '" + fileName + "'" + PRO + " -D " + DIR + " screenshot")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1461,12 +1464,12 @@ while True:
 
    if selection =='67':
       os.system("volatility -f '" + fileName + "'" + PRO + " mftparser --output-file mfttable.txt")
-      print "The MFT has sucessfully been exported to mfttable.txt..."
+      print("The MFT has sucessfully been exported to mfttable.txt...")
       os.system("strings mfttable.txt | grep '0000000000:' > count.txt")
       fileNum = sum(1 for line in open('count.txt'))
-      print "The table contains " + str(fileNum) + " local files < 1024 bytes in length."
+      print("The table contains " + str(fileNum) + " local files < 1024 bytes in length.")
       os.remove("count.txt")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1478,7 +1481,7 @@ while True:
 
    if selection =='68':
       os.system("bulk_extractor -x all -e net -o " + DIR + " '" + fileName + "'")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1490,6 +1493,6 @@ while True:
 
    if selection =='69':
       os.system("bulk_extractor -o " + DIR + " '" + fileName + "'")
-      raw_input("\nPress ENTER to continue...")
+      input("\nPress ENTER to continue...")
 
 #Eof...
