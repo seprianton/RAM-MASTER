@@ -5,14 +5,14 @@ Usage: python3 RamMaster.py dumpfile.mem
 
 | LANGUAGE  | FILENAME         | MD5 Hash                         | VERSION     |
 |------     |------            | -------                          | ------      |
-| python    | RamMaster.py     | 87d505da9afccb4d527888cddc72b64d | Reminiscent |
+| python    | RamMaster.py     | 59307816f90d795832f0547e1a9099f6 | Reminiscent |
 | text file | profiles.txt     | ba638a0a6f9d322100809bd6e67427d6 | Reminiscent |
 
 - [x] Requires volatility (https://github.com/volatilityfoundation/volatility) to be installed.
 - [x] Sample memory-dump files can be found here:-</br>
 
       https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples
-      https://downloads.digitalcorpora.org/corpora/scenarios/2009-m57-patents/ram/
+      http://downloads.digitalcorpora.org/corpora/scenarios/2009-m57-patents/ram/
 
 A python script file to forensically examine Microsoft Windows memory-dump files - It can pull usernames, password hashes, extract .pcap files, system executables, MFT tables, console keystrokes, screenshots and much much more.
 
