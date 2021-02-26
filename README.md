@@ -2,7 +2,7 @@
   <img src="https://github.com/BroadbentT/RAM-MASTER/blob/master/picture1.png">
 </p>
 
-## FORENSICS EDITION
+## DIGITAL FORENSICS EDITION
 
 **INSTALLATION INSTRUCTIONS**
 
