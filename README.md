@@ -6,7 +6,7 @@ Usage: python3 RamMaster.py
 | LANGUAGE  | FILENAME         | MD5 Hash                         | VERSION     |
 |------     |------            | -------                          | ------      |
 | python3   | install.py       | f186b02ddc0a450567fd4088a0f3494f | Reminiscent |
-| python    | RamMaster.py     | d3492de3d00535225727d2a90876aedd | Reminiscent |
+| python3   | RamMaster.py     | d3492de3d00535225727d2a90876aedd | Reminiscent |
 | text file | profiles.txt     | ba638a0a6f9d322100809bd6e67427d6 | Reminiscent |
 
 - [x] Uses linux volatility 2.6 - https://www.volatilityfoundation.org/26
