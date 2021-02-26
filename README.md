@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/BroadbentT/RAM-MASTER/blob/main/picture1.png">
+  <img src="https://github.com/BroadbentT/RAM-MASTER/blob/master/picture1.png">
 </p>
 
 ## FORENSICS EDITION
@@ -13,7 +13,7 @@
 <br>
 
 <p align="center">
-  <img src="https://github.com/BroadbentT/RAM-MASTER/picture2.png">
+  <img src="https://github.com/BroadbentT/RAM-MASTER/blob/master/picture2.png"> https://github.com/BroadbentT/RAM-MASTER/blob/master/picture2.png
 </p>
 
 ## COMMAND CENTRE TO FORENSICALLY INVESTIGATE AND ANALYSE MICROSOFT WINDOWS MEMORY DUMP FILES VIA VOLATILITY.
