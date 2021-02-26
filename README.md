@@ -20,11 +20,11 @@
 
 Usage: python3 RamMaster.py
 
-| LANGUAGE  | FILENAME         | MD5 Hash                         | VERSION     |
-|------     |------            | -------                          | ------      |
-| python3   | install.py       | f186b02ddc0a450567fd4088a0f3494f | Reminiscent |
-| python3   | RamMaster.py     | d3492de3d00535225727d2a90876aedd | Reminiscent |
-| text file | profiles.txt     | ba638a0a6f9d322100809bd6e67427d6 | Reminiscent |
+| LANGUAGE  | FILENAME         | MD5 Hash                         | VERSION           |
+|------     |------            | -------                          | ------            |
+| python3   | install.py       | f186b02ddc0a450567fd4088a0f3494f | Digital Forensics |
+| python3   | RamMaster.py     | 0e06050b4f0978c272ce809e7e612b83 | Digital Forensics |
+| text file | profiles.txt     | ba638a0a6f9d322100809bd6e67427d6 | Digital Forensics |
 
 - [x] Uses linux volatility 2.6 - https://www.volatilityfoundation.org/26
 - [x] Sample memory-dump files can be found here:-</br>
