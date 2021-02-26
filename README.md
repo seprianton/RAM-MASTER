@@ -1,14 +1,15 @@
 # RAM MASTER
 ## A PYTHON SCRIPT FILE TO FORENSICALLY INVESTIGATE AND ANALYSE MICROSOFT WINDOWS MEMORY DUMP FILES VIA VOLATILITY.
 
-Usage: python3 RamMaster.py dumpfile.mem
+Usage: python3 RamMaster.py
 
 | LANGUAGE  | FILENAME         | MD5 Hash                         | VERSION     |
 |------     |------            | -------                          | ------      |
-| python    | RamMaster.py     | 59307816f90d795832f0547e1a9099f6 | Reminiscent |
+| python3   | install.py       | f186b02ddc0a450567fd4088a0f3494f | Reminiscent |
+| python    | RamMaster.py     | d3492de3d00535225727d2a90876aedd | Reminiscent |
 | text file | profiles.txt     | ba638a0a6f9d322100809bd6e67427d6 | Reminiscent |
 
-- [x] Requires volatility (https://github.com/volatilityfoundation/volatility) to be installed.
+- [x] Uses linux volatility 2.6 - https://www.volatilityfoundation.org/26
 - [x] Sample memory-dump files can be found here:-</br>
 
       https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples
