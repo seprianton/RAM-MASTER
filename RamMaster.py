@@ -66,8 +66,16 @@ def dispBanner(variable,flash):
    ascii_banner = ascii_banner.rstrip("\n")
    if flash == 1:
       os.system("clear")
-      print(colored(ascii_banner,colour0, attrs=['bold']))
+      print(colored(ascii_banner,colour4, attrs=['bold']))
    os.system("pyfiglet " + variable + " > banner.tmp")
+   return
+
+def prompt():
+   input("\n[*] Press ENTER to continue...")
+   return
+
+def info():
+   print(colored("[*] Analysing file, please wait...", colour3))
    return
 
 # -------------------------------------------------------------------------------------
@@ -104,7 +112,6 @@ HRD = "0x0000000000000000"
 DEF = "0x0000000000000000"
 BCD = "0x0000000000000000"
 CUS = "0x0000000000000000"
-C = "CUSTOM   "
 HST = "UNKNOWN            "
 PRC = "0                  "
 SVP = "0                  "
@@ -112,16 +119,23 @@ DA2 = "NOT FOUND          "
 HIP = "000.000.000.000    "
 POR = "000                "
 
+
 X1 = " "*COL3
 X2 = " "*COL4
 
 US = [X1]*MAXX
 PA = [X2]*MAXX
 
+colour0 = 'white'
 colour1 = 'green'
 colour2 = 'yellow'
+colour3 = 'blue'
+colour4 = 'red'
 
 volpath = "/opt/volatility_2.6_lin64_standalone/volatility_2.6_lin64_standalone"
+
+fileName = "UNKNOWN   "
+C = "CUSTOM   "
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -132,12 +146,7 @@ volpath = "/opt/volatility_2.6_lin64_standalone/volatility_2.6_lin64_standalone"
 # -------------------------------------------------------------------------------------
 
 os.system("clear")
-print(" ____      _    __  __    __  __    _    ____ _____ _____ ____    ")
-print("|  _ \    / \  |  \/  |  |  \/  |  / \  / ___|_   _| ____|  _ \   ")
-print("| |_) |  / _ \ | |\/| |  | |\/| | / _ \ \___ \ | | |  _| | |_) |  ")
-print("|  _ <  / ___ \| |  | |  | |  | |/ ___ \ ___) || | | |___|  _ <   ")
-print("|_| \_\/_/   \_\_|  |_|  |_|  |_/_/   \_\____/ |_| |_____|_| \_\  ")
-print("                                                                  ")
+dispBanner("RAM MASTER",1)
 print("BY TERENCE BROADBENT MSc DIGITAL FORENSICS & CYBERCRIME ANALYSIS\n")
 
 # -------------------------------------------------------------------------------------
@@ -149,12 +158,11 @@ print("BY TERENCE BROADBENT MSc DIGITAL FORENSICS & CYBERCRIME ANALYSIS\n")
 # -------------------------------------------------------------------------------------
 
 print("Booting - Please wait...\n")
-
+LTM = getTime()
 if not os.path.exists('WORKAREA'):
    os.mkdir("WORKAREA")
-
-LTM = getTime()
 os.system("xdotool key Alt+Shift+S; xdotool type 'RAM MASTER'; xdotool key Return")
+time.sleep(3)
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -165,9 +173,9 @@ os.system("xdotool key Alt+Shift+S; xdotool type 'RAM MASTER'; xdotool key Retur
 # -------------------------------------------------------------------------------------
 
 def Display():
-   print('\u2554' + ('\u2550')*14 + '\u2566' + ('\u2550')*21 + '\u2566' + ('\u2550')*33 + '\u2566' + ('\u2550')*61 + '\u2557')
-   print('\u2551' + " TIME   " + colored(LTM[:6],colour1) + '\u2551' + " HOST DATA " +  (" ")*10 + '\u2551' + " HIVE         OFFSET LOCATION    "  + '\u2551' + " USERNAME " + " "*17 + " NTFS PASSWORD HASH " + " "*14 + '\u2551') 
-   print('\u2560' + '\u2550'*14 + '\u256C' + '\u2550'*21 + '\u256C' + '\u2550'*12 + '\u2566' + '\u2550'*20 + '\u256C' + '\u2550'*61 + '\u2563')
+   print('\u2554' + '\u2550'*14 + '\u2566' + '\u2550'*21 + '\u2566' + '\u2550'*33 + '\u2566' + '\u2550'*61 + '\u2566' + '\u2550'*31 + '\u2557')
+   print('\u2551' + " TIME   " + colored(LTM[:6],colour1) + '\u2551' + " FILENAME " + colored(fileName[:10],colour1) + " " + '\u2551' + " HIVE         OFFSET LOCATION    "  + '\u2551' + " USERNAME " + " "*17 + " NTFS PASSWORD HASH " + " "*14 + '\u2551' + " "*31 + '\u2551') 
+   print('\u2560' + '\u2550'*14 + '\u256C' + '\u2550'*21 + '\u256C' + '\u2550'*12 + '\u2566' + '\u2550'*20 + '\u256C' + '\u2550'*61 + '\u2563' + " "*31 + '\u2551')
    
    print('\u2551' + " PROFILE      " + '\u2551', end=' ')
    if PR2 == "UNSELECTED         ":
@@ -182,7 +190,7 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[0].upper(),colour1), end=' ')
    print(colored(PA[0],colour1), end=' ')
-   print('\u2551')
+   print('\u2551' + " "*31 + '\u2551')
    
    print('\u2551' + " HOST NAME    " + '\u2551', end=' ')
    if HST == "NOT FOUND          ":
@@ -197,7 +205,7 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[1].upper(),colour1), end=' ')
    print(colored(PA[1],colour1), end=' ')
-   print('\u2551')
+   print('\u2551' + " "*31 + '\u2551')
    
    print('\u2551' + " SERVICE PACK " + '\u2551', end=' ')
    if SVP == "0                  ":
@@ -212,7 +220,7 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[2].upper(),colour1), end=' ')
    print(colored(PA[2],colour1), end=' ')
-   print('\u2551')
+   print('\u2551' + " "*31 + '\u2551')
    
    print('\u2551' + " TIME STAMP   " + '\u2551', end=' ')
    if DA2 == "NOT FOUND          ":
@@ -227,7 +235,7 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[3].upper(),colour1), end=' ')
    print(colored(PA[3],colour1), end=' ')
-   print('\u2551')
+   print('\u2551' + " "*31 + '\u2551')
    
    print('\u2551' + " LOCAL IP     " + '\u2551', end=' ')
    if HIP == "000.000.000.000    ":
@@ -242,7 +250,7 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[4].upper(),colour1), end=' ')
    print(colored(PA[4],colour1), end=' ')
-   print('\u2551')
+   print('\u2551' + " "*31 + '\u2551')
    
    print('\u2551' + " LOCAL PORT   " + '\u2551', end=' ')
    if POR == "000                ":
@@ -257,7 +265,7 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[5].upper(),colour1), end=' ')
    print(colored(PA[5],colour1), end=' ')
-   print('\u2551')
+   print('\u2551' + " "*31 + '\u2551')
    
    print('\u2551' + " PID VALUE    " + '\u2551', end=' ')
    if PI1 == "0                  ":
@@ -272,7 +280,7 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[6].upper(),colour1), end=' ')
    print(colored(PA[6],colour1), end=' ')
-   print('\u2551')
+   print('\u2551' + " "*31 + '\u2551')
    
    print('\u2551' + " OFFSET VALUE " + '\u2551', end=' ')
    if OFF == "0                  ":
@@ -287,7 +295,7 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[7].upper(),colour1), end=' ')
    print(colored(PA[7],colour1), end=' ')
-   print('\u2551')
+   print('\u2551' + " "*31 + '\u2551')
    
    print('\u2551' + " PARAMETER    " + '\u2551', end=' ')
    if PRM == "UNSELECTED         ":
@@ -302,7 +310,7 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[8].upper(),colour1), end=' ')
    print(colored(PA[8],colour1), end=' ')
-   print('\u2551')
+   print('\u2551' + " "*31 + '\u2551')
    
    print('\u2551' + " DIRECTORY    " + '\u2551', end=' ')
    if DIR == "WORKAREA           ":
@@ -321,9 +329,9 @@ def Display():
    else:
       print(colored(US[9].upper(),colour1), end=' ')
       print(colored(PA[9],colour1), end=' ')   
-   print('\u2551')
+   print('\u2551' + " "*31 + '\u2551')
 
-   print('\u2560' + ('\u2550')*14 + '\u2569'+ ('\u2550')*21  + '\u2569' + ('\u2550')*12 + '\u2567' + ('\u2550')*20 + '\u2569' + ('\u2550')*61 + '\u2563')
+   print('\u2560' + ('\u2550')*14 + '\u2569'+ ('\u2550')*21  + '\u2569' + ('\u2550')*12 + '\u2569' + ('\u2550')*20 + '\u2569' + ('\u2550')*61 + '\u2569' + ('\u2550')*31 + '\u2563')
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -338,23 +346,23 @@ def Display():
    print("INVESTIGATE", end=' ')
    print(" "*16, end=' ')
    print("EXTRACT", end=' ')
-   print(" "*3, end=' ')
+   print(" "*35, end=' ')
    print('\u2551')
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-   print('\u2560' + ('\u2550'*132) + '\u2563')
-   print('\u2551' + "(0) Re/Set PROFILE   (10) Users/Passwords   (20) SAM        (30) Re/Set   (40) PrintKey         (50) Desktop   (60) Malfind PID DIR " + '\u2551')
-   print('\u2551' + "(1) Re/Set PID       (11) Default Password  (21) SECURITY   (31) Re/Set   (41) ShellBags        (51) Clipboard (61) Vaddump PID DIR " + '\u2551')
-   print('\u2551' + "(2) Re/Set OFFSET    (12) Running Processes (22) COMPONENTS (32) Re/Set   (42) SlimCache Data   (52) Notepad   (62) Prodump PID DIR " + '\u2551')
-   print('\u2551' + "(3) Re/Set PARAMETER (13) Hidden Processes  (23) SOFTWARE   (33) Re/Set   (43) Connections Scan (53) Explorer  (63) Memdump PID DIR " + '\u2551')
-   print('\u2551' + "(4) Re/Set DIRECTORY (14) Running Services  (24) SYSTEM     (34) Re/Set   (44) Network Scan     (54) Files     (64) PARAMETER OFFSET" + '\u2551')
-   print('\u2551' + "(5) Re/Set IP        (15) Command History   (25) NTUSER     (35) Re/Set   (45) Socket Scan      (55) SymLinks  (65) Timelines       " + '\u2551')
-   print('\u2551' + "(6) Re/Set PORT      (16) Console History   (26) HARDWARE   (36) Re/Set   (46) Mutant Scan      (56) Drivers   (66) Screen Shots    " + '\u2551')
-   print('\u2551' + "(7) Re/Set "+C[:9]+" (17) Cmdline Arguments (27) DEFUALT    (37) Re/Set   (47) DLL List         (57) SIDs      (67) MFT Table       " + '\u2551')
-   print('\u2551' + "(8) Load Filename    (18) User Assist Keys  (28) BOOT BCD   (38) Re/Set   (48) Sessions         (58) EnvVars   (68) PCAP File       " + '\u2551')
-   print('\u2551' + "(9) Exit Program     (19) Hive List         (29) "+C[:9]+"  (39) Re/Set   (49) PARAMETER Search (59) TrueCrypt (69) Bulk Extract    " + '\u2551')
-   print('\u255A' + ('\u2550')*132 + '\u255D')
+   print('\u2560' + ('\u2550'*164) + '\u2563')
+   print('\u2551' + "(0) Re/Set PROFILE   (10) Users/Passwords   (20) SAM        (30) Re/Set SAM        (40) PrintKey         (50) Desktop   (60) Malfind PID DIR  (70) RESERVED" + " "*9 + '\u2551')
+   print('\u2551' + "(1) Re/Set PID       (11) Default Password  (21) SECURITY   (31) Re/Set SECURITY   (41) ShellBags        (51) Clipboard (61) Vaddump PID DIR  (71) RESERVED" + " "*9 + '\u2551')
+   print('\u2551' + "(2) Re/Set OFFSET    (12) Running Processes (22) COMPONENTS (32) Re/Set COMPONENTS (42) SlimCache Data   (52) Notepad   (62) Prodump PID DIR  (72) RESERVED" + " "*9 + '\u2551')
+   print('\u2551' + "(3) Re/Set PARAMETER (13) Hidden Processes  (23) SOFTWARE   (33) Re/Set SOFTWARE   (43) Connections Scan (53) Explorer  (63) Memdump PID DIR  (73) RESERVED" + " "*9 + '\u2551')
+   print('\u2551' + "(4) Re/Set DIRECTORY (14) Running Services  (24) SYSTEM     (34) Re/Set SYSTEM     (44) Network Scan     (54) Files     (64) PARAMETER OFFSET (74) RESERVED" + " "*9 + '\u2551')
+   print('\u2551' + "(5) Re/Set IP        (15) Command History   (25) NTUSER     (35) Re/Set NTUSER     (45) Socket Scan      (55) SymLinks  (65) Timelines        (75) RESERVED" + " "*9 + '\u2551')
+   print('\u2551' + "(6) Re/Set PORT      (16) Console History   (26) HARDWARE   (36) Re/Set HARDWARE   (46) Mutant Scan      (56) Drivers   (66) Screen Shots     (76) RESERVED" + " "*9 + '\u2551')
+   print('\u2551' + "(7) Re/Set "+C[:9]+" (17) Cmdline Arguments (27) DEFUALT    (37) Re/Set DEFUALT    (47) DLL List         (57) SIDs      (67) MFT Table        (77) RESERVED" + " "*9 + '\u2551')
+   print('\u2551' + "(8) Load Filename    (18) User Assist Keys  (28) BOOT BCD   (38) Re/Set BOOT BCD   (48) Sessions         (58) EnvVars   (68) PCAP File        (78) RESERVED" + " "*9 + '\u2551')
+   print('\u2551' + "(9) Exit Program     (19) Hive List         (29) "+C[:9]+"  (39) Re/Set "+C[:9]+"  (49) PARAMETER Search (59) TrueCrypt (69) Bulk Extract     (79) RESERVED" + " "*9 + '\u2551')
+   print('\u255A' + ('\u2550')*164 + '\u255D')
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -370,7 +378,7 @@ while True:
    os.system("rm *.tmp")
    os.system("clear")
    Display()
-   selection=input("Please Select: ")
+   selection=input("[?] Please Select: ")
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -456,7 +464,7 @@ while True:
             DIR = directory
             DIR = spacePadding(DIR, COL1)
             print("Working directory changed...")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                           
@@ -509,8 +517,15 @@ while True:
 
    if selection == '8':
       fileName = input("[?] Please enter filename: ")
+      if os.path.exists(fileName):
+         fileName = spacePadding(fileName,11)
+      else:
+         print("error")
+         exit(1)        
+
       
       profiles = "NOT FOUND"
+      info()
       os.system(volpath + " imageinfo -f '" + fileName + "' > image.log")
 
       with open("image.log") as search:
@@ -677,7 +692,7 @@ while True:
          print(colored("SAM HIVE missing - its not possible to extract the hashes...",colour2))
       else:
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hashdump -y " + SYS + " -s " + SAM)
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -689,7 +704,7 @@ while True:
 
    if selection == '11':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " lsadump | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -749,7 +764,7 @@ while True:
       os.remove("NUM.txt")
       os.remove("SUSPECT.txt")
       os.remove("SUSPECT2.txt")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -761,7 +776,7 @@ while True:
 
    if selection == '13':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " psxview | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -773,7 +788,7 @@ while True:
 
    if selection == '14':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " svcscan | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -785,7 +800,7 @@ while True:
 
    if selection == '15':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " cmdscan")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -797,7 +812,7 @@ while True:
 
    if selection == '16':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " consoles")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -809,7 +824,7 @@ while True:
 
    if selection == '17':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " cmdline")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -821,7 +836,7 @@ while True:
 
    if selection == '18':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " userassist")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -833,7 +848,7 @@ while True:
 
    if selection == '19':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " hivelist")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -848,7 +863,7 @@ while True:
          print(colored("SAM Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + SAM + " | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -863,7 +878,7 @@ while True:
          print(colored("SECURITY Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system(volpath + " -f " + fileName + PRO + " hivedump -o " + SEC + " | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -878,7 +893,7 @@ while True:
          print(colored("COMPONENTS Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + COM + " | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -893,7 +908,7 @@ while True:
          print(colored("SOFTWARE Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + SOF + " | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -908,7 +923,7 @@ while True:
          print(colored("SYSTEM Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + SYS + " | more")
-      input("\nPress ENTER to continue...")    
+      prompt()    
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -923,7 +938,7 @@ while True:
          print(colored("NTUSER (Administrator) Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + NTU + " | more")
-      input("\nPress ENTER to continue...") 
+      prompt() 
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -938,7 +953,7 @@ while True:
          print(colored("HARDWARE Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + HRD + " | more")
-      input("\nPress ENTER to continue...")     
+      prompt()     
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -953,7 +968,7 @@ while True:
          print(colored("DEFUALT Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + DEF + " | more")
-      input("\nPress ENTER to continue...")   
+      prompt()   
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -968,7 +983,7 @@ while True:
          print(colored("BOOT BCD Hive missing - it is not possible to extract data...",colour2))
       else:
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + BCD + " | more")
-      input("\nPress ENTER to continue...")   
+      prompt()   
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -983,7 +998,7 @@ while True:
          print(colored(C + " missing - it is not possible to extract data...",colour2))
       else:
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + CUS + " | more")
-      input("\nPress ENTER to continue...")  
+      prompt()  
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1127,7 +1142,7 @@ while True:
       KEY = input("Please enter the key value in quotes: ")
       if KEY != "":
          os.system(volpath + " -f '" + fileName + "'" + PRO + " printkey -K " + KEY)
-         input("\nPress ENTER to continue...")
+         prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1139,7 +1154,7 @@ while True:
 
    if selection =='41':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " shellbags | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1151,7 +1166,7 @@ while True:
 
    if selection =='42':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " shimcache | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1163,7 +1178,7 @@ while True:
 
    if selection =='43':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " connscan | more")
-      input("\nPress ENTER to continue...") 
+      prompt() 
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1175,7 +1190,7 @@ while True:
 
    if selection =='44':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " netscan | more")
-      input("\nPress ENTER to continue...") 
+      prompt() 
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1187,7 +1202,7 @@ while True:
 
    if selection =='45':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " sockets | more")
-      input("\nPress ENTER to continue...") 
+      prompt() 
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1199,7 +1214,7 @@ while True:
 
    if selection =='46':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " mutantscan | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1211,7 +1226,7 @@ while True:
 
    if selection =='47':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " dlllist | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1223,7 +1238,7 @@ while True:
 
    if selection =='48':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " sessions | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1236,7 +1251,7 @@ while True:
    if selection =='49':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " pslist | grep " + PRM)
       os.system(volpath + " -f '" + fileName + "'" + PRO + " filescan | grep " + PRM)
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1248,7 +1263,7 @@ while True:
 
    if selection =='50':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " deskscan | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1260,7 +1275,7 @@ while True:
 
    if selection =='51':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " clipboard | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1272,7 +1287,7 @@ while True:
 
    if selection =='52':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " notepad | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1284,7 +1299,7 @@ while True:
 
    if selection =='53':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " iehistory | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1296,7 +1311,7 @@ while True:
 
    if selection =='54':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " filescan | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1308,7 +1323,7 @@ while True:
 
    if selection =='55':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " symlinkscan | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1321,7 +1336,7 @@ while True:
    if selection =='56':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " devicetree | more")
       os.system(volpath + " -f '" + fileName + "'" + PRO + " driverscan | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1333,7 +1348,7 @@ while True:
 
    if selection =='57':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " getsids | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1345,7 +1360,7 @@ while True:
 
    if selection =='58':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " envars | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1359,7 +1374,7 @@ while True:
       os.system(volpath + " -f '" + fileName + "'" + PRO + " truecryptsummary | more")
       os.system(volpath + " -f '" + fileName + "'" + PRO + " truecryptmaster | more")
       os.system(volpath + " -f '" + fileName + "'" + PRO + " truecryptpassphrase | more")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1371,7 +1386,7 @@ while True:
 
    if selection =='60':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " malfind -p " + PI1 + " -D " + DIR)
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1383,7 +1398,7 @@ while True:
 
    if selection =='61':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " vaddump -p " + PI1 + " --dump-dir " + DIR)
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1395,7 +1410,7 @@ while True:
 
    if selection =='62':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " procdump  -p " + PI1 + " --dump-dir " + DIR)
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1407,7 +1422,7 @@ while True:
 
    if selection =='63':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " memdump  -p " + PI1 + " --dump-dir " + DIR)
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1419,7 +1434,7 @@ while True:
 
    if selection =='64':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " dumpfiles -Q " + OFF + " -D " + DIR + " -u -n")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1433,7 +1448,7 @@ while True:
       os.system(volpath + " -f '" + fileName + "'" + PRO + " timeliner --output-file timeline.txt")
       os.system(volpath + " -f '" + fileName + "'" + PRO + " shellbags --output-file time.txt")
       print("A timeline has sucessfully been exported...")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 #------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1445,7 +1460,7 @@ while True:
 
    if selection =='66':
       os.system(volpath + " -f '" + fileName + "'" + PRO + " -D " + DIR + " screenshot")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1462,7 +1477,7 @@ while True:
       fileNum = sum(1 for line in open('count.txt'))
       print("The table contains " + str(fileNum) + " local files < 1024 bytes in length.")
       os.remove("count.txt")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1474,7 +1489,7 @@ while True:
 
    if selection =='68':
       os.system("bulk_extractor -x all -e net -o " + DIR + " '" + fileName + "'")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1486,6 +1501,6 @@ while True:
 
    if selection =='69':
       os.system("bulk_extractor -o " + DIR + " '" + fileName + "'")
-      input("\nPress ENTER to continue...")
+      prompt()
 
 #Eof...
