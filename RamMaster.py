@@ -61,21 +61,19 @@ def getTime():
    variable = spacePadding(variable, COL1)
    return variable 
    
-def dispBanner(variable,flash):
+def dispBanner(variable):
    ascii_banner = pyfiglet.figlet_format(variable).upper()
    ascii_banner = ascii_banner.rstrip("\n")
-   if flash == 1:
-      os.system("clear")
-      print(colored(ascii_banner,colour4, attrs=['bold']))
-   os.system("pyfiglet " + variable + " > banner.tmp")
+   os.system("clear")
+   print(colored(ascii_banner,colour4, attrs=['bold']))
    return
 
 def prompt():
    input("\n[*] Press ENTER to continue...")
    return
 
-def info():
-   print(colored("[*] Analysing file, please wait...", colour3))
+def message():
+   print(colored("[*] Analysing file, please wait...\n", colour3))
    return
 
 # -------------------------------------------------------------------------------------
@@ -90,18 +88,18 @@ COL1 = 19
 COL2 = 18
 COL3 = 26
 COL4 = 32
-MAN1 = 0
-MAN2 = 0
+COL5 = 31
 MAXX = 11
 
-PRO  = "UNSELECTED         "
-PR2  = "UNSELECTED         "
-DA1  = "NOT FOUND          "
-PI1  = "0                  "
-PI2  = "0                  "
-OFF  = "0                  "
-PRM  = "UNSELECTED         "
-DIR  = "WORKAREA           "
+PRO = "UNSELECTED         "
+PR2 = "UNSELECTED         "
+DA1 = "NOT FOUND          "
+DA2 = "NOT FOUND          "
+PI1 = "0                  "
+PI2 = "0                  "
+OFF = "0                  "
+PRM = "UNSELECTED         "
+DIR = "OUTCOME            "
 SAM = "0x0000000000000000"
 SEC = "0x0000000000000000"
 COM = "0x0000000000000000"
@@ -112,13 +110,12 @@ HRD = "0x0000000000000000"
 DEF = "0x0000000000000000"
 BCD = "0x0000000000000000"
 CUS = "0x0000000000000000"
+CNM = "CUSTOM   "
 HST = "UNKNOWN            "
 PRC = "0                  "
 SVP = "0                  "
-DA2 = "NOT FOUND          "
 HIP = "000.000.000.000    "
 POR = "000                "
-
 
 X1 = " "*COL3
 X2 = " "*COL4
@@ -133,9 +130,7 @@ colour3 = 'blue'
 colour4 = 'red'
 
 volpath = "/opt/volatility_2.6_lin64_standalone/volatility_2.6_lin64_standalone"
-
 fileName = "UNKNOWN   "
-C = "CUSTOM   "
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -146,8 +141,8 @@ C = "CUSTOM   "
 # -------------------------------------------------------------------------------------
 
 os.system("clear")
-dispBanner("RAM MASTER",1)
-print("BY TERENCE BROADBENT MSc DIGITAL FORENSICS & CYBERCRIME ANALYSIS\n")
+dispBanner("RAM MASTER")
+print(colored("BY TERENCE BROADBENT MSc DIGITAL FORENSICS & CYBERCRIME ANALYSIS\n", colour2, attrs=['bold']))
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -157,10 +152,10 @@ print("BY TERENCE BROADBENT MSc DIGITAL FORENSICS & CYBERCRIME ANALYSIS\n")
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
-print("Booting - Please wait...\n")
+print(colored("Booting - Please wait...\n",colour3))
 LTM = getTime()
-if not os.path.exists('WORKAREA'):
-   os.mkdir("WORKAREA")
+if not os.path.exists('OUTCOME'):
+   os.mkdir("OUTCOME")
 os.system("xdotool key Alt+Shift+S; xdotool type 'RAM MASTER'; xdotool key Return")
 time.sleep(3)
 
@@ -173,9 +168,9 @@ time.sleep(3)
 # -------------------------------------------------------------------------------------
 
 def Display():
-   print('\u2554' + '\u2550'*14 + '\u2566' + '\u2550'*21 + '\u2566' + '\u2550'*33 + '\u2566' + '\u2550'*61 + '\u2566' + '\u2550'*31 + '\u2557')
-   print('\u2551' + " TIME   " + colored(LTM[:6],colour1) + '\u2551' + " FILENAME " + colored(fileName[:10],colour1) + " " + '\u2551' + " HIVE         OFFSET LOCATION    "  + '\u2551' + " USERNAME " + " "*17 + " NTFS PASSWORD HASH " + " "*14 + '\u2551' + " "*31 + '\u2551') 
-   print('\u2560' + '\u2550'*14 + '\u256C' + '\u2550'*21 + '\u256C' + '\u2550'*12 + '\u2566' + '\u2550'*20 + '\u256C' + '\u2550'*61 + '\u2563' + " "*31 + '\u2551')
+   print('\u2554' + '\u2550'*14 + '\u2566' + '\u2550'*21 + '\u2566' + '\u2550'*33 + '\u2566' + '\u2550'*61 + '\u2566' + '\u2550'*COL5 + '\u2557')
+   print('\u2551' + " TIME   " + colored(LTM[:6],colour1) + '\u2551' + " FILENAME " + colored(fileName[:10],colour1) + " " + '\u2551' + " HIVE         OFFSET LOCATION    "  + '\u2551' + " USERNAME " + " "*17 + " NTFS PASSWORD HASH " + " "*14 + '\u2551' + " "*COL5 + '\u2551') 
+   print('\u2560' + '\u2550'*14 + '\u256C' + '\u2550'*21 + '\u256C' + '\u2550'*12 + '\u2566' + '\u2550'*20 + '\u256C' + '\u2550'*61 + '\u2563' + " "*COL5 + '\u2551')
    
    print('\u2551' + " PROFILE      " + '\u2551', end=' ')
    if PR2 == "UNSELECTED         ":
@@ -313,11 +308,11 @@ def Display():
    print('\u2551' + " "*31 + '\u2551')
    
    print('\u2551' + " DIRECTORY    " + '\u2551', end=' ')
-   if DIR == "WORKAREA           ":
+   if DIR == "OUTCOME            ":
       print(colored(DIR[:COL1],colour2), end=' ')
    else:
       print(colored(DIR[:COL1],'yellow'), end=' ')
-   print('\u2551' + " " + C[:9] + "  " + '\u2551', end=' ')
+   print('\u2551' + " " + CNM[:9] + "  " + '\u2551', end=' ')
    if CUS == "0x0000000000000000":
       print(colored(CUS,colour2), end=' ')
    else:
@@ -331,7 +326,7 @@ def Display():
       print(colored(PA[9],colour1), end=' ')   
    print('\u2551' + " "*31 + '\u2551')
 
-   print('\u2560' + ('\u2550')*14 + '\u2569'+ ('\u2550')*21  + '\u2569' + ('\u2550')*12 + '\u2569' + ('\u2550')*20 + '\u2569' + ('\u2550')*61 + '\u2569' + ('\u2550')*31 + '\u2563')
+   print('\u2560' + ('\u2550')*14 + '\u2569'+ ('\u2550')*21  + '\u2569' + ('\u2550')*12 + '\u2569' + ('\u2550')*20 + '\u2569' + ('\u2550')*61 + '\u2569' + ('\u2550')*COL5 + '\u2563')
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -359,9 +354,9 @@ def Display():
    print('\u2551' + "(4) Re/Set DIRECTORY (14) Running Services  (24) SYSTEM     (34) Re/Set SYSTEM     (44) Network Scan     (54) Files     (64) PARAMETER OFFSET (74) RESERVED" + " "*9 + '\u2551')
    print('\u2551' + "(5) Re/Set IP        (15) Command History   (25) NTUSER     (35) Re/Set NTUSER     (45) Socket Scan      (55) SymLinks  (65) Timelines        (75) RESERVED" + " "*9 + '\u2551')
    print('\u2551' + "(6) Re/Set PORT      (16) Console History   (26) HARDWARE   (36) Re/Set HARDWARE   (46) Mutant Scan      (56) Drivers   (66) Screen Shots     (76) RESERVED" + " "*9 + '\u2551')
-   print('\u2551' + "(7) Re/Set "+C[:9]+" (17) Cmdline Arguments (27) DEFUALT    (37) Re/Set DEFUALT    (47) DLL List         (57) SIDs      (67) MFT Table        (77) RESERVED" + " "*9 + '\u2551')
+   print('\u2551' + "(7) Re/Set "+CNM[:9]+" (17) Cmdline Arguments (27) DEFUALT    (37) Re/Set DEFUALT    (47) DLL List         (57) SIDs      (67) MFT Table        (77) RESERVED" + " "*9 + '\u2551')
    print('\u2551' + "(8) Load Filename    (18) User Assist Keys  (28) BOOT BCD   (38) Re/Set BOOT BCD   (48) Sessions         (58) EnvVars   (68) PCAP File        (78) RESERVED" + " "*9 + '\u2551')
-   print('\u2551' + "(9) Exit Program     (19) Hive List         (29) "+C[:9]+"  (39) Re/Set "+C[:9]+"  (49) PARAMETER Search (59) TrueCrypt (69) Bulk Extract     (79) RESERVED" + " "*9 + '\u2551')
+   print('\u2551' + "(9) RESERVED         (19) Hive List         (29) "+CNM[:9]+"  (39) Re/Set "+CNM[:9]+"  (49) PARAMETER Search (59) TrueCrypt (69) Bulk Extract     (79) Exit Program     " + '\u2551')
    print('\u255A' + ('\u2550')*164 + '\u255D')
 
 # -------------------------------------------------------------------------------------
@@ -411,14 +406,14 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Allowd the user to set the PID value.
+# Details : Menu option selected - Allows the user to set the PID value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '1':
-      temp = input("Please enter PID value: ")
-      if temp != '':
-         PI1 = spacePadding(temp, COL1)
+      value = input("[?] Please enter PID value: ")
+      if value != '':
+         PI1 = spacePadding(value, COL1)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -429,28 +424,28 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '2':
-      temp = input("Please enter OFFSET value: ")
-      if temp != '':
-         OFF = spacePadding(temp, COL1)
+      value = input("[?] Please enter OFFSET value: ")
+      if value != '':
+         OFF = spacePadding(value, COL1)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Allows the user to set the Parameter string.
+# Details : Menu option selected - Allows the user to set the PARAMETER string.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '3':
-      temp = input("Please enter parameter value: ")
-      if temp != '':
-         PRM = spacePadding(temp,COL1)
+      value = input("Please enter parameter value: ")
+      if value != '':
+         PRM = spacePadding(value,COL1)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Allows the user to set the Parameter string.
+# Details : Menu option selected - Allows the user to change the working directory.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
@@ -470,214 +465,204 @@ while True:
 # AUTHOR  : Terence Broadbent                                                           
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Set host IP Value.
+# Details : Menu option selected - Allows the user to set the host IP value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '5':
-      temp = input("Please enter IP value: ")
-      if temp != '':
-         HIP = spacePadding(temp, COL1)
-         MAN1 = 1
+      value = input("Please enter IP value: ")
+      if value != '':
+         HIP = spacePadding(value, COL1)
+#         MAN1 = 1
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                           
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Set host PORT Value.
+# Details : Menu option selected - Allows the user to Set host PORT value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '6':
-      temp = input("Please enter PORT value: ")
-      if temp != '':
-         POR = spacePadding(temp, COL1)
-         MAN2 = 1
+      value = input("Please enter PORT value: ")
+      if value != '':
+         POR = spacePadding(value, COL1)
+#         MAN2 = 1
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                           
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Rename CUSTOM hive.
+# Details : Menu option selected - Allows the user to name the 'C'USTOM hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '7':
-      temp = input("Please enter HIVE name: ")
-      if temp != '':
-         C = spacePadding(temp, 9)
+      value = input("Please enter HIVE name: ")
+      if value != '':
+         C = spacePadding(value, 9)
          
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Clean up system files and exit the program.
+# Details : Menu option selected - Select file & extract host variables.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '8':
+      bak = fileName
       fileName = input("[?] Please enter filename: ")
+      if fileName == "":
+         fileName = bak
       if os.path.exists(fileName):
          fileName = spacePadding(fileName,11)
-      else:
-         print("error")
-         exit(1)        
+         profiles = "NOT FOUND"
+         message()
+         os.system(volpath + " imageinfo -f '" + fileName + "' --output-file=image.log")
+         with open("image.log") as search:
+            for line in search:
+               if "Suggested Profile(s) :" in line:
+                  profiles = line
+               if "Number of Processors" in line:
+                  PRC = line
+               if "Image Type (Service Pack) :" in line:
+                  SVP = line
+               if "Image date and time :" in line:
+                  DA1 = line
+               if "Image local date and time :" in line:
+                  DA2 = line
 
-      
-      profiles = "NOT FOUND"
-      info()
-      os.system(volpath + " imageinfo -f '" + fileName + "' > image.log")
-
-      with open("image.log") as search:
-         for line in search:
-            if "Suggested Profile(s) :" in line:
-               profiles = line
-            if "Number of Processors" in line:
-               PRC = line
-            if "Image Type (Service Pack) :" in line:
-               SVP = line
-            if "Image date and time :" in line:
-               DA1 = line
-            if "Image local date and time :" in line:
-               DA2 = line
-
-      if profiles == "NOT FOUND":
-         print("ERROR #001 - A windows profile was not found, see 'image.log' for further information.")
-         exit(True)
+         if profiles == "NOT FOUND":
+            print("ERROR #001 - A windows profile was not found, see 'image.log' for further information.")
+            exit(True)
          
-      profiles = profiles.replace("Suggested Profile(s) :","")
-      profiles = profiles.replace(" ","")
-      profiles = profiles.split(",")
-      PRO = " --profile " + profiles[0]
-      PR2 = profiles[0]
-      if (PR2[:1] != "W") and (PR2[:1] != "V"):
-         print("ERROR #002- A windows profile was not found, see 'image.log' for further information.")
-         exit(True)
-      else:
-         PR2 = spacePadding(PR2,COL1)
-         os.remove("image.log")
+         profiles = profiles.replace("Suggested Profile(s) :","")
+         profiles = profiles.replace(" ","")
+         profiles = profiles.split(",")
+         PRO = " --profile " + profiles[0]
+         PR2 = profiles[0]
+         if (PR2[:1] != "W") and (PR2[:1] != "V"):
+            print("ERROR #002- A windows profile was not found, see 'image.log' for further information.")
+            exit(True)
+         else:
+            PR2 = spacePadding(PR2,COL1)
+            os.remove("image.log")
    
-      PRC = PRC.replace("Number of Processors :","")
-      PRC = PRC.replace(" ","")
-      PRC = PRC.replace("\n","")
-      PRC = spacePadding(PRC, COL3)
+         PRC = PRC.replace("Number of Processors :","")
+         PRC = PRC.replace(" ","")
+         PRC = PRC.replace("\n","")
+         PRC = spacePadding(PRC, COL3)
 
-      SVP = SVP.replace("Image Type (Service Pack) :","")
-      SVP = SVP.replace(" ","")
-      SVP = SVP.replace("\n","")
-      SVP = spacePadding(SVP, COL1)
+         SVP = SVP.replace("Image Type (Service Pack) :","")
+         SVP = SVP.replace(" ","")
+         SVP = SVP.replace("\n","")
+         SVP = spacePadding(SVP, COL1)
 
-      DA1 = DA1.replace("Image date and time :","")
-      DA1 = DA1.lstrip()
-      DA1 = DA1.rstrip("\n")
-      a,b,c = DA1.split()
-      DA1 = a + " @ " + b
+         DA1 = DA1.replace("Image date and time :","")
+         DA1 = DA1.lstrip() 
+         DA1 = DA1.rstrip("\n")
+         a,b,c = DA1.split()
+         DA1 = a + " @ " + b
 
-      DA2 = DA2.replace("Image local date and time :","")
-      DA2 = DA2.lstrip()
-      DA2 = DA2.rstrip("\n")
-      a,b,c = DA2.split()
-      DA2 = a + " " + b
-      DA2 = spacePadding(DA2, COL1)
+         DA2 = DA2.replace("Image local date and time :","")
+         DA2 = DA2.lstrip()
+         DA2 = DA2.rstrip("\n")
+         a,b,c = DA2.split()
+         DA2 = a + " " + b
+         DA2 = spacePadding(DA2, COL1)
 
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " hivelist > hivelist.tmp")
+         print(""); message()
+         os.system(volpath + " -f '" + fileName + "'" + PRO + " hivelist --output-file=hivelist.tmp")
+         with open("hivelist.tmp") as search:
+            for line in search:
+              if "\sam" in line.lower():
+                 SAM = line.split(None, 1)[0]
+                 SAM = spacePadding(SAM, COL2)
+              if "\security" in line.lower():
+                 SEC = line.split(None, 1)[0]
+                 SEC = spacePadding(SEC, COL2)
+              if "\software" in line.lower():
+                 SOF = line.split(None, 1)[0]
+                 SOF = spacePadding(SOF, COL2)
+              if "\system" in line.lower():
+                 SYS = line.split(None, 1)[0]
+                 SYS = spacePadding(SYS, COL2)
+              if "\components" in line.lower():
+                 COM = line.split(None, 1)[0]
+                 COM = spacePadding(SYS, COL2)
+              if "\\administrator\\ntuser.dat" in line.lower(): # \Administrator\NTUSER.DAT as there are usually multiple NTUSERS files. 
+                 NTU = line.split(None, 1)[0]
+                 NTU = spacePadding(SYS, COL2)
+              if "\hardware" in line.lower():
+                 HRD = line.split(None,1)[0]
+                 HRD = spacePadding(HRD, COL2)
+              if "\default" in line.lower():
+                 DEF = line.split(None,1)[0]
+                 DEF = spacePadding(DEF, COL2)
+              if "\\bcd" in line.lower():
+                 BCD = line.split(None,1)[0]
+                 BCD = spacePadding(BCD, COL2)
 
-      with open("hivelist.tmp") as search:
-         for line in search:
-           if "\sam" in line.lower():
-              SAM = line.split(None, 1)[0]
-              SAM = spacePadding(SAM, COL2)
-           if "\security" in line.lower():
-              SEC = line.split(None, 1)[0]
-              SEC = spacePadding(SEC, COL2)
-           if "\software" in line.lower():
-              SOF = line.split(None, 1)[0]
-              SOF = spacePadding(SOF, COL2)
-           if "\system" in line.lower():
-              SYS = line.split(None, 1)[0]
-              SYS = spacePadding(SYS, COL2)
-           if "\components" in line.lower():
-              COM = line.split(None, 1)[0]
-              COM = spacePadding(SYS, COL2)
-           if "\\administrator\\ntuser.dat" in line.lower(): # \Administrator\NTUSER.DAT as there are usually multiple NTUSERS files. 
-              NTU = line.split(None, 1)[0]
-              NTU = spacePadding(SYS, COL2)
-           if "\hardware" in line.lower():
-              HRD = line.split(None,1)[0]
-              HRD = spacePadding(HRD, COL2)
-           if "\default" in line.lower():
-              DEF = line.split(None,1)[0]
-              DEF = spacePadding(DEF, COL2)
-           if "\\bcd" in line.lower():
-              BCD = line.split(None,1)[0]
-              BCD = spacePadding(BCD, COL2)
+         print(""); message()
+         os.system(volpath + " -f '" + fileName + "'" + PRO + " printkey -o " + SYS + " -K 'ControlSet001\Control\ComputerName\ComputerName' --output-file=host.tmp")
+         with open("host.tmp") as search:
+            wordlist = (list(search)[-1])
+            wordlist = wordlist.split()
+            HST = str(wordlist[-1])
+         if HST == "searched":					# Looks like a host name has not been found.
+            HST = "NOT FOUND          "				# So set a defualt value.
+         else:
+            HST = HST.encode(encoding='UTF-8',errors='strict')	# Deal with a encoding issue with hostname.
+            HST = str(HST)
+            HST = HST.replace("b'","")
+            HST = HST.replace("\\x00'","")
+            HST = spacePadding(HST, COL1)
 
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " printkey -o " + SYS + " -K 'ControlSet001\Control\ComputerName\ComputerName' > host.tmp")
-
-      with open("host.tmp") as search:
-         wordlist = (list(search)[-1])
-         wordlist = wordlist.split()
-         HST = str(wordlist[-1])
-      if HST == "searched":					# Looks like a host name has not been found.
-         HST = "NOT FOUND          "				# So set a defualt value.
+         print(""); message()
+         os.system(volpath + " -f '" + fileName + "'" + PRO + " hashdump -y " + SYS + " -s " + SAM + " --output-file=hash.tmp")
+         with open("hash.tmp") as search:
+            count = 0
+            for line in search:
+               if line != "":
+                  catch = line.replace(":"," ")
+                  catch2 = catch.split()
+                  catch3 = catch2[3]
+                  PA[count] = catch3
+                  US[count] = catch2[0][:COL3-1] + " "
+                  US[count] = spacePadding(US[count], COL3)
+                  count = count + 1				# 0 - 9 Users
+               if count > MAXX: count = MAXX			# 10 - Maximum threshold reached for user display.
+        
+         print(""); message()
+         os.system(volpath + " -f '" + fileName + "'" + PRO + " connscan --output-file=connscan.tmp")
+         os.system("sed '1d' connscan.tmp > conn1.tmp")
+         os.system("sed '1d' conn1.tmp > connscan.tmp")
+         os.system("cut -f 2 -d ' ' connscan.tmp > conn1.tmp")
+         os.system("strings conn1.tmp | sort | uniq -c | sort -nr > connscan.tmp")
+         os.system("sed '1d' conn1.tmp > connscan.tmp")
+         getip = linecache.getline('connscan.tmp', 1)
+         if getip != "":
+            getip = getip.split()
+            getip = getip[0].replace(':',' ')  
+            HIP = getip.rsplit(' ', 1)[0]
+            POR = getip.rsplit(' ', 1)[1]
+            HIP = spacePadding(HIP, COL1)
+            POR = spacePadding(POR, COL1)
       else:
-         HST = HST.encode(encoding='UTF-8',errors='strict')	# Deal with a encoding issue with hostname.
-         HST = str(HST)
-         HST = HST.replace("b'","")
-         HST = HST.replace("\\x00'","")
-         HST = spacePadding(HST, COL1)
-
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " hashdump -y " + SYS + " -s " + SAM + " >> hash.tmp")
-
-      with open("hash.tmp") as search:
-         count = 0
-         for line in search:
-            if line != "":
-               catch = line.replace(":"," ")
-               catch2 = catch.split()
-               catch3 = catch2[3]
-               PA[count] = catch3
-               US[count] = catch2[0][:COL3-1] + " "
-               US[count] = spacePadding(US[count], COL3)
-               count = count + 1				# 0 - 9 Users
-            if count > MAXX: count = MAXX			# 10 - Maximum threshold reached for user display.
-
-      os.system("volatility -f '" + fileName + "'" + PRO + " connscan > connscan.txt")
-      os.system("sed '1d' connscan.txt > conn1.txt")
-      os.system("sed '1d' conn1.txt > connscan.txt")
-      os.remove("conn1.txt")
-      os.system("cut -f 2 -d ' ' connscan.txt > conn1.txt")
-      os.system("strings conn1.txt | sort | uniq -c | sort -nr > connscan.txt")
-      os.system("sed '1d' conn1.txt > connscan.txt")
-      getip = linecache.getline('connscan.txt', 1)
-      if getip != "":
-         getip = getip.split()
-         getip = getip[0].replace(':',' ')  
-         HIP = getip.rsplit(' ', 1)[0]
-         POR = getip.rsplit(' ', 1)[1]
-         HIP = padding(HIP, COL1)
-         POR = padding(POR, COL1)
-      os.remove('connscan.txt')
-      os.remove('conn1.txt')
-         
+         print("[-] The specified file was not found...")
+      prompt()
+            
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Exit the program, leaving files undeleted.
+# Details : Menu option selected - 
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '9':
-      if os.path.exists('WORKAREA'):
-         shutil.rmtree('WORKAREA')
-      if os.path.exists('timeline.txt'):
-         os.remove('timeline.txt')
-      if os.path.exists('time.txt'):
-         os.remove('time.txt')
-      if os.path.exists('mfttable.txt'):
-         os.remove('mfttable.txt')
-      exit(1)
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -689,8 +674,9 @@ while True:
 
    if selection == '10':
       if SAM == "0x0000000000000000":
-         print(colored("SAM HIVE missing - its not possible to extract the hashes...",colour2))
+         print(colored("[-] SAM HIVE missing - its not possible to extract the hashes...",colour2))
       else:
+         message()
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hashdump -y " + SYS + " -s " + SAM)
       prompt()
 
@@ -703,6 +689,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '11':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " lsadump | more")
       prompt()
 
@@ -715,22 +702,24 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '12':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " psscan | more")
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " psscan --output greptext > F1.txt")
-      os.system("tail -n +2 F1.txt > F2.txt")
-      os.system("sed -i 's/>//g' F2.txt")
-      with open("F2.txt") as read1:
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " psscan --output greptext > F1.tmp")
+      os.system("tail -n +2 F1.tmp > F2.tmp")
+      os.system("sed -i 's/>//g' F2.tmp")
+      with open("F2.tmp") as read1:
          for line in read1:
             for word in line.split('|'):
-                output = subprocess.check_output("echo " + word + " >> F3.txt", shell=True)
-      os.system("tail -n +2 F3.txt > F4.txt")
-      os.system("wc -l F2.txt > NUM.txt")
-      NUMLINES = open("NUM.txt").readline().replace(' F2.txt','') 
+                output = subprocess.check_output("echo " + word + " >> F3.tmp", shell=True)
+      os.system("tail -n +2 F3.tmp > F4.tmp")
+      os.system("wc -l F2.tmp > NUM.tmp")
+      NUMLINES = open("NUM.tmp").readline().replace(' F2.tmp','') 
       COUNT = int(NUMLINES)
-      print("\n[1].\tThere were",COUNT,"processes running at the time of the memory dump.\n")
-      read2 = open('PID.txt','w')
-      read3 = open('PPID.txt','w')
-      with open('F4.txt') as read4:
+      print("\n[+] There were",COUNT,"processes running at the time of the memory dump.\n")
+      read2 = open('PID.tmp','w')
+      read3 = open('PPID.tmp','w')
+      with open('F4.tmp') as read4:
          while COUNT > 0:
             A = read4.readline()
             B = read4.readline() # Executable name
@@ -744,26 +733,21 @@ while True:
             COUNT = (COUNT-1)
       read2.close() # required
       read3.close() # required
-      os.remove('F1.txt')
-      os.remove('F2.txt')
-      os.remove('F3.txt')
-      os.remove('F4.txt')
-      os.system("echo 'comm -13 <(sort -u PID.txt) <(sort -u PPID.txt) > SUSPECT.txt' > patch.sh")
+      os.remove('F1.tmp')
+      os.remove('F2.tmp')
+      os.remove('F3.tmp')
+      os.remove('F4.tmp')
+      os.system("echo 'comm -13 <(sort -u PID.tmp) <(sort -u PPID.tmp) > SUSPECT.tmp' > patch.sh")
       os.system("bash patch.sh")
-      os.system("sort -n SUSPECT.txt > SUSPECT2.txt")
-      print("[2].\tAnalyse of these processes reveals that:")
-      with open('SUSPECT2.txt') as read5:
+      os.system("sort -n SUSPECT.tmp > SUSPECT2.tmp")
+      print("[+] Analyse of these processes reveals that:")
+      with open('SUSPECT2.tmp') as read5:
          line = read5.readline().rstrip('\n')
          while line != "":
             if line != "0":
                print("\tParent process PPID",line,"does not have a process spawn! and should be investigated further...")
             line = read5.readline().strip('\n')
       os.remove("patch.sh")
-      os.remove("PID.txt")
-      os.remove("PPID.txt")
-      os.remove("NUM.txt")
-      os.remove("SUSPECT.txt")
-      os.remove("SUSPECT2.txt")
       prompt()
 
 # ------------------------------------------------------------------------------------- 
@@ -775,6 +759,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '13':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " psxview | more")
       prompt()
 
@@ -787,6 +772,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '14':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " svcscan | more")
       prompt()
 
@@ -799,6 +785,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '15':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " cmdscan")
       prompt()
 
@@ -811,6 +798,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '16':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " consoles")
       prompt()
 
@@ -823,6 +811,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '17':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " cmdline")
       prompt()
 
@@ -835,6 +824,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '18':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " userassist")
       prompt()
 
@@ -847,6 +837,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '19':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " hivelist")
       prompt()
 
@@ -860,8 +851,9 @@ while True:
 
    if selection == '20':
       if (SAM == "0x0000000000000000"):
-         print(colored("SAM Hive missing - it is not possible to extract data...",colour2))
+         print("[-] SAM Hive missing - it is not possible to extract data...")
       else:
+         message()
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + SAM + " | more")
       prompt()
 
@@ -875,8 +867,9 @@ while True:
 
    if selection =='21':
       if (SEC == "0x0000000000000000"):
-         print(colored("SECURITY Hive missing - it is not possible to extract data...",colour2))
+         print("[-] SECURITY Hive missing - it is not possible to extract data...")
       else:
+         message()
          os.system(volpath + " -f " + fileName + PRO + " hivedump -o " + SEC + " | more")
       prompt()
 
@@ -890,8 +883,9 @@ while True:
 
    if selection =='22':
       if (COM == "0x0000000000000000"):
-         print(colored("COMPONENTS Hive missing - it is not possible to extract data...",colour2))
+         print("[-] COMPONENTS Hive missing - it is not possible to extract data...")
       else:
+         message()
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + COM + " | more")
       prompt()
 
@@ -905,8 +899,9 @@ while True:
 
    if selection =='23':
       if (SOF == "0x0000000000000000"):
-         print(colored("SOFTWARE Hive missing - it is not possible to extract data...",colour2))
+         print("[-] SOFTWARE Hive missing - it is not possible to extract data...")
       else:
+         message()
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + SOF + " | more")
       prompt()
 
@@ -920,8 +915,9 @@ while True:
 
    if selection =='24':
       if (SYS == "0x0000000000000000"):
-         print(colored("SYSTEM Hive missing - it is not possible to extract data...",colour2))
+         print("[-] SYSTEM Hive missing - it is not possible to extract data...")
       else:
+         message()
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + SYS + " | more")
       prompt()    
 
@@ -935,8 +931,9 @@ while True:
 
    if selection =='25':
       if (NTU == "0x0000000000000000"):
-         print(colored("NTUSER (Administrator) Hive missing - it is not possible to extract data...",colour2))
+         print("[-] NTUSER (Administrator) Hive missing - it is not possible to extract data...")
       else:
+         message()
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + NTU + " | more")
       prompt() 
 
@@ -950,8 +947,9 @@ while True:
 
    if selection =='26':
       if (HRD == "0x0000000000000000"):
-         print(colored("HARDWARE Hive missing - it is not possible to extract data...",colour2))
+         print("[-] HARDWARE Hive missing - it is not possible to extract data...")
       else:
+         message()
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + HRD + " | more")
       prompt()     
 
@@ -965,8 +963,9 @@ while True:
 
    if selection =='27':
       if (DEF == "0x0000000000000000"):
-         print(colored("DEFUALT Hive missing - it is not possible to extract data...",colour2))
+         print("[-] DEFUALT Hive missing - it is not possible to extract data...")
       else:
+         message()
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + DEF + " | more")
       prompt()   
 
@@ -980,8 +979,9 @@ while True:
 
    if selection =='28':
       if (BCD == "0x0000000000000000"):
-         print(colored("BOOT BCD Hive missing - it is not possible to extract data...",colour2))
+         print("[-] BOOT BCD Hive missing - it is not possible to extract data...")
       else:
+         message()
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + BCD + " | more")
       prompt()   
 
@@ -995,8 +995,9 @@ while True:
 
    if selection =='29':
       if (CUS == "0x0000000000000000"):
-         print(colored(C + " missing - it is not possible to extract data...",colour2))
+         print("[-] " + CNM + " Hive missing - it is not possible to extract data...")
       else:
+         message()
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + CUS + " | more")
       prompt()  
 
@@ -1009,9 +1010,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '30':
-      temp = input("Please enter SAM value: ")
-      if temp != "":
-         SAM = spacePadding(temp, COL2)
+      value = input("Please enter SAM value: ")
+      if value != "":
+         SAM = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1022,9 +1023,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '31':
-      temp = input("Please enter SECURITY value: ")
-      if temp != "":
-         SEC = spacePadding(temp, COL2)
+      value = input("Please enter SECURITY value: ")
+      if value != "":
+         SEC = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1035,9 +1036,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '32':
-      temp = input("Please enter COMPENENTS value: ")
-      if temp != "":
-         COM = spacePadding(temp, COL2)
+      value = input("Please enter COMPENENTS value: ")
+      if value != "":
+         COM = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1048,9 +1049,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '33':
-      temp = input("Please enter SOFTWARE value: ")
-      if temp != "":
-         SOF = spacePadding(temp, COL2)
+      value = input("Please enter SOFTWARE value: ")
+      if value != "":
+         SOF = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1061,9 +1062,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '34':
-      temp = input("Please enter SYSTEM value: ")
-      if temp != "":
-         SYS = spacePadding(temp, COL2)
+      value = input("Please enter SYSTEM value: ")
+      if value != "":
+         SYS = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1074,9 +1075,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '35':
-      temp = input("Please enter NTUSER value: ")
-      if temp != "":
-         NTU = spacePadding(temp, COL2)
+      value = input("Please enter NTUSER value: ")
+      if value != "":
+         NTU = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1087,9 +1088,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '36':
-      temp = input("Please enter HARDWARE value: ")
-      if temp != "":
-         HRD = spacePadding(temp, COL2)
+      value = input("Please enter HARDWARE value: ")
+      if value != "":
+         HRD = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1100,9 +1101,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '37':
-      temp = input("Please enter DEFUALT value: ")
-      if temp != "":
-         DEF = spacePadding(temp, COL2)
+      value = input("Please enter DEFUALT value: ")
+      if value != "":
+         DEF = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1113,9 +1114,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '38':
-      temp = input("Please enter BOOT BCD value: ")
-      if temp != "":
-         BCD = spacePadding(temp, COL2)
+      value = input("Please enter BOOT BCD value: ")
+      if value != "":
+         BCD = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1126,9 +1127,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '39':
-      temp = input("Please enter " + C.rstrip() + " value: ")
-      if temp != "":
-         CUS = spacePadding(temp, COL2)
+      value = input("Please enter " + CNM.rstrip() + " value: ")
+      if value != "":
+         CUS = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1141,6 +1142,7 @@ while True:
    if selection =='40':
       KEY = input("Please enter the key value in quotes: ")
       if KEY != "":
+         message()
          os.system(volpath + " -f '" + fileName + "'" + PRO + " printkey -K " + KEY)
          prompt()
 
@@ -1153,6 +1155,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='41':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " shellbags | more")
       prompt()
 
@@ -1165,6 +1168,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='42':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " shimcache | more")
       prompt()
 
@@ -1177,6 +1181,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='43':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " connscan | more")
       prompt() 
 
@@ -1189,6 +1194,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='44':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " netscan | more")
       prompt() 
 
@@ -1201,6 +1207,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='45':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " sockets | more")
       prompt() 
 
@@ -1213,6 +1220,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='46':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " mutantscan | more")
       prompt()
 
@@ -1225,6 +1233,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='47':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " dlllist | more")
       prompt()
 
@@ -1237,6 +1246,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='48':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " sessions | more")
       prompt()
 
@@ -1249,7 +1259,9 @@ while True:
 # ------------------------------------------------------------------------------------- 
    
    if selection =='49':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " pslist | grep " + PRM)
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " filescan | grep " + PRM)
       prompt()
 
@@ -1262,6 +1274,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='50':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " deskscan | more")
       prompt()
 
@@ -1274,6 +1287,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='51':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " clipboard | more")
       prompt()
 
@@ -1286,6 +1300,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='52':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " notepad | more")
       prompt()
 
@@ -1298,6 +1313,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='53':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " iehistory | more")
       prompt()
 
@@ -1310,6 +1326,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='54':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " filescan | more")
       prompt()
 
@@ -1322,6 +1339,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='55':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " symlinkscan | more")
       prompt()
 
@@ -1334,7 +1352,9 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='56':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " devicetree | more")
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " driverscan | more")
       prompt()
 
@@ -1347,6 +1367,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='57':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " getsids | more")
       prompt()
 
@@ -1359,6 +1380,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='58':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " envars | more")
       prompt()
 
@@ -1371,8 +1393,11 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='59':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " truecryptsummary | more")
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " truecryptmaster | more")
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " truecryptpassphrase | more")
       prompt()
 
@@ -1385,6 +1410,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='60':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " malfind -p " + PI1 + " -D " + DIR)
       prompt()
 
@@ -1397,6 +1423,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='61':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " vaddump -p " + PI1 + " --dump-dir " + DIR)
       prompt()
 
@@ -1409,6 +1436,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='62':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " procdump  -p " + PI1 + " --dump-dir " + DIR)
       prompt()
 
@@ -1421,6 +1449,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='63':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " memdump  -p " + PI1 + " --dump-dir " + DIR)
       prompt()
 
@@ -1433,6 +1462,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='64':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " dumpfiles -Q " + OFF + " -D " + DIR + " -u -n")
       prompt()
 
@@ -1445,9 +1475,10 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='65':
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " timeliner --output-file timeline.txt")
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " shellbags --output-file time.txt")
-      print("A timeline has sucessfully been exported...")
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " timeliner --output-file='" + DIR.rstrip(" ") + "/timeline.txt'")
+      print(""); message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " shellbags --output-file='" + DIR.rstrip(" ") + "/time.txt'")
       prompt()
 
 #------------------------------------------------------------------------------------- 
@@ -1459,6 +1490,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='66':
+      message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " -D " + DIR + " screenshot")
       prompt()
 
@@ -1471,12 +1503,12 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='67':
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " mftparser --output-file mfttable.txt")
-      print("The MFT has sucessfully been exported to mfttable.txt...")
-      os.system("strings mfttable.txt | grep '0000000000:' > count.txt")
-      fileNum = sum(1 for line in open('count.txt'))
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " mftparser --output-file=" + DIR.rstrip(" ") + "/mfttable.txt")     
+      message()
+      os.system("strings " + DIR.rstrip(" ") + "/mfttable.txt | grep '0000000000:' > count.tmp")
+      fileNum = sum(1 for line in open('count.tmp'))
       print("The table contains " + str(fileNum) + " local files < 1024 bytes in length.")
-      os.remove("count.txt")
       prompt()
 
 # ------------------------------------------------------------------------------------- 
@@ -1488,6 +1520,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='68':
+      message()
       os.system("bulk_extractor -x all -e net -o " + DIR + " '" + fileName + "'")
       prompt()
 
@@ -1500,7 +1533,18 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection =='69':
+      message()
       os.system("bulk_extractor -o " + DIR + " '" + fileName + "'")
       prompt()
+      
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : Windows Forensics
+# Details : Menu option selected - Exit the program.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
 
+   if selection =='79':
+      exit(1)
 #Eof...
