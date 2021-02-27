@@ -69,7 +69,7 @@ def dispBanner(variable):
    return
 
 def prompt():
-   input("\n[*] Press ENTER to continue...")
+   input("\n[?] Press ENTER to continue...")
    return
 
 def message():
@@ -88,7 +88,7 @@ COL1 = 19
 COL2 = 18
 COL3 = 26
 COL4 = 32
-COL5 = 31
+COL5 = 32
 MAXX = 11
 
 PRO = "UNSELECTED         "
@@ -110,7 +110,7 @@ HRD = "0x0000000000000000"
 DEF = "0x0000000000000000"
 BCD = "0x0000000000000000"
 CUS = "0x0000000000000000"
-CNM = "CUSTOM   "
+J   = "CUSTOM   "
 HST = "UNKNOWN            "
 PRC = "0                  "
 SVP = "0                  "
@@ -185,7 +185,7 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[0].upper(),colour1), end=' ')
    print(colored(PA[0],colour1), end=' ')
-   print('\u2551' + " "*31 + '\u2551')
+   print('\u2551' + " "*COL4 + '\u2551')
    
    print('\u2551' + " HOST NAME    " + '\u2551', end=' ')
    if HST == "NOT FOUND          ":
@@ -200,7 +200,7 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[1].upper(),colour1), end=' ')
    print(colored(PA[1],colour1), end=' ')
-   print('\u2551' + " "*31 + '\u2551')
+   print('\u2551' + " "*COL4 + '\u2551')
    
    print('\u2551' + " SERVICE PACK " + '\u2551', end=' ')
    if SVP == "0                  ":
@@ -215,7 +215,7 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[2].upper(),colour1), end=' ')
    print(colored(PA[2],colour1), end=' ')
-   print('\u2551' + " "*31 + '\u2551')
+   print('\u2551' + " "*COL4 + '\u2551')
    
    print('\u2551' + " TIME STAMP   " + '\u2551', end=' ')
    if DA2 == "NOT FOUND          ":
@@ -230,7 +230,7 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[3].upper(),colour1), end=' ')
    print(colored(PA[3],colour1), end=' ')
-   print('\u2551' + " "*31 + '\u2551')
+   print('\u2551' + " "*COL4 + '\u2551')
    
    print('\u2551' + " LOCAL IP     " + '\u2551', end=' ')
    if HIP == "000.000.000.000    ":
@@ -245,7 +245,7 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[4].upper(),colour1), end=' ')
    print(colored(PA[4],colour1), end=' ')
-   print('\u2551' + " "*31 + '\u2551')
+   print('\u2551' + " "*COL4 + '\u2551')
    
    print('\u2551' + " LOCAL PORT   " + '\u2551', end=' ')
    if POR == "000                ":
@@ -260,13 +260,13 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[5].upper(),colour1), end=' ')
    print(colored(PA[5],colour1), end=' ')
-   print('\u2551' + " "*31 + '\u2551')
+   print('\u2551' + " "*COL4 + '\u2551')
    
    print('\u2551' + " PID VALUE    " + '\u2551', end=' ')
-   if PI1 == "0                  ":
+   if PI1[:2] == "0 ":
       print(colored(PI1[:COL1],colour2), end=' ')
    else:
-      print(colored(PI1[:COL1],'yellow'), end=' ')
+      print(colored(PI1[:COL1],colour1), end=' ')
    print('\u2551' + " HARDWARE   " + '\u2551', end=' ')
    if HRD == "0x0000000000000000":
       print(colored(HRD,colour2), end=' ')
@@ -275,13 +275,13 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[6].upper(),colour1), end=' ')
    print(colored(PA[6],colour1), end=' ')
-   print('\u2551' + " "*31 + '\u2551')
+   print('\u2551' + " "*COL4 + '\u2551')
    
    print('\u2551' + " OFFSET VALUE " + '\u2551', end=' ')
-   if OFF == "0                  ":
+   if OFF[:2] == "0 ":
       print(colored(OFF[:COL1],colour2), end=' ')
    else:
-      print(colored(OFF[:COL1],'yellow'), end=' ')
+      print(colored(OFF[:COL1],colour1), end=' ')
    print('\u2551' + " DEFUALT    " + '\u2551', end=' ')
    if DEF == "0x0000000000000000":
       print(colored(DEF,colour2), end=' ')
@@ -290,13 +290,13 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[7].upper(),colour1), end=' ')
    print(colored(PA[7],colour1), end=' ')
-   print('\u2551' + " "*31 + '\u2551')
+   print('\u2551' + " "*COL4 + '\u2551')
    
    print('\u2551' + " PARAMETER    " + '\u2551', end=' ')
    if PRM == "UNSELECTED         ":
       print(colored(PRM[:COL1],colour2), end=' ')
    else:
-      print(colored(PRM[:COL1],'yellow'), end=' ')
+      print(colored(PRM[:COL1],colour1), end=' ')
    print('\u2551' + " BOOT BCD   " + '\u2551', end=' ')
    if BCD == "0x0000000000000000":
       print(colored(BCD,colour2), end=' ')
@@ -305,59 +305,59 @@ def Display():
    print('\u2551', end=' ')
    print(colored(US[8].upper(),colour1), end=' ')
    print(colored(PA[8],colour1), end=' ')
-   print('\u2551' + " "*31 + '\u2551')
+   print('\u2551' + " "*COL4 + '\u2551')
    
    print('\u2551' + " DIRECTORY    " + '\u2551', end=' ')
    if DIR == "OUTCOME            ":
       print(colored(DIR[:COL1],colour2), end=' ')
    else:
-      print(colored(DIR[:COL1],'yellow'), end=' ')
-   print('\u2551' + " " + CNM[:9] + "  " + '\u2551', end=' ')
+      print(colored(DIR[:COL1],colour1), end=' ')
+   print('\u2551' + " " + J[:9] + "  " + '\u2551', end=' ')
    if CUS == "0x0000000000000000":
       print(colored(CUS,colour2), end=' ')
    else:
       print(colored(CUS,colour1), end=' ')
    print('\u2551', end=' ')
-   if US[10] != "":						# MAXX user threshold reached.
+   if US[10] != "":
       print(colored(US[9].upper(),'red'), end=' ')
       print(colored(PA[9],'red'), end=' ')
    else:
       print(colored(US[9].upper(),colour1), end=' ')
       print(colored(PA[9],colour1), end=' ')   
-   print('\u2551' + " "*31 + '\u2551')
+   print('\u2551' + " "*COL4 + '\u2551')
 
    print('\u2560' + ('\u2550')*14 + '\u2569'+ ('\u2550')*21  + '\u2569' + ('\u2550')*12 + '\u2569' + ('\u2550')*20 + '\u2569' + ('\u2550')*61 + '\u2569' + ('\u2550')*COL5 + '\u2563')
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 
    print('\u2551', end=' ')
-   print(" "*7, end=' ')
+   print(" "*15, end=' ')
    print("SETTINGS", end=' ')
-   print(" "*12, end=' ')
-   print("IDENTIFY", end=' ')
-   print(" "*17, end=' ')
+   print(" "*22, end=' ')
    print("ANALYSE", end=' ')
+   print(" "*7, end=' ')
+   print("IDENTIFY", end=' ')
    print(" "*24, end=' ')
    print("INVESTIGATE", end=' ')
-   print(" "*16, end=' ')
+   print(" "*13, end=' ')
    print("EXTRACT", end=' ')
-   print(" "*35, end=' ')
+   print(" "*31, end=' ')
    print('\u2551')
 
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 
-   print('\u2560' + ('\u2550'*164) + '\u2563')
-   print('\u2551' + "(0) Re/Set PROFILE   (10) Users/Passwords   (20) SAM        (30) Re/Set SAM        (40) PrintKey         (50) Desktop   (60) Malfind PID DIR  (70) RESERVED" + " "*9 + '\u2551')
-   print('\u2551' + "(1) Re/Set PID       (11) Default Password  (21) SECURITY   (31) Re/Set SECURITY   (41) ShellBags        (51) Clipboard (61) Vaddump PID DIR  (71) RESERVED" + " "*9 + '\u2551')
-   print('\u2551' + "(2) Re/Set OFFSET    (12) Running Processes (22) COMPONENTS (32) Re/Set COMPONENTS (42) SlimCache Data   (52) Notepad   (62) Prodump PID DIR  (72) RESERVED" + " "*9 + '\u2551')
-   print('\u2551' + "(3) Re/Set PARAMETER (13) Hidden Processes  (23) SOFTWARE   (33) Re/Set SOFTWARE   (43) Connections Scan (53) Explorer  (63) Memdump PID DIR  (73) RESERVED" + " "*9 + '\u2551')
-   print('\u2551' + "(4) Re/Set DIRECTORY (14) Running Services  (24) SYSTEM     (34) Re/Set SYSTEM     (44) Network Scan     (54) Files     (64) PARAMETER OFFSET (74) RESERVED" + " "*9 + '\u2551')
-   print('\u2551' + "(5) Re/Set IP        (15) Command History   (25) NTUSER     (35) Re/Set NTUSER     (45) Socket Scan      (55) SymLinks  (65) Timelines        (75) RESERVED" + " "*9 + '\u2551')
-   print('\u2551' + "(6) Re/Set PORT      (16) Console History   (26) HARDWARE   (36) Re/Set HARDWARE   (46) Mutant Scan      (56) Drivers   (66) Screen Shots     (76) RESERVED" + " "*9 + '\u2551')
-   print('\u2551' + "(7) Re/Set "+CNM[:9]+" (17) Cmdline Arguments (27) DEFUALT    (37) Re/Set DEFUALT    (47) DLL List         (57) SIDs      (67) MFT Table        (77) RESERVED" + " "*9 + '\u2551')
-   print('\u2551' + "(8) Load Filename    (18) User Assist Keys  (28) BOOT BCD   (38) Re/Set BOOT BCD   (48) Sessions         (58) EnvVars   (68) PCAP File        (78) RESERVED" + " "*9 + '\u2551')
-   print('\u2551' + "(9) RESERVED         (19) Hive List         (29) "+CNM[:9]+"  (39) Re/Set "+CNM[:9]+"  (49) PARAMETER Search (59) TrueCrypt (69) Bulk Extract     (79) Exit Program     " + '\u2551')
-   print('\u255A' + ('\u2550')*164 + '\u255D')
+   print('\u2560' + ('\u2550'*165) + '\u2563')
+   print('\u2551' + "(0) Re/Set PROFILE   (10) Re/Set SAM        (20) SAM        (30) Users/Passwords   (40) PrintKey         (50) Desktop   (60) Malfind PID DIR  (70) " + " "*18 + '\u2551')
+   print('\u2551' + "(1) Re/Set HOST NAME (11) Re/Set SECURITY   (21) SECURITY   (31) Default Password  (41) ShellBags        (51) Clipboard (61) Vaddump PID DIR  (71) " + " "*18 + '\u2551')
+   print('\u2551' + "(2) Re/Set SERV PACK (12) Re/Set COMPONENTS (22) COMPONENTS (32) Running Processes (42) SlimCache Data   (52) Notepad   (62) Prodump PID DIR  (72) " + " "*18 + '\u2551')
+   print('\u2551' + "(3) Re/Set TIMESTAMP (13) Re/Set SOFTWARE   (23) SOFTWARE   (33) Hidden Processes  (43) Connections Scan (53) Explorer  (63) Memdump PID DIR  (73) " + " "*18 + '\u2551')
+   print('\u2551' + "(4) Re/Set LOCAL  IP (14) Re/Set SYSTEM     (24) SYSTEM     (34) Running Services  (44) Network Scan     (54) Files     (64) PARAMETER OFFSET (74) " + " "*18 + '\u2551')
+   print('\u2551' + "(5) Re/Set LOCALPORT (15) Re/Set NTUSER     (25) NTUSER     (35) Command History   (45) Socket Scan      (55) SymLinks  (65) Timelines        (75) " + " "*18 + '\u2551')
+   print('\u2551' + "(6) Re/Set PID VALUE (16) Re/Set HARDWARE   (26) HARDWARE   (36) Console History   (46) Mutant Scan      (56) Drivers   (66) Screen Shots     (76) " + " "*18 + '\u2551')
+   print('\u2551' + "(7) Re/Set OFF   SET (17) Re/Set DEFUALT    (27) DEFUALT    (37) Cmdline Arguments (47) DLL List         (57) SIDs      (67) MFT Table        (77) " + " "*18 + '\u2551')
+   print('\u2551' + "(8) Re/Set PARAMETER (18) Re/Set BOOT BCD   (28) BOOT BCD   (38) User Assist Keys  (48) Sessions         (58) EnvVars   (68) PCAP File        (78) Load Memory File  " + '\u2551')
+   print('\u2551' + "(9) Re/Set DIRECTORY (19) Re/Set "+J[:9]+"  (29) "+J[:9]+"  (39) Hive list         (49) PARAMETER Search (59) TrueCrypt (69) Bulk Extract     (79) Exit Program      " + '\u2551')
+   print('\u255A' + ('\u2550')*165 + '\u255D')
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -397,11 +397,78 @@ while True:
                MATCH = 1  
       if MATCH == 0:
          PRO = BAK
+         print("[-] Profile not found...")
       else:
          PRO = " --profile " + PRO
-         PR2 = PRO.replace(" --profile ","")
+         PR2 = PRO.replace(" --profile ","") 
          PR2 = spacePadding(PR2, COL1)
+      prompt()
+         
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                           
+# CONTRACT: GitHub
+# Version : Windows Forensics
+# Details : Menu option selected - Allows the user to change the HOST name.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
 
+   if selection == '1':
+      value = input("Please enter HOST name: ")
+      if value != '':
+         HST = spacePadding(value, COL1)
+         
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                           
+# CONTRACT: GitHub
+# Version : Windows Forensics
+# Details : Menu option selected - Allows the user to change the SERVICE PACK version. 
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '2':
+      value = input("Please enter SERVICE PACK name: ")
+      if value != '':
+         SVP = spacePadding(value, COL1)
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                           
+# CONTRACT: GitHub
+# Version : Windows Forensics
+# Details : Menu option selected - Allows the user to change the TIME STAMP. 
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '3':
+      value = input("Please enter TIME STAMP: ")
+      if value != '':
+         DA2 = spacePadding(value, COL1)
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                           
+# CONTRACT: GitHub
+# Version : Windows Forensics
+# Details : Menu option selected - Allows the user to set the host IP value.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '4':
+      value = input("Please enter IP value: ")
+      if value != '':
+         HIP = spacePadding(value, COL1)
+
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                           
+# CONTRACT: GitHub
+# Version : Windows Forensics
+# Details : Menu option selected - Allows the user to Set host PORT value.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '5':
+      value = input("Please enter PORT value: ")
+      if value != '':
+         POR = spacePadding(value, COL1)
+         
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
@@ -410,11 +477,11 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '1':
+   if selection == '6':
       value = input("[?] Please enter PID value: ")
       if value != '':
          PI1 = spacePadding(value, COL1)
-
+         
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
@@ -423,11 +490,11 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '2':
+   if selection == '7':
       value = input("[?] Please enter OFFSET value: ")
       if value != '':
          OFF = spacePadding(value, COL1)
-
+         
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
@@ -436,11 +503,11 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '3':
+   if selection == '8':
       value = input("Please enter parameter value: ")
       if value != '':
          PRM = spacePadding(value,COL1)
-
+      
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
@@ -449,7 +516,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '4':
+   if selection == '9':
       directory = input("Please enter new working directory value: ")
       if os.path.exists(directory):
          print("Directory already Exists....")
@@ -460,386 +527,136 @@ while True:
             DIR = spacePadding(DIR, COL1)
             print("Working directory changed...")
       prompt()
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                           
-# CONTRACT: GitHub
-# Version : Windows Forensics
-# Details : Menu option selected - Allows the user to set the host IP value.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection == '5':
-      value = input("Please enter IP value: ")
-      if value != '':
-         HIP = spacePadding(value, COL1)
-#         MAN1 = 1
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                           
-# CONTRACT: GitHub
-# Version : Windows Forensics
-# Details : Menu option selected - Allows the user to Set host PORT value.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection == '6':
-      value = input("Please enter PORT value: ")
-      if value != '':
-         POR = spacePadding(value, COL1)
-#         MAN2 = 1
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                           
-# CONTRACT: GitHub
-# Version : Windows Forensics
-# Details : Menu option selected - Allows the user to name the 'C'USTOM hive.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection == '7':
-      value = input("Please enter HIVE name: ")
-      if value != '':
-         C = spacePadding(value, 9)
-         
+      
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Select file & extract host variables.
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection == '8':
-      bak = fileName
-      fileName = input("[?] Please enter filename: ")
-      if fileName == "":
-         fileName = bak
-      if os.path.exists(fileName):
-         fileName = spacePadding(fileName,11)
-         profiles = "NOT FOUND"
-         message()
-         os.system(volpath + " imageinfo -f '" + fileName + "' --output-file=image.log")
-         with open("image.log") as search:
-            for line in search:
-               if "Suggested Profile(s) :" in line:
-                  profiles = line
-               if "Number of Processors" in line:
-                  PRC = line
-               if "Image Type (Service Pack) :" in line:
-                  SVP = line
-               if "Image date and time :" in line:
-                  DA1 = line
-               if "Image local date and time :" in line:
-                  DA2 = line
-
-         if profiles == "NOT FOUND":
-            print("ERROR #001 - A windows profile was not found, see 'image.log' for further information.")
-            exit(True)
-         
-         profiles = profiles.replace("Suggested Profile(s) :","")
-         profiles = profiles.replace(" ","")
-         profiles = profiles.split(",")
-         PRO = " --profile " + profiles[0]
-         PR2 = profiles[0]
-         if (PR2[:1] != "W") and (PR2[:1] != "V"):
-            print("ERROR #002- A windows profile was not found, see 'image.log' for further information.")
-            exit(True)
-         else:
-            PR2 = spacePadding(PR2,COL1)
-            os.remove("image.log")
-   
-         PRC = PRC.replace("Number of Processors :","")
-         PRC = PRC.replace(" ","")
-         PRC = PRC.replace("\n","")
-         PRC = spacePadding(PRC, COL3)
-
-         SVP = SVP.replace("Image Type (Service Pack) :","")
-         SVP = SVP.replace(" ","")
-         SVP = SVP.replace("\n","")
-         SVP = spacePadding(SVP, COL1)
-
-         DA1 = DA1.replace("Image date and time :","")
-         DA1 = DA1.lstrip() 
-         DA1 = DA1.rstrip("\n")
-         a,b,c = DA1.split()
-         DA1 = a + " @ " + b
-
-         DA2 = DA2.replace("Image local date and time :","")
-         DA2 = DA2.lstrip()
-         DA2 = DA2.rstrip("\n")
-         a,b,c = DA2.split()
-         DA2 = a + " " + b
-         DA2 = spacePadding(DA2, COL1)
-
-         print(""); message()
-         os.system(volpath + " -f '" + fileName + "'" + PRO + " hivelist --output-file=hivelist.tmp")
-         with open("hivelist.tmp") as search:
-            for line in search:
-              if "\sam" in line.lower():
-                 SAM = line.split(None, 1)[0]
-                 SAM = spacePadding(SAM, COL2)
-              if "\security" in line.lower():
-                 SEC = line.split(None, 1)[0]
-                 SEC = spacePadding(SEC, COL2)
-              if "\software" in line.lower():
-                 SOF = line.split(None, 1)[0]
-                 SOF = spacePadding(SOF, COL2)
-              if "\system" in line.lower():
-                 SYS = line.split(None, 1)[0]
-                 SYS = spacePadding(SYS, COL2)
-              if "\components" in line.lower():
-                 COM = line.split(None, 1)[0]
-                 COM = spacePadding(SYS, COL2)
-              if "\\administrator\\ntuser.dat" in line.lower(): # \Administrator\NTUSER.DAT as there are usually multiple NTUSERS files. 
-                 NTU = line.split(None, 1)[0]
-                 NTU = spacePadding(SYS, COL2)
-              if "\hardware" in line.lower():
-                 HRD = line.split(None,1)[0]
-                 HRD = spacePadding(HRD, COL2)
-              if "\default" in line.lower():
-                 DEF = line.split(None,1)[0]
-                 DEF = spacePadding(DEF, COL2)
-              if "\\bcd" in line.lower():
-                 BCD = line.split(None,1)[0]
-                 BCD = spacePadding(BCD, COL2)
-
-         print(""); message()
-         os.system(volpath + " -f '" + fileName + "'" + PRO + " printkey -o " + SYS + " -K 'ControlSet001\Control\ComputerName\ComputerName' --output-file=host.tmp")
-         with open("host.tmp") as search:
-            wordlist = (list(search)[-1])
-            wordlist = wordlist.split()
-            HST = str(wordlist[-1])
-         if HST == "searched":					# Looks like a host name has not been found.
-            HST = "NOT FOUND          "				# So set a defualt value.
-         else:
-            HST = HST.encode(encoding='UTF-8',errors='strict')	# Deal with a encoding issue with hostname.
-            HST = str(HST)
-            HST = HST.replace("b'","")
-            HST = HST.replace("\\x00'","")
-            HST = spacePadding(HST, COL1)
-
-         print(""); message()
-         os.system(volpath + " -f '" + fileName + "'" + PRO + " hashdump -y " + SYS + " -s " + SAM + " --output-file=hash.tmp")
-         with open("hash.tmp") as search:
-            count = 0
-            for line in search:
-               if line != "":
-                  catch = line.replace(":"," ")
-                  catch2 = catch.split()
-                  catch3 = catch2[3]
-                  PA[count] = catch3
-                  US[count] = catch2[0][:COL3-1] + " "
-                  US[count] = spacePadding(US[count], COL3)
-                  count = count + 1				# 0 - 9 Users
-               if count > MAXX: count = MAXX			# 10 - Maximum threshold reached for user display.
-        
-         print(""); message()
-         os.system(volpath + " -f '" + fileName + "'" + PRO + " connscan --output-file=connscan.tmp")
-         os.system("sed '1d' connscan.tmp > conn1.tmp")
-         os.system("sed '1d' conn1.tmp > connscan.tmp")
-         os.system("cut -f 2 -d ' ' connscan.tmp > conn1.tmp")
-         os.system("strings conn1.tmp | sort | uniq -c | sort -nr > connscan.tmp")
-         os.system("sed '1d' conn1.tmp > connscan.tmp")
-         getip = linecache.getline('connscan.tmp', 1)
-         if getip != "":
-            getip = getip.split()
-            getip = getip[0].replace(':',' ')  
-            HIP = getip.rsplit(' ', 1)[0]
-            POR = getip.rsplit(' ', 1)[1]
-            HIP = spacePadding(HIP, COL1)
-            POR = spacePadding(POR, COL1)
-      else:
-         print("[-] The specified file was not found...")
-      prompt()
-            
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : Windows Forensics
-# Details : Menu option selected - 
-# Modified: N/A
-# -------------------------------------------------------------------------------------
-
-   if selection == '9':
-      prompt()
-
-# ------------------------------------------------------------------------------------- 
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : Windows Forensics
-# Details : Menu option selected - Dumps the SAM file hashes for export to hashcat.
+# Details : Menu option selected - Change SAM via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '10':
-      if SAM == "0x0000000000000000":
-         print(colored("[-] SAM HIVE missing - its not possible to extract the hashes...",colour2))
-      else:
-         message()
-         os.system(volpath + " -f '" + fileName + "'" + PRO + " hashdump -y " + SYS + " -s " + SAM)
-      prompt()
+      value = input("Please enter SAM value: ")
+      if value != "":
+         SAM = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Display any LSA secrets
+# Details : Menu option selected - Change SECURITY via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '11':
-      message()
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " lsadump | more")
-      prompt()
+      value = input("Please enter SECURITY value: ")
+      if value != "":
+         SEC = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Shows running processes and provides a brief analyse.
+# Details : Menu option selected - Change COMPENENTS via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '12':
-      message()
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " psscan | more")
-      message()
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " psscan --output greptext > F1.tmp")
-      os.system("tail -n +2 F1.tmp > F2.tmp")
-      os.system("sed -i 's/>//g' F2.tmp")
-      with open("F2.tmp") as read1:
-         for line in read1:
-            for word in line.split('|'):
-                output = subprocess.check_output("echo " + word + " >> F3.tmp", shell=True)
-      os.system("tail -n +2 F3.tmp > F4.tmp")
-      os.system("wc -l F2.tmp > NUM.tmp")
-      NUMLINES = open("NUM.tmp").readline().replace(' F2.tmp','') 
-      COUNT = int(NUMLINES)
-      print("\n[+] There were",COUNT,"processes running at the time of the memory dump.\n")
-      read2 = open('PID.tmp','w')
-      read3 = open('PPID.tmp','w')
-      with open('F4.tmp') as read4:
-         while COUNT > 0:
-            A = read4.readline()
-            B = read4.readline() # Executable name
-            C = read4.readline().rstrip('\n') # PI1
-            print(C, file=read2)
-            D = read4.readline().rstrip('\n') # OFF             
-            print(D, file=read3)		
-            E = read4.readline()
-            G = read4.readline()
-            H = read4.readline() # blank
-            COUNT = (COUNT-1)
-      read2.close() # required
-      read3.close() # required
-      os.remove('F1.tmp')
-      os.remove('F2.tmp')
-      os.remove('F3.tmp')
-      os.remove('F4.tmp')
-      os.system("echo 'comm -13 <(sort -u PID.tmp) <(sort -u PPID.tmp) > SUSPECT.tmp' > patch.sh")
-      os.system("bash patch.sh")
-      os.system("sort -n SUSPECT.tmp > SUSPECT2.tmp")
-      print("[+] Analyse of these processes reveals that:")
-      with open('SUSPECT2.tmp') as read5:
-         line = read5.readline().rstrip('\n')
-         while line != "":
-            if line != "0":
-               print("\tParent process PPID",line,"does not have a process spawn! and should be investigated further...")
-            line = read5.readline().strip('\n')
-      os.remove("patch.sh")
-      prompt()
+      value = input("Please enter COMPENENTS value: ")
+      if value != "":
+         COM = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Shows hidden processes.
+# Details : Menu option selected - Change SOFTWARE via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '13':
-      message()
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " psxview | more")
-      prompt()
+      value = input("Please enter SOFTWARE value: ")
+      if value != "":
+         SOF = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Shows running services.
+# Details : Menu option selected - Change SYSTEM via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '14':
-      message()
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " svcscan | more")
-      prompt()
+      value = input("Please enter SYSTEM value: ")
+      if value != "":
+         SYS = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Last commands run.
+# Details : Menu option selected - Change NTUSER via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '15':
-      message()
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " cmdscan")
-      prompt()
+      value = input("Please enter NTUSER value: ")
+      if value != "":
+         NTU = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Last commands run.
+# Details : Menu option selected - Change HARDWARE via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '16':
-      message()
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " consoles")
-      prompt()
+      value = input("Please enter HARDWARE value: ")
+      if value != "":
+         HRD = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Last commands run.
+# Details : Menu option selected - Change DEFAULT via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '17':
-      message()
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " cmdline")
-      prompt()
+      value = input("Please enter DEFUALT value: ")
+      if value != "":
+         DEF = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Show userassist key values.
+# Details : Menu option selected - Change BOOT BCD via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '18':
-      message()
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " userassist")
-      prompt()
+      value = input("Please enter BOOT BCD value: ")
+      if value != "":
+         BCD = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Hivelist all
+# Details : Menu option selected - Change BOOT BCD via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '19':
-      message()
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " hivelist")
-      prompt()
+      value = input("Please enter " + J.rstrip() + " value: ")
+      if value != "":
+         CUS = spacePadding(value, COL2)
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -995,141 +812,189 @@ while True:
 
    if selection =='29':
       if (CUS == "0x0000000000000000"):
-         print("[-] " + CNM + " Hive missing - it is not possible to extract data...")
+         print("[-] " + J + " Hive missing - it is not possible to extract data...")
       else:
          message()
          os.system(volpath + " -f '" + fileName + "'" + PRO + " hivedump -o " + CUS + " | more")
       prompt()  
-
+      
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Change SAM via user choice.
+# Details : Menu option selected - Dumps the SAM file hashes for export to hashcat.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '30':
-      value = input("Please enter SAM value: ")
-      if value != "":
-         SAM = spacePadding(value, COL2)
+      if SAM == "0x0000000000000000":
+         print(colored("[-] SAM HIVE missing - its not possible to extract the hashes...",colour2))
+      else:
+         message()
+         os.system(volpath + " -f '" + fileName + "'" + PRO + " hashdump -y " + SYS + " -s " + SAM)
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Change SECURITY via user choice.
+# Details : Menu option selected - Display any LSA secrets
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '31':
-      value = input("Please enter SECURITY value: ")
-      if value != "":
-         SEC = spacePadding(value, COL2)
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " lsadump | more")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Change COMPENENTS via user choice.
+# Details : Menu option selected - Shows running processes and provides a brief analyse.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '32':
-      value = input("Please enter COMPENENTS value: ")
-      if value != "":
-         COM = spacePadding(value, COL2)
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " psscan | more")
+      
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " psscan --output greptext > F1.tmp")
+      os.system("tail -n +2 F1.tmp > F2.tmp")
+      os.system("sed -i 's/>//g' F2.tmp")
+      with open("F2.tmp") as read1:
+         for line in read1:
+            for word in line.split('|'):
+                output = subprocess.check_output("echo " + word + " >> F3.tmp", shell=True)
+      os.system("tail -n +2 F3.tmp > F4.tmp")
+      os.system("wc -l F2.tmp > NUM.tmp")
+      NUMLINES = open("NUM.tmp").readline().replace(' F2.tmp','') 
+      COUNT = int(NUMLINES)
+      print("\n[+] There were",COUNT,"processes running at the time of the memory dump.\n")
+      read2 = open('PID.tmp','w')
+      read3 = open('PPID.tmp','w')
+      with open('F4.tmp') as read4:
+         while COUNT > 0:
+            A = read4.readline()
+            B = read4.readline() # Executable name
+            C = read4.readline().rstrip('\n') # PI1
+            print(C, file=read2)
+            D = read4.readline().rstrip('\n') # OFF             
+            print(D, file=read3)		
+            E = read4.readline()
+            G = read4.readline()
+            H = read4.readline() # blank
+            COUNT = (COUNT-1)
+      read2.close() # required
+      read3.close() # required
+      os.remove('F1.tmp')
+      os.remove('F2.tmp')
+      os.remove('F3.tmp')
+      os.remove('F4.tmp')
+      os.system("echo 'comm -13 <(sort -u PID.tmp) <(sort -u PPID.tmp) > SUSPECT.tmp' > patch.sh")
+      os.system("bash patch.sh")
+      os.system("sort -n SUSPECT.tmp > SUSPECT2.tmp")
+      print("[+] Analyse of these processes reveals that:")
+      with open('SUSPECT2.tmp') as read5:
+         line = read5.readline().rstrip('\n')
+         while line != "":
+            if line != "0":
+               print("\tParent process PPID",line,"does not have a process spawn! and should be investigated further...")
+            line = read5.readline().strip('\n')
+      os.remove("patch.sh")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Change SOFTWARE via user choice.
+# Details : Menu option selected - Shows hidden processes.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '33':
-      value = input("Please enter SOFTWARE value: ")
-      if value != "":
-         SOF = spacePadding(value, COL2)
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " psxview | more")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Change SYSTEM via user choice.
+# Details : Menu option selected - Shows running services.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '34':
-      value = input("Please enter SYSTEM value: ")
-      if value != "":
-         SYS = spacePadding(value, COL2)
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " svcscan | more")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Change NTUSER via user choice.
+# Details : Menu option selected - Last commands run.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '35':
-      value = input("Please enter NTUSER value: ")
-      if value != "":
-         NTU = spacePadding(value, COL2)
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " cmdscan")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Change HARDWARE via user choice.
+# Details : Menu option selected - Last commands run.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '36':
-      value = input("Please enter HARDWARE value: ")
-      if value != "":
-         HRD = spacePadding(value, COL2)
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " consoles")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Change DEFAULT via user choice.
+# Details : Menu option selected - Last commands run.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '37':
-      value = input("Please enter DEFUALT value: ")
-      if value != "":
-         DEF = spacePadding(value, COL2)
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " cmdline")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Change BOOT BCD via user choice.
+# Details : Menu option selected - Show userassist key values.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '38':
-      value = input("Please enter BOOT BCD value: ")
-      if value != "":
-         BCD = spacePadding(value, COL2)
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " userassist")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Windows Forensics
-# Details : Menu option selected - Change BOOT BCD via user choice.
+# Details : Menu option selected - Hivelist all
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '39':
-      value = input("Please enter " + CNM.rstrip() + " value: ")
-      if value != "":
-         CUS = spacePadding(value, COL2)
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " hivelist")
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1535,6 +1400,147 @@ while True:
    if selection =='69':
       message()
       os.system("bulk_extractor -o " + DIR + " '" + fileName + "'")
+      prompt()
+      
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : Windows Forensics
+# Details : Menu option selected - Select file & extract host variables.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '78':
+      bak = fileName
+      fileName = input("[?] Please enter filename: ")
+      if fileName == "":
+         fileName = bak
+      if os.path.exists(fileName):
+         fileName = spacePadding(fileName,11)
+         profiles = "NOT FOUND"
+         message()
+         os.system(volpath + " imageinfo -f '" + fileName + "' --output-file=image.log")
+         with open("image.log") as search:
+            for line in search:
+               if "Suggested Profile(s) :" in line:
+                  profiles = line
+               if "Number of Processors" in line:
+                  PRC = line
+               if "Image Type (Service Pack) :" in line:
+                  SVP = line
+               if "Image date and time :" in line:
+                  DA1 = line
+               if "Image local date and time :" in line:
+                  DA2 = line
+         if profiles == "NOT FOUND":
+            print("ERROR #001 - A windows profile was not found, see 'image.log' for further information.")
+            exit(True)         
+         profiles = profiles.replace("Suggested Profile(s) :","")
+         profiles = profiles.replace(" ","")
+         profiles = profiles.split(",")
+         PRO = " --profile " + profiles[0]
+         PR2 = profiles[0]
+         if (PR2[:1] != "W") and (PR2[:1] != "V"):
+            print("ERROR #002- A windows profile was not found, see 'image.log' for further information.")
+            exit(True)
+         else:
+            PR2 = spacePadding(PR2,COL1)
+            os.remove("image.log")   
+         PRC = PRC.replace("Number of Processors :","")
+         PRC = PRC.replace(" ","")
+         PRC = PRC.replace("\n","")
+         PRC = spacePadding(PRC, COL3)
+         SVP = SVP.replace("Image Type (Service Pack) :","")
+         SVP = SVP.replace(" ","")
+         SVP = SVP.replace("\n","")
+         SVP = spacePadding(SVP, COL1)
+         DA1 = DA1.replace("Image date and time :","")
+         DA1 = DA1.lstrip() 
+         DA1 = DA1.rstrip("\n")
+         a,b,c = DA1.split()
+         DA1 = a + " @ " + b
+         DA2 = DA2.replace("Image local date and time :","")
+         DA2 = DA2.lstrip()
+         DA2 = DA2.rstrip("\n")
+         a,b,c = DA2.split()
+         DA2 = a + " " + b
+         DA2 = spacePadding(DA2, COL1)
+         print(""); message()
+         os.system(volpath + " -f '" + fileName + "'" + PRO + " hivelist --output-file=hivelist.tmp")
+         with open("hivelist.tmp") as search:
+            for line in search:
+              if "\sam" in line.lower():
+                 SAM = line.split(None, 1)[0]
+                 SAM = spacePadding(SAM, COL2)
+              if "\security" in line.lower():
+                 SEC = line.split(None, 1)[0]
+                 SEC = spacePadding(SEC, COL2)
+              if "\software" in line.lower():
+                 SOF = line.split(None, 1)[0]
+                 SOF = spacePadding(SOF, COL2)
+              if "\system" in line.lower():
+                 SYS = line.split(None, 1)[0]
+                 SYS = spacePadding(SYS, COL2)
+              if "\components" in line.lower():
+                 COM = line.split(None, 1)[0]
+                 COM = spacePadding(SYS, COL2)
+              if "\\administrator\\ntuser.dat" in line.lower(): # \Administrator\NTUSER.DAT as there are usually multiple NTUSERS files. 
+                 NTU = line.split(None, 1)[0]
+                 NTU = spacePadding(SYS, COL2)
+              if "\hardware" in line.lower():
+                 HRD = line.split(None,1)[0]
+                 HRD = spacePadding(HRD, COL2)
+              if "\default" in line.lower():
+                 DEF = line.split(None,1)[0]
+                 DEF = spacePadding(DEF, COL2)
+              if "\\bcd" in line.lower():
+                 BCD = line.split(None,1)[0]
+                 BCD = spacePadding(BCD, COL2)
+         print(""); message()
+         os.system(volpath + " -f '" + fileName + "'" + PRO + " printkey -o " + SYS + " -K 'ControlSet001\Control\ComputerName\ComputerName' --output-file=host.tmp")
+         with open("host.tmp") as search:
+            wordlist = (list(search)[-1])
+            wordlist = wordlist.split()
+            HST = str(wordlist[-1])
+         if HST == "searched":					# Looks like a host name has not been found.
+            HST = "NOT FOUND          "				# So set a defualt value.
+         else:
+            HST = HST.encode(encoding='UTF-8',errors='strict')	# Deal with a encoding issue with hostname.
+            HST = str(HST)
+            HST = HST.replace("b'","")
+            HST = HST.replace("\\x00'","")
+            HST = spacePadding(HST, COL1)
+         print(""); message()
+         os.system(volpath + " -f '" + fileName + "'" + PRO + " hashdump -y " + SYS + " -s " + SAM + " --output-file=hash.tmp")
+         with open("hash.tmp") as search:
+            count = 0
+            for line in search:
+               if line != "":
+                  catch = line.replace(":"," ")
+                  catch2 = catch.split()
+                  catch3 = catch2[3]
+                  PA[count] = catch3
+                  US[count] = catch2[0][:COL3-1] + " "
+                  US[count] = spacePadding(US[count], COL3)
+                  count = count + 1
+               if count > MAXX: count = MAXX        
+         print(""); message()
+         os.system(volpath + " -f '" + fileName + "'" + PRO + " connscan --output-file=connscan.tmp")
+         os.system("sed '1d' connscan.tmp > conn1.tmp")
+         os.system("sed '1d' conn1.tmp > connscan.tmp")
+         os.system("cut -f 2 -d ' ' connscan.tmp > conn1.tmp")
+         os.system("strings conn1.tmp | sort | uniq -c | sort -nr > connscan.tmp")
+         os.system("sed '1d' conn1.tmp > connscan.tmp")         
+         getip = linecache.getline('connscan.tmp', 1)         
+         if getip != "":
+            getip = getip.split()
+            getip = getip[0].replace(':',' ')  
+            HIP = getip.rsplit(' ', 1)[0]
+            POR = getip.rsplit(' ', 1)[1]
+            HIP = spacePadding(HIP, COL1)
+            POR = spacePadding(POR, COL1)
+      else:
+         print("[-] The specified file was not found...")
       prompt()
       
 # ------------------------------------------------------------------------------------- 
