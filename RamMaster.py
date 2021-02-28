@@ -16,15 +16,13 @@
 
 import os
 import sys
-#import time
 import os.path
 import datetime
 import pyfiglet
-#import fileinput
 import linecache
-#import subprocess
+import subprocess
 
-from termcolor import colored					# pip install termcolor
+from termcolor import colored
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
@@ -125,7 +123,7 @@ def Display():
    print(colored(PA[2],colour1), end=' ')
    print('\u2551' + " "*COL4 + '\u2551')
    
-   print('\u2551' + " TIME STAMP   " + '\u2551', end=' ')
+   print('\u2551' + " LOCAL TIME   " + '\u2551', end=' ')
    if DA2 == "NOT FOUND          ":
       print(colored(DA2,colour2), end=' ')
    else:
@@ -243,11 +241,11 @@ def Display():
    print("GENERAL SETTINGS", end=' ')
    print(" "*19, end=' ')
    print("ANALYSE", end=' ')
-   print(" "*7, end=' ')
+   print(" "*16, end=' ')
    print("IDENTIFY", end=' ')
-   print(" "*22, end=' ')
+   print(" "*12, end=' ')
    print("INVESTIGATE", end=' ')
-   print(" "*15, end=' ')
+   print(" "*16, end=' ')
    print("EXTRACT", end=' ')
    print(" "*31, end=' ')
    print('\u2551')
@@ -255,16 +253,16 @@ def Display():
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 
    print('\u2560' + ('\u2550'*165) + '\u2563')
-   print('\u2551' + "(0) Re/Set PROFILE   (10) Re/Set SAM        (20) SAM        (30) Users & Passwords (40) PrintKey         (50) Desktop   (60) Malfind PID DIR  (70) RESERVED          " + '\u2551')
-   print('\u2551' + "(1) Re/Set HOST NAME (11) Re/Set SECURITY   (21) SECURITY   (31) Default Passwords (41) ShellBags        (51) Clipboard (61) Vaddump PID DIR  (71) RESERVED          " + '\u2551')
-   print('\u2551' + "(2) Re/Set SERV PACK (12) Re/Set COMPONENTS (22) COMPONENTS (32) Running Processes (42) SlimCache Data   (52) Notepad   (62) Prodump PID DIR  (72) RESERVED          " + '\u2551')
-   print('\u2551' + "(3) Re/Set TIMESTAMP (13) Re/Set SOFTWARE   (23) SOFTWARE   (33) Hidden Processes  (43) Connections Scan (53) Explorer  (63) Memdump PID DIR  (73) RESERVED          " + '\u2551')
-   print('\u2551' + "(4) Re/Set LOCAL IP  (14) Re/Set SYSTEM     (24) SYSTEM     (34) Running Services  (44) Network Scan     (54) Files     (64) PARAMETER OFFSET (74) RESERVED          " + '\u2551')
-   print('\u2551' + "(5) Re/Set LOCALPORT (15) Re/Set NTUSER     (25) NTUSER     (35) Command History   (45) Socket Scan      (55) SymLinks  (65) Timelines        (75) RESERVED          " + '\u2551')
-   print('\u2551' + "(6) Re/Set PID VALUE (16) Re/Set HARDWARE   (26) HARDWARE   (36) Console History   (46) Mutant Scan      (56) Drivers   (66) Screen Shots     (76) RESERVED          " + '\u2551')
-   print('\u2551' + "(7) Re/Set OFFSET    (17) Re/Set DEFUALT    (27) DEFUALT    (37) Cmdline Arguments (47) DLL List         (57) SIDs      (67) MFT Table        (77) RESERVED          " + '\u2551')
-   print('\u2551' + "(8) Re/Set PARAMETER (18) Re/Set BOOT BCD   (28) BOOT BCD   (38) User Assist Keys  (48) Sessions         (58) EnvVars   (68) PCAP File        (78) Load Memory File  " + '\u2551')
-   print('\u2551' + "(9) Re/Set DIRECTORY (19) Re/Set "+J[:9]+"  (29) "+J[:9]+"  (39) List all Hives    (49) PARAMETER Search (59) TrueCrypt (69) Bulk Extract     (79) Exit Program      " + '\u2551')
+   print('\u2551' + "(0) Re/Set PROFILE   (10) Re/Set SAM        (20) SAM        (30) Users & Passwords (40) PrintKey         (50) Desktop   (60) RSA SSL Keys DIR (70) Yara String Search" + '\u2551')
+   print('\u2551' + "(1) Re/Set HOST NAME (11) Re/Set SECURITY   (21) SECURITY   (31) Default Passwords (41) ShellBags        (51) Clipboard (61) RegHiveCerts DIR (71) Time Lines DIR    " + '\u2551')
+   print('\u2551' + "(2) Re/Set SERV PACK (12) Re/Set COMPONENTS (22) COMPONENTS (32) Running Processes (42) SlimCache Data   (52) Notepad   (62) Kern Drivers DIR (72) Screen Shots DIR  " + '\u2551')
+   print('\u2551' + "(3) Re/Set TIMESTAMP (13) Re/Set SOFTWARE   (23) SOFTWARE   (33) Hidden Processes  (43) Connections Scan (53) Explorer  (63) DllDump PID DIR  (73) MFT Table DIR     " + '\u2551')
+   print('\u2551' + "(4) Re/Set LOCAL IP  (14) Re/Set SYSTEM     (24) SYSTEM     (34) Running Services  (44) Network Scan     (54) Files     (64) MalFind PID DIR  (74) PCAP Files DIR    " + '\u2551')
+   print('\u2551' + "(5) Re/Set LOCALPORT (15) Re/Set NTUSER     (25) NTUSER     (35) Running Dll's     (45) Socket Scan      (55) SymLinks  (65) VadDump PID DIR  (75) Bulk Extract DIR  " + '\u2551')
+   print('\u2551' + "(6) Re/Set PID VALUE (16) Re/Set HARDWARE   (26) HARDWARE   (36) Command History   (46) Mutant Scan      (56) Drivers   (66) ProDump PID DIR  (76) Load Memory File  " + '\u2551')
+   print('\u2551' + "(7) Re/Set OFFSET    (17) Re/Set DEFUALT    (27) DEFUALT    (37) Console History   (47) User Assist Keys (57) SIDs      (67) MemDump PID DIR  (77) Info Memory File  " + '\u2551')
+   print('\u2551' + "(8) Re/Set PARAMETER (18) Re/Set BOOT BCD   (28) BOOT BCD   (38) Cmdline Arguments (48) Sessions         (58) EnvVars   (68) PARAMETER OFFSET (78) Shell Memory File " + '\u2551')
+   print('\u2551' + "(9) Re/Set DIRECTORY (19) Re/Set "+J[:9]+"  (29) "+J[:9]+"  (39) List all Hives    (49) Domain Hashes    (59) TrueCrypt (69) PARAMETER Search (79) Exit Program      " + '\u2551')
    print('\u255A' + ('\u2550')*165 + '\u255D')
    return
    
@@ -305,6 +303,7 @@ COL3 = 26
 COL4 = 32
 COL5 = 32
 MAXX = 11
+LOAD = 0
 
 SAM = "0x0000000000000000"
 SEC = "0x0000000000000000"
@@ -362,6 +361,15 @@ while True:
    os.system("clear")
    Display()
    selection=input("[?] Please Select: ")
+   
+# Details : Make sure a file is loaded first!!.
+
+   if selection == "79":
+      LOAD = 1
+   if LOAD == 0 and selection != "76":
+      print("[-] Please select a file to analyse first...")
+      selection = "100"
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -834,7 +842,7 @@ while True:
 # -------------------------------------------------------------------------------------
 
    if selection == '31':
-      message()
+      message();
       os.system(volpath + " -f '" + fileName + "'" + PRO + " lsadump | more")
       prompt()
 
@@ -921,18 +929,18 @@ while True:
       message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " svcscan | more")
       prompt()
-
+      
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Forensic
-# Details : Menu option selected - Last commands run.
+# Details : Menu option selected - List running dll's.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '35':
+   if selection =='35':
       message()
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " cmdscan")
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " dlllist | more")
       prompt()
 
 # ------------------------------------------------------------------------------------- 
@@ -945,7 +953,7 @@ while True:
 
    if selection == '36':
       message()
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " consoles")
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " cmdscan")
       prompt()
 
 # ------------------------------------------------------------------------------------- 
@@ -958,20 +966,20 @@ while True:
 
    if selection == '37':
       message()
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " cmdline")
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " consoles")
       prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Forensic
-# Details : Menu option selected - Show userassist key values.
+# Details : Menu option selected - Last commands run.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '38':
       message()
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " userassist")
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " cmdline")
       prompt()
 
 # ------------------------------------------------------------------------------------- 
@@ -1084,13 +1092,13 @@ while True:
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Forensic
-# Details : Menu option selected - List dll's.
+# Details : Menu option selected - Show userassist key values.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='47':
+   if selection == '47':
       message()
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " dlllist | more")
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " userassist")
       prompt()
 
 # ------------------------------------------------------------------------------------- 
@@ -1104,22 +1112,20 @@ while True:
    if selection =='48':
       message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " sessions | more")
-      prompt()
-
+      prompt()     
+      
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
 # Version : Forensic
-# Details : Menu option selected - Search image for occurences of string.
+# Details : Menu option selected - Dump domain hashes.
 # Modified: N/A
-# ------------------------------------------------------------------------------------- 
-   
+# -------------------------------------------------------------------------------------
+
    if selection =='49':
       message()
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " pslist | grep " + PRM)
-      message()
-      os.system(volpath + " -f '" + fileName + "'" + PRO + " filescan | grep " + PRM)
-      prompt()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " cachedump")
+      prompt()    
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1256,6 +1262,58 @@ while True:
       message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " truecryptpassphrase | more")
       prompt()
+      
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : Forensic
+# Details : Menu option selected - Dump private and public RSA SSL keys.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='60':
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " dumpcerts -D " + DIR)
+      prompt()
+      
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : Forensic
+# Details : Menu option selected - Dump registry Hives.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='61':
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " dumpregistry -D " + DIR)
+      prompt()
+      
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : Forensic
+# Details : Menu option selected - Dump kernal drivers.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='62':
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " moddump -D " + DIR)
+      prompt()
+      
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : Forensic
+# Details : Menu option selected - List running dll's for process PID and dump.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='63':
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " dlldump -p " + PI1 + " -D " + DIR)
+      prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1265,7 +1323,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='60':
+   if selection =='64':
       message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " malfind -p " + PI1 + " -D " + DIR)
       prompt()
@@ -1278,7 +1336,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='61':
+   if selection =='65':
       message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " vaddump -p " + PI1 + " --dump-dir " + DIR)
       prompt()
@@ -1291,7 +1349,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='62':
+   if selection =='66':
       message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " procdump  -p " + PI1 + " --dump-dir " + DIR)
       prompt()
@@ -1304,9 +1362,24 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='63':
+   if selection =='67':
       message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " memdump  -p " + PI1 + " --dump-dir " + DIR)
+      prompt()
+      
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : Forensic
+# Details : Menu option selected - Search image for occurences of string.
+# Modified: N/A
+# ------------------------------------------------------------------------------------- 
+   
+   if selection =='68':
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " pslist | grep " + PRM)
+      message()
+      os.system(volpath + " -f '" + fileName + "'" + PRO + " filescan | grep " + PRM)
       prompt()
 
 # ------------------------------------------------------------------------------------- 
@@ -1317,10 +1390,25 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='64':
+   if selection =='69':
       message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " dumpfiles -Q " + OFF + " -D " + DIR + " -u -n")
       prompt()
+      
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : Forensic
+# Details : Menu option selected - Yara scan.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection =='70':
+      scanString = input("[?] Please enter yara string to scan: ")
+      if scanString != "":
+         message()
+         os.system(volpath + " -f '" + fileName + "'" + PRO + " yarascan -Y " + scanString)
+         prompt()
 
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
@@ -1330,7 +1418,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='65':
+   if selection =='71':
       message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " timeliner --output-file='" + DIR.rstrip(" ") + "/timeline.txt'")
       print(""); message()
@@ -1345,7 +1433,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='66':
+   if selection =='72':
       message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " -D " + DIR + " screenshot")
       prompt()
@@ -1358,7 +1446,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='67':
+   if selection =='73':
       message()
       os.system(volpath + " -f '" + fileName + "'" + PRO + " mftparser --output-file=" + DIR.rstrip(" ") + "/mfttable.txt")     
       message()
@@ -1375,7 +1463,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='68':
+   if selection =='74':
       message()
       os.system("bulk_extractor -x all -e net -o " + DIR + " '" + fileName + "'")
       prompt()
@@ -1388,7 +1476,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection =='69':
+   if selection =='75':
       message()
       os.system("bulk_extractor -o " + DIR + " '" + fileName + "'")
       prompt()
@@ -1401,7 +1489,7 @@ while True:
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
-   if selection == '78':
+   if selection == '76':
       bak = fileName
       fileName = input("[?] Please enter filename: ")
       if fileName == "":
@@ -1409,6 +1497,7 @@ while True:
       if os.path.exists(fileName):
          fileName = spacePadding(fileName,11)
          profiles = "NOT FOUND"
+         LOAD = 1
          message()
          os.system(volpath + " imageinfo -f '" + fileName + "' --output-file=image.log")
          with open("image.log") as search:
@@ -1532,7 +1621,33 @@ while True:
             POR = spacePadding(POR, COL1)
       else:
          print("[-] The specified file was not found...")
-      prompt()
+      prompt()      
+      
+# ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : Forensic
+# Details : Menu option selected - Select file & extract host variables.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '77':
+      message()
+      os.system(volpath + " -f '" + fileName + "' " + PRO + " verinfo | more") 
+      prompt()   
+      
+ # ------------------------------------------------------------------------------------- 
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub
+# Version : Forensic
+# Details : Menu option selected - Shell in.
+# Modified: N/A
+# -------------------------------------------------------------------------------------
+
+   if selection == '78':
+      message()
+      os.system(volpath + " -f '" + fileName + "' " + PRO + " volshell") 
+      prompt()  
       
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
