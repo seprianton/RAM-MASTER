@@ -9,48 +9,49 @@
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics                                                                
+# Version : Forensic                                                               
 # Details : Load required imports.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
 import os
 import sys
-import time
-import shutil
+#import time
 import os.path
 import datetime
 import pyfiglet
-import fileinput
+#import fileinput
 import linecache
-import subprocess
+#import subprocess
 
 from termcolor import colored					# pip install termcolor
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : Windows Forensics                                                                
-# Details : Conduct simple and routine tests on user supplied arguements.   
+# Version : Forensic                                                               
+# Details : Conduct simple and routine tests on any user supplied arguements.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
 if os.geteuid() != 0:
     print("\nPlease run this python script as root...")
     exit(True)
-
+    
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : Windows Forensics
-# Details : Create function calls from main.
+# Version : Forensic
+# Details : Create functional subroutine calls from main.
 # Modified: N/A                                                               
 # -------------------------------------------------------------------------------------
 
-def spacePadding(variable,value):
-   while len(variable) < value:
-      variable += " "
-   return variable
+def dispBanner(variable):
+   ascii_banner = pyfiglet.figlet_format(variable).upper()
+   ascii_banner = ascii_banner.rstrip("\n")
+   os.system("clear")
+   print(colored(ascii_banner,'red', attrs=['bold']))
+   return   
    
 def getTime():
    variable = str(datetime.datetime.now().time())
@@ -61,111 +62,18 @@ def getTime():
    variable = spacePadding(variable, COL1)
    return variable 
    
-def dispBanner(variable):
-   ascii_banner = pyfiglet.figlet_format(variable).upper()
-   ascii_banner = ascii_banner.rstrip("\n")
-   os.system("clear")
-   print(colored(ascii_banner,colour4, attrs=['bold']))
-   return
+def spacePadding(variable,value):
+   while len(variable) < value:
+      variable += " "
+   return variable
 
 def prompt():
-   input("\n[?] Press ENTER to continue...")
+   input("\n[!] Press ENTER to continue...")
    return
 
 def message():
    print(colored("[*] Analysing file, please wait...\n", colour3))
    return
-
-# -------------------------------------------------------------------------------------
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub                                                               
-# Version : Windows Forensics
-# Details : Initialise universal program variables.
-# Modified: N/A                                                               
-# -------------------------------------------------------------------------------------
-
-COL1 = 19
-COL2 = 18
-COL3 = 26
-COL4 = 32
-COL5 = 32
-MAXX = 11
-
-PRO = "UNSELECTED         "
-PR2 = "UNSELECTED         "
-DA1 = "NOT FOUND          "
-DA2 = "NOT FOUND          "
-PI1 = "0                  "
-PI2 = "0                  "
-OFF = "0                  "
-PRM = "UNSELECTED         "
-DIR = "OUTCOME            "
-SAM = "0x0000000000000000"
-SEC = "0x0000000000000000"
-COM = "0x0000000000000000"
-SOF = "0x0000000000000000"
-SYS = "0x0000000000000000"
-NTU = "0x0000000000000000"
-HRD = "0x0000000000000000"
-DEF = "0x0000000000000000"
-BCD = "0x0000000000000000"
-CUS = "0x0000000000000000"
-J   = "CUSTOM   "
-HST = "UNKNOWN            "
-PRC = "0                  "
-SVP = "0                  "
-HIP = "000.000.000.000    "
-POR = "000                "
-
-X1 = " "*COL3
-X2 = " "*COL4
-
-US = [X1]*MAXX
-PA = [X2]*MAXX
-
-colour0 = 'white'
-colour1 = 'green'
-colour2 = 'yellow'
-colour3 = 'blue'
-colour4 = 'red'
-
-volpath = "/opt/volatility_2.6_lin64_standalone/volatility_2.6_lin64_standalone"
-fileName = "UNKNOWN   "
-
-# -------------------------------------------------------------------------------------
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub
-# Version : Windows Forensics                                                                
-# Details : Display universal header.
-# Modified: N/A                                                               
-# -------------------------------------------------------------------------------------
-
-os.system("clear")
-dispBanner("RAM MASTER")
-print(colored("BY TERENCE BROADBENT MSc DIGITAL FORENSICS & CYBERCRIME ANALYSIS\n", colour2, attrs=['bold']))
-
-# -------------------------------------------------------------------------------------
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub                                                               
-# Version : Windows Forensics
-# Details : Boot the system and populate program variables.
-# Modified: N/A                                                               
-# -------------------------------------------------------------------------------------
-
-print(colored("Booting - Please wait...\n",colour3))
-LTM = getTime()
-if not os.path.exists('OUTCOME'):
-   os.mkdir("OUTCOME")
-os.system("xdotool key Alt+Shift+S; xdotool type 'RAM MASTER'; xdotool key Return")
-time.sleep(3)
-
-# -------------------------------------------------------------------------------------
-# AUTHOR  : Terence Broadbent                                                    
-# CONTRACT: GitHub                                                               
-# Version : Windows Forensics
-# Details : Build the top half of the screen display as a function call.
-# Modified: N/A                                                               
-# -------------------------------------------------------------------------------------
 
 def Display():
    print('\u2554' + '\u2550'*14 + '\u2566' + '\u2550'*21 + '\u2566' + '\u2550'*33 + '\u2566' + '\u2550'*61 + '\u2566' + '\u2550'*COL5 + '\u2557')
@@ -188,7 +96,7 @@ def Display():
    print('\u2551' + " "*COL4 + '\u2551')
    
    print('\u2551' + " HOST NAME    " + '\u2551', end=' ')
-   if HST == "NOT FOUND          ":
+   if HST == "UNKNOWN            ":
       print(colored(HST[:20],colour2), end=' ')
    else:
       print(colored(HST[:20],colour1), end=' ')
@@ -331,15 +239,15 @@ def Display():
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 
    print('\u2551', end=' ')
-   print(" "*15, end=' ')
-   print("SETTINGS", end=' ')
-   print(" "*22, end=' ')
+   print(" "*10, end=' ')
+   print("GENERAL SETTINGS", end=' ')
+   print(" "*19, end=' ')
    print("ANALYSE", end=' ')
    print(" "*7, end=' ')
    print("IDENTIFY", end=' ')
-   print(" "*24, end=' ')
+   print(" "*22, end=' ')
    print("INVESTIGATE", end=' ')
-   print(" "*13, end=' ')
+   print(" "*15, end=' ')
    print("EXTRACT", end=' ')
    print(" "*31, end=' ')
    print('\u2551')
@@ -347,22 +255,102 @@ def Display():
 # ----------------------------------------------------------------------------------------------------------------------------------------------------
 
    print('\u2560' + ('\u2550'*165) + '\u2563')
-   print('\u2551' + "(0) Re/Set PROFILE   (10) Re/Set SAM        (20) SAM        (30) Users/Passwords   (40) PrintKey         (50) Desktop   (60) Malfind PID DIR  (70) " + " "*18 + '\u2551')
-   print('\u2551' + "(1) Re/Set HOST NAME (11) Re/Set SECURITY   (21) SECURITY   (31) Default Password  (41) ShellBags        (51) Clipboard (61) Vaddump PID DIR  (71) " + " "*18 + '\u2551')
-   print('\u2551' + "(2) Re/Set SERV PACK (12) Re/Set COMPONENTS (22) COMPONENTS (32) Running Processes (42) SlimCache Data   (52) Notepad   (62) Prodump PID DIR  (72) " + " "*18 + '\u2551')
-   print('\u2551' + "(3) Re/Set TIMESTAMP (13) Re/Set SOFTWARE   (23) SOFTWARE   (33) Hidden Processes  (43) Connections Scan (53) Explorer  (63) Memdump PID DIR  (73) " + " "*18 + '\u2551')
-   print('\u2551' + "(4) Re/Set LOCAL  IP (14) Re/Set SYSTEM     (24) SYSTEM     (34) Running Services  (44) Network Scan     (54) Files     (64) PARAMETER OFFSET (74) " + " "*18 + '\u2551')
-   print('\u2551' + "(5) Re/Set LOCALPORT (15) Re/Set NTUSER     (25) NTUSER     (35) Command History   (45) Socket Scan      (55) SymLinks  (65) Timelines        (75) " + " "*18 + '\u2551')
-   print('\u2551' + "(6) Re/Set PID VALUE (16) Re/Set HARDWARE   (26) HARDWARE   (36) Console History   (46) Mutant Scan      (56) Drivers   (66) Screen Shots     (76) " + " "*18 + '\u2551')
-   print('\u2551' + "(7) Re/Set OFF   SET (17) Re/Set DEFUALT    (27) DEFUALT    (37) Cmdline Arguments (47) DLL List         (57) SIDs      (67) MFT Table        (77) " + " "*18 + '\u2551')
+   print('\u2551' + "(0) Re/Set PROFILE   (10) Re/Set SAM        (20) SAM        (30) Users & Passwords (40) PrintKey         (50) Desktop   (60) Malfind PID DIR  (70) RESERVED          " + '\u2551')
+   print('\u2551' + "(1) Re/Set HOST NAME (11) Re/Set SECURITY   (21) SECURITY   (31) Default Passwords (41) ShellBags        (51) Clipboard (61) Vaddump PID DIR  (71) RESERVED          " + '\u2551')
+   print('\u2551' + "(2) Re/Set SERV PACK (12) Re/Set COMPONENTS (22) COMPONENTS (32) Running Processes (42) SlimCache Data   (52) Notepad   (62) Prodump PID DIR  (72) RESERVED          " + '\u2551')
+   print('\u2551' + "(3) Re/Set TIMESTAMP (13) Re/Set SOFTWARE   (23) SOFTWARE   (33) Hidden Processes  (43) Connections Scan (53) Explorer  (63) Memdump PID DIR  (73) RESERVED          " + '\u2551')
+   print('\u2551' + "(4) Re/Set LOCAL IP  (14) Re/Set SYSTEM     (24) SYSTEM     (34) Running Services  (44) Network Scan     (54) Files     (64) PARAMETER OFFSET (74) RESERVED          " + '\u2551')
+   print('\u2551' + "(5) Re/Set LOCALPORT (15) Re/Set NTUSER     (25) NTUSER     (35) Command History   (45) Socket Scan      (55) SymLinks  (65) Timelines        (75) RESERVED          " + '\u2551')
+   print('\u2551' + "(6) Re/Set PID VALUE (16) Re/Set HARDWARE   (26) HARDWARE   (36) Console History   (46) Mutant Scan      (56) Drivers   (66) Screen Shots     (76) RESERVED          " + '\u2551')
+   print('\u2551' + "(7) Re/Set OFFSET    (17) Re/Set DEFUALT    (27) DEFUALT    (37) Cmdline Arguments (47) DLL List         (57) SIDs      (67) MFT Table        (77) RESERVED          " + '\u2551')
    print('\u2551' + "(8) Re/Set PARAMETER (18) Re/Set BOOT BCD   (28) BOOT BCD   (38) User Assist Keys  (48) Sessions         (58) EnvVars   (68) PCAP File        (78) Load Memory File  " + '\u2551')
-   print('\u2551' + "(9) Re/Set DIRECTORY (19) Re/Set "+J[:9]+"  (29) "+J[:9]+"  (39) Hive list         (49) PARAMETER Search (59) TrueCrypt (69) Bulk Extract     (79) Exit Program      " + '\u2551')
+   print('\u2551' + "(9) Re/Set DIRECTORY (19) Re/Set "+J[:9]+"  (29) "+J[:9]+"  (39) List all Hives    (49) PARAMETER Search (59) TrueCrypt (69) Bulk Extract     (79) Exit Program      " + '\u2551')
    print('\u255A' + ('\u2550')*165 + '\u255D')
+   return
+   
+# -------------------------------------------------------------------------------------
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub                                                               
+# Version : Forensic
+# Details : Boot the system and populate system variables.
+# Modified: N/A                                                               
+# -------------------------------------------------------------------------------------
+
+os.system("clear")
+os.system("xdotool key Alt+Shift+S; xdotool type 'RAM MASTER'; xdotool key Return")
+dispBanner("RAM  MASTER")
+print(colored("BY TERENCE BROADBENT MSc DIGITAL FORENSICS & CYBERCRIME ANALYSIS\n", 'yellow', attrs=['bold']))
+print("Booting - Please wait...")
+
+if not os.path.exists('OUTCOME'):
+   os.mkdir("OUTCOME")     
+
+if not os.path.exists("volatility_2.6_lin64_standalone"):
+   print("Downloading volatility 2.6 for linux...\n")
+   os.system("wget https://downloads.volatilityfoundation.org/releases/2.6/volatility_2.6_lin64_standalone.zip")
+   os.system("unzip volatility_2.6_lin64_standalone.zip")
+   os.remove("volatility_2.6_lin64_standalone.zip")
 
 # -------------------------------------------------------------------------------------
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub                                                               
-# Version : Windows Forensics
+# Version : Forensic
+# Details : Initialise program variables.
+# Modified: N/A                                                               
+# -------------------------------------------------------------------------------------
+
+COL1 = 19
+COL2 = 18
+COL3 = 26
+COL4 = 32
+COL5 = 32
+MAXX = 11
+
+SAM = "0x0000000000000000"
+SEC = "0x0000000000000000"
+COM = "0x0000000000000000"
+SOF = "0x0000000000000000"
+SYS = "0x0000000000000000"
+NTU = "0x0000000000000000"
+HRD = "0x0000000000000000"
+DEF = "0x0000000000000000"
+BCD = "0x0000000000000000"
+CUS = "0x0000000000000000"
+
+PRO = "UNSELECTED         "
+PR2 = "UNSELECTED         "
+DA1 = "NOT FOUND          "
+DA2 = "NOT FOUND          "
+DIR = "OUTCOME            "
+J   = "CUSTOM             "
+HST = "UNKNOWN            "
+PRM = "UNSELECTED         "
+PI1 = "0                  "
+PI2 = "0                  "
+OFF = "0                  "
+PRC = "0                  "
+SVP = "0                  "
+HIP = "000.000.000.000    "
+POR = "000                "
+
+X1 = " "*COL3
+X2 = " "*COL4
+
+US = [X1]*MAXX
+PA = [X2]*MAXX
+
+colour0 = 'white'
+colour1 = 'green'
+colour2 = 'yellow'
+colour3 = 'blue'
+
+volpath = "volatility_2.6_lin64_standalone/volatility_2.6_lin64_standalone"
+fileName = "UNKNOWN   "
+
+# -------------------------------------------------------------------------------------
+# AUTHOR  : Terence Broadbent                                                    
+# CONTRACT: GitHub                                                               
+# Version : Forensic
 # Details : Start the main menu controller.
 # Modified: N/A                                                               	
 # -------------------------------------------------------------------------------------
@@ -378,7 +366,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Lets the user select a new Windows profile.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -407,7 +395,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                           
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Allows the user to change the HOST name.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -420,7 +408,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                           
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Allows the user to change the SERVICE PACK version. 
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -433,7 +421,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                           
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Allows the user to change the TIME STAMP. 
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -446,7 +434,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                           
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Allows the user to set the host IP value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -459,7 +447,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                           
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Allows the user to Set host PORT value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -472,7 +460,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Allows the user to set the PID value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -485,7 +473,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Allows the user to set the OFFSET value.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -498,7 +486,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Allows the user to set the PARAMETER string.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -511,7 +499,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Allows the user to change the working directory.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -531,7 +519,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Change SAM via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -544,7 +532,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Change SECURITY via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -557,7 +545,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Change COMPENENTS via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -570,7 +558,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Change SOFTWARE via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -583,7 +571,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Change SYSTEM via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -596,7 +584,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Change NTUSER via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -609,7 +597,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Change HARDWARE via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -622,7 +610,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Change DEFAULT via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -635,7 +623,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Change BOOT BCD via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -648,12 +636,15 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
-# Details : Menu option selected - Change BOOT BCD via user choice.
+# Version : Forensic
+# Details : Menu option selected - Change CUSTOM via user choice.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
 
    if selection == '19':
+      value = input("Please enter " + J.rstrip() + " name: ")
+      if value != "":
+         J = spacePadding(value, 9)
       value = input("Please enter " + J.rstrip() + " value: ")
       if value != "":
          CUS = spacePadding(value, COL2)
@@ -661,7 +652,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows SAM hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -677,7 +668,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows SECURITY hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -693,7 +684,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows COMPONENTS hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -709,7 +700,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows SOFTWARE hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -725,7 +716,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows SYSTEM hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -741,7 +732,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows NTUSER hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -757,7 +748,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows HARDWARE hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -773,7 +764,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows DEFUALT hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -789,7 +780,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows BOOT BCD hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -805,7 +796,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows CUSTOM hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -821,7 +812,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Dumps the SAM file hashes for export to hashcat.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -837,7 +828,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Display any LSA secrets
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -850,7 +841,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows running processes and provides a brief analyse.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -908,7 +899,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows hidden processes.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -921,7 +912,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows running services.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -934,7 +925,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Last commands run.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -947,7 +938,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Last commands run.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -960,7 +951,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Last commands run.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -973,7 +964,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Show userassist key values.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -986,7 +977,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Hivelist all
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -999,7 +990,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Print specified key from hive.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1014,7 +1005,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shellbags.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1027,7 +1018,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shellbags.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1040,7 +1031,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Analyse the NETWORK connections.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1053,7 +1044,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Analyse the NETWORK traffic.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1066,7 +1057,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Analyse the NETWORK sockets.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1079,7 +1070,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Finds Mutants.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1092,7 +1083,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - List dll's.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1105,7 +1096,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows sessions history.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1118,7 +1109,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Search image for occurences of string.
 # Modified: N/A
 # ------------------------------------------------------------------------------------- 
@@ -1133,7 +1124,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows desktop information.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1146,7 +1137,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows clipboard information.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1159,7 +1150,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows notepad information.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1172,7 +1163,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows IE history.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1185,7 +1176,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows files.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1198,7 +1189,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows symlinks.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1211,7 +1202,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Shows drivers.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1226,7 +1217,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Display all SID's.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1239,7 +1230,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Display environmental variables.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1252,7 +1243,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - TrueCrypt info
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1269,7 +1260,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Finds Malware.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1282,7 +1273,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected -  Vad dump PID.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1295,7 +1286,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Proc dump PID.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1308,7 +1299,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Memory dump PID.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1321,7 +1312,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Extract a single file based on physical OFFSET.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1334,7 +1325,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Extract timeline.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1349,7 +1340,7 @@ while True:
 #------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Extract windows screenshots.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1362,7 +1353,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Extract the MFT table and it contents.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1379,7 +1370,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Bulk Extract all known files.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1392,7 +1383,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Bulk Extract all known files.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1405,7 +1396,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Select file & extract host variables.
 # Modified: N/A
 # -------------------------------------------------------------------------------------
@@ -1546,7 +1537,7 @@ while True:
 # ------------------------------------------------------------------------------------- 
 # AUTHOR  : Terence Broadbent                                                    
 # CONTRACT: GitHub
-# Version : Windows Forensics
+# Version : Forensic
 # Details : Menu option selected - Exit the program.
 # Modified: N/A
 # -------------------------------------------------------------------------------------

@@ -2,14 +2,13 @@
   <img src="https://github.com/BroadbentT/RAM-MASTER/blob/master/picture1.png">
 </p>
 
-## WINDOWS FORENSICS EDITION
+## WINDOWS FORENSIC EDITION
 
 **INSTALLATION INSTRUCTIONS**
 
         RAM MASTER (BETA)
         -------------------------------------------------------
         https://github.com/BroadbentT/RAM-MASTER.git 
-        python3 install.py
 <br>
 
 <p align="center">
@@ -20,11 +19,10 @@
 
 Usage: python3 RamMaster.py
 
-| LANGUAGE  | FILENAME         | MD5 Hash                         | VERSION           |
-|------     |------            | -------                          | ------            |
-| python3   | install.py       | f186b02ddc0a450567fd4088a0f3494f | Windows Forensics |
-| python3   | RamMaster.py     | 915801696268719f6c21e4c0941dfb0a | Windows Forensics |
-| text file | profiles.txt     | ba638a0a6f9d322100809bd6e67427d6 | Windows Forensics |
+| LANGUAGE  | FILENAME         | MD5 Hash                         | VERSION  |
+|------     |------            | -------                          | ------   |
+| python3   | RamMaster.py     | 3ca8c6c94402891591232c835e8286bf | Forensic |
+| text file | profiles.txt     | ba638a0a6f9d322100809bd6e67427d6 | Forensic |
 
 - [x] Uses linux volatility 2.6 - https://www.volatilityfoundation.org/26
 - [x] Sample memory-dump files can be found here:-</br>
