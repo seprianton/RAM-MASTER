@@ -8,7 +8,7 @@
 
         RAM MASTER (BETA)
         -------------------------------------------------------
-        https://github.com/BroadbentT/RAM-MASTER.git 
+        git clone https://github.com/BroadbentT/RAM-MASTER.git 
 <br>
 
 <p align="center">
