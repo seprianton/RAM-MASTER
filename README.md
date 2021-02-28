@@ -35,7 +35,10 @@ A python script file to forensically examine Microsoft Windows memory-dump files
 ### CONSOLE DISPLAY AND VIDEO LINK
 [![RamMater](https://github.com/BroadbentT/RAM-MASTER/blob/master/picture3.png)](https://youtu.be/qu3LE98fbzY "RamMaster")
 
-COMPUTER MISUSE ACT 1990 - SECTION 3A
+
+### COMPUTER MISUSE ACT 1990 - SECTION 3A
 This software program has been specifically written for the purpose of legitimate penetration testing and should not be used for any other unauthorised or nefarious reasons.
 
-Found this project useful, or would like to buy the developer a coffee - make a donation. https://paypal.me/TerenceBroadbent
+Found this project useful, or would like to buy the developer a coffee - make a donation.
+https://paypal.me/TerenceBroadbent
+
