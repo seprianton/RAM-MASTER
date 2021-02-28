@@ -22,7 +22,7 @@ Usage: python3 RamMaster.py
 | LANGUAGE  | FILENAME         | MD5 Hash                         | VERSION  |
 |------     |------            | -------                          | ------   |
 | python3   | RamMaster.py     | 3ca8c6c94402891591232c835e8286bf | Forensic |
-| text file | profiles.txt     | ba638a0a6f9d322100809bd6e67427d6 | Forensic |
+| text file | profiles.txt     | 380d793d31c90a09aae417b16cbaff22 | Forensic |
 
 - [x] Uses linux volatility 2.6 - https://www.volatilityfoundation.org/26
 - [x] Sample memory-dump files can be found here:-</br>
