@@ -19,10 +19,10 @@
 
 Usage: python3 RamMaster.py
 
-| LANGUAGE  | FILENAME         | MD5 Hash                         | VERSION  |
-|------     |------            | -------                          | ------   |
-| python3   | RamMaster.py     | 3ca8c6c94402891591232c835e8286bf | Forensic |
-| text file | profiles.txt     | 380d793d31c90a09aae417b16cbaff22 | Forensic |
+| LANGUAGE  | FILENAME     | MD5 Hash                         | DESCRIPTION    | VERSION  |
+|------     |------        | -------                          | ------         | ----     |
+| python3   | RamMaster.py | 3ca8c6c94402891591232c835e8286bf | Command Centre | Forensic |
+| text file | profiles.txt | 380d793d31c90a09aae417b16cbaff22 | Profile List   | Forensic |
 
 - [x] Uses linux volatility 2.6 - https://www.volatilityfoundation.org/26
 - [x] Sample memory-dump files can be found here:-</br>
