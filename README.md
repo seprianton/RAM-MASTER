@@ -24,7 +24,7 @@ Usage: python3 RamMaster.py
 | python3   | RamMaster.py | 3ca8c6c94402891591232c835e8286bf | Command Centre | Forensic |
 | text file | profiles.txt | 380d793d31c90a09aae417b16cbaff22 | Profile List   | Forensic |
 
-- [x] Uses linux volatility 2.6 - https://www.volatilityfoundation.org/26
+- [x] Uses and self-installs linux volatility 2.6 - https://www.volatilityfoundation.org/26
 - [x] Sample memory-dump files can be found here:-</br>
 
       https://github.com/volatilityfoundation/volatility/wiki/Memory-Samples
